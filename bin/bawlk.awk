@@ -52,6 +52,10 @@ $1 == "headers" && $2 == "names" {
     print "NR == 1 { headers=\"" $3 "\"; if (!are_headers_valid(headers)) print \"invalid headers\" }"
 }
 
+$1 == "file" {
+    file_options[$2]=$3;
+}
+
 $1 == "field" {
     defaults["mode"]="append"
     defaults["summary"]="true"
@@ -140,7 +144,7 @@ END {
     print "action == \"insert\" && NR == 1 {"
     print "    print \"SET client_encoding = 'UTF8';\""
     print "    gsub(\"Range\", \"rangeno\");"
-    print "    print \"COPY " options["table"] " (\" $0 \") FROM stdin;\""
+    print "    print \"COPY " file_options["table"] " (\" $0 \") FROM stdin;\""
     print "}"
 
     print "action == \"insert\" && NR > 1 {"
@@ -161,20 +165,20 @@ END {
         if (c < l) fields=fields ","
     }
 
-    if(options["pkey"]) {
-        cols=options["pkey"]
+    if(file_options["pkey"]) {
+        cols=file_options["pkey"]
         gsub(":", ",", cols)
         fields=fields ", PRIMARY KEY (" cols ") "
     }
-    if(options["fkey"]) {
-        split(options["fkey"], ref, " ")
+    if(file_options["fkey"]) {
+        split(file_options["fkey"], ref, " ")
         ftable=ref[1]
         fcols=ref[2]
         gsub(":", ",", fcols)
         fields=fields ", FOREIGN KEY (" fcols ") REFERENCES " ftable " (" fcols ") MATCH FULL "
     }
 
-    print "     print \"CREATE TABLE IF NOT EXISTS " options["table"] " (" fields ");\""
+    print "     print \"CREATE TABLE IF NOT EXISTS " file_options["table"] " (" fields ");\""
     print "}"
 
     print "action == \"sanitize\" { print }" RS
