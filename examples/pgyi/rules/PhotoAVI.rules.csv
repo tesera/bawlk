@@ -1,20 +1,15 @@
-option,mode,append
-option,summary,false
-option,dcat,warning
-option,dvalnum,-9999
-option,dvalstr,NA
-option,table,photo_avi
-option,pkey,companyplotnumber:company
-option,fkey,plot companyplotnumber:company
-headers,names,CompanyPlotNumber|AVIVersion|PolygonNumber|YearPhotography|YearPhotoCall|Moist_Reg|Density|Height|Sp1|Sp1_Per|Sp2|Sp2_Per|Sp3|Sp3_Per|Sp4|Sp4_Per|Sp5|Sp5_Per|Struc|Struc_Val|Origin|Tpr|UMoist_Reg|UDensity|UHeight|USp1|USp1_Per|USp2|USp2_Per|USp3|USp3_Per|USp4|USp4_Per|USp5|USp5_Per|UStruc|UStruc_Val|UOrigin|UTpr|AMoist_Reg|ADensity|AHeight|ASp1|ASp1_Per|ASp2|ASp2_Per|ASp3|ASp3_Per|ASp4|ASp4_Per|ASp5|ASp5_Per|AStruc|AStruc_Val|AOrigin|ATpr|PhotoAVIComment
-field,min,CompanyPlotNumber 1
-field,max,CompanyPlotNumber 9999999999
+headers,names,CompanyPlotNumber|Company|AVIVersion|PolygonNumber|YearPhotography|YearPhotoCall|Moist_Reg|Density|Height|Sp1|Sp1_Per|Sp2|Sp2_Per|Sp3|Sp3_Per|Sp4|Sp4_Per|Sp5|Sp5_Per|Struc|Struc_Val|Origin|Tpr|UMoist_Reg|UDensity|UHeight|USp1|USp1_Per|USp2|USp2_Per|USp3|USp3_Per|USp4|USp4_Per|USp5|USp5_Per|UStruc|UStruc_Val|UOrigin|UTpr|AMoist_Reg|ADensity|AHeight|ASp1|ASp1_Per|ASp2|ASp2_Per|ASp3|ASp3_Per|ASp4|ASp4_Per|ASp5|ASp5_Per|AStruc|AStruc_Val|AOrigin|ATpr|PhotoAVIComment
+field,type,CompanyPlotNumber number
+field,required,CompanyPlotNumber true
+field,required,Company true
+field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
 field,none,AVIVersion
 field,none,PolygonNumber
 field,none,YearPhotography
 field,none,YearPhotoCall
 field,none,Moist_Reg
-field,values,Density A|B|C|D
+field,pattern,Density /^(A|B|C|D)$/
+field,type,Height number
 field,min,Height 1.3
 field,max,Height 45
 field,none,Sp1

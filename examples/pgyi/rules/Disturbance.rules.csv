@@ -1,19 +1,17 @@
-option,summary,false
-option,dcat,warning
-option,dvalnum,-9999
-option,dvalstr,NA
-option,table,disturbance
-option,pkey,companyplotnumber:company
-option,fkey,plot companyplotnumber:company
-headers,names,CompanyPlotNumber|DisturbanceNumber|DisturbanceCode|DisturbanceYear|DisturbanceMonth|DisturbanceDay|DisturbanceComment
-field,required,CompanyPlotNumber
-field,min,DisturbanceNumber 1
+headers,names,CompanyPlotNumber|Company|DisturbanceNumber|DisturbanceCode|DisturbanceYear|DisturbanceMonth|DisturbanceDay|DisturbanceComment
+field,required,CompanyPlotNumber true
+field,required,Company true
+field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
+field,type,DisturbanceNumber number
 field,min,DisturbanceNumber 12
-field,values,DisturbanceCode BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA
-field,min,DisturbanceYear 1800 error
-field,max,DisturbanceYear 2050 error
-field,min,DisturbanceMonth 1 error
-field,max,DisturbanceMonth 12 error
-field,min,DisturbanceDay 1 error
-field,max,DisturbanceDay 31 error
+field,pattern,DisturbanceCode /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/
+field,type,DisturbanceYear number
+field,min,DisturbanceYear 1800
+field,max,DisturbanceYear 2050
+field,type,DisturbanceMonth number
+field,min,DisturbanceMonth 1
+field,max,DisturbanceMonth 12
+field,type,DisturbanceDay number
+field,min,DisturbanceDay 1
+field,max,DisturbanceDay 31
 field,none,DisturbanceComment

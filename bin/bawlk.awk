@@ -75,7 +75,7 @@ $1 == "field" {
 
     if (rule_type == "type") {
         type=params[2]
-        if (type == "numeric"){
+        if (type == "number"){
             test=field " && !is_numeric(" field ")"
             msg="Field " field " in \" FILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
         }
@@ -112,7 +112,7 @@ $1 == "field" {
         err_handler= handler_prefix "print $0 FS \"" msg "\" }"
     }
 
-    if (rule_type !~ /^(none|colmap)$/) { print "action == \"validate\" && NR > 1 && " test " " err_handler " " }
+    if (rule_type != "none") { print "action == \"validate\" && NR > 1 && " test " " err_handler " " }
 }
 
 $1 == "field" {
@@ -120,13 +120,11 @@ $1 == "field" {
     split($3,params," ")
     field=params[1]
 
-    if (rule_type ~ /^(min|max)$/ || (rule_type == "type" && params[2] == "numeric")) {
+    if (rule_type ~ /^(min|max)$/ || (rule_type == "type" && params[2] == "number")) {
         types[field] = "numeric"
-    } else if (rule_type != "colmap") {
+    } else {
         types[field] = "text"
     }
-
-    if(rule_type == "colmap") mappings[field]=params[2]
 }
 
 END {
