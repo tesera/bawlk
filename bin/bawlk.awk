@@ -33,7 +33,7 @@ BEGIN {
     print RS
 }
 
-$1 == "option" { 
+$1 == "option" {
     options[$2]=$3;
 }
 
@@ -53,6 +53,14 @@ $1 == "headers" && $2 == "names" {
 }
 
 $1 == "field" {
+    defaults["mode"]="append"
+    defaults["summary"]="true"
+    defaults["dcat"]="warning"
+    defaults["dvalnum"]=-9999
+    defaults["dvalstr"]="NA"
+    for (option in defaults) {
+        if (!options[option]) options[option] = defaults[option]
+    }
     rule_type=$2
     split($3,params," ")
     field=params[1]
