@@ -174,6 +174,6 @@ END {
     print "# la fin"
     print "END {" 
     print "    if (action == \"insert\") print \"\\\\.\""
-    print "    if (action == \"validate\") print RS \"violation summary: \" RS \"   counts:   \" RS \"      total: \" err_count; print_cats(cats); "
+    print "    if (action == \"validate\" && options[\"summary\"] == \"true\") { print RS \"violation summary: \" RS \"   counts:   \" RS \"      total: \" err_count; print_cats(cats); }"
     print "}"
 }
