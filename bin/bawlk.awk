@@ -80,11 +80,11 @@ $1 == "field" {
 
         test=field " " comparator " " limit
         msg=field " in line \" NR \" should be " term " than " limit " and was \" " field " \" "
-    } else if (rule_type == "values") {
-        values=params[2]
+    } else if (rule_type == "pattern") {
+        pattern=params[2]
 
-        test=field " != \"\" && " field " !~ /^(" values ")$/"
-        msg=field " in line \" NR \" should be one of " values " and was \" " field " \" "
+        test=field " != \"\" && " field " !~ " pattern
+        msg=field " in line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
     }
 
     if (!options["mode"]) options["mode"] = "text"
