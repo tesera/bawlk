@@ -1,0 +1,13 @@
+option,mode,append
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,admin
+option,pkey,company
+headers,names,Company|NumberPlotsSubmitted|ParentOrganization|AdminComment
+field,required,Company
+field,values,Company AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP
+field,type,NumberPlotsSubmitted numeric
+field,none,ParentOrganization
+field,none,AdminComment

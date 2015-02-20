@@ -1,0 +1,19 @@
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,disturbance
+option,pkey,companyplotnumber:company
+option,fkey,plot companyplotnumber:company
+headers,names,CompanyPlotNumber|DisturbanceNumber|DisturbanceCode|DisturbanceYear|DisturbanceMonth|DisturbanceDay|DisturbanceComment
+field,required,CompanyPlotNumber
+field,min,DisturbanceNumber 1
+field,min,DisturbanceNumber 12
+field,values,DisturbanceCode BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA
+field,min,DisturbanceYear 1800 error
+field,max,DisturbanceYear 2050 error
+field,min,DisturbanceMonth 1 error
+field,max,DisturbanceMonth 12 error
+field,min,DisturbanceDay 1 error
+field,max,DisturbanceDay 31 error
+field,none,DisturbanceComment

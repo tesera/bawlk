@@ -1,0 +1,16 @@
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,regeneration
+option,pkey,companyplotnumber:company
+option,fkey,plot companyplotnumber:company
+headers,names,CompanyPlotNumber|MeasurementNumber|RegenerationPlotNumber|RegenerationPlotName|Species|RegenerationCount|RegenerationComment
+field,required,CompanyPlotNumber
+field,required,MeasurementNumber
+field,required,RegenerationPlotNumber
+field,values,RegenerationPlotName R1|R2|R3|R4|R5|R6|R7|R8|R9|R10
+field,values,Species Aw|Pb|Bw|Ax|Dd|Dc|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No
+field,min,RegenerationCount 0
+field,max,RegenerationCount 9999
+field,none,RegenerationComment

@@ -1,0 +1,47 @@
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,plot_measurement
+option,pkey,companyplotnumber:company
+option,fkey,plot companyplotnumber:company
+headers,names,CompanyPlotNumber|MeasurementNumber|MeasurementYear|MeasurementMonth|MeasurementDay|StandOrigin|PlotType|StandType|PlotStatus|TreePlotArea|TreePlotShape|TreeTaggingLimit|SaplingPlotArea|SaplingPlotShape|SaplingTaggingLimit_DBH|SaplingTaggingLimit_Height|RegenPlotArea|RegenPlotShape|RegenTaggingLimitConifer|RegenTaggingLimitDecid|NumberRegenPlots|Contractor|Cruiser1FirstName|Cruiser1LastName|Cruiser2FirstName|Cruiser2LastName|Ecomanual|ShrubCover|HerbForbCover|GrassCover|MossLichenCover|AVIFieldCall|PlotMeasurementComment
+field,required,CompanyPlotNumber
+field,none,MeasurementNumber
+field,none,MeasurementYear
+field,none,MeasurementMonth
+field,none,MeasurementDay
+field,values,StandOrigin C|L|F|P|R|N|S|A|B
+field,values,PlotType 1|2|3|4
+field,values,StandType 1|2|3
+field,values,PlotStatus 1|2|3|4|5|6|7|8|9|10|12|13|14|15|16|17|18|19|20|21|11
+field,min,TreePlotArea 400
+field,max,TreePlotArea 2500
+field,values,TreePlotShape C|R|S
+field,min,TreeTaggingLimit 0.1
+field,max,TreeTaggingLimit 9.1
+field,min,SaplingPlotArea 1
+field,max,SaplingPlotArea 2500
+field,values,SaplingPlotShape C|R|S
+field,min,SaplingTaggingLimit_DBH 0.1
+field,max,SaplingTaggingLimit_DBH 12.0
+field,min,SaplingTaggingLimit_Height 1.3
+field,max,SaplingTaggingLimit_Height 20.0
+field,none,RegenPlotArea 1:2500
+field,values,RegenPlotShape C|R|S
+field,none,RegenTaggingLimitConifer
+field,none,RegenTaggingLimitDecid
+field,min,NumberRegenPlots 0
+field,max,NumberRegenPlots 10
+field,none,Contractor
+field,none,Cruiser1FirstName
+field,none,Cruiser1LastName
+field,none,Cruiser2FirstName
+field,none,Cruiser2LastName
+field,none,Ecomanual
+field,none,ShrubCover
+field,none,HerbForbCover
+field,none,GrassCover
+field,none,MossLichenCover
+field,none,AVIFieldCall
+field,none,PlotMeasurementComment

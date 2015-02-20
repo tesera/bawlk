@@ -1,0 +1,1357 @@
+{"name": "afgo-dataset",
+"datatheme": { "name": "afgo", "version": 1.0, "repository": "https://github.com/tesera/datatheme-afgo.git"},
+"resources": [
+{
+  "path": "Admin.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "Company",
+        "type": "string",
+        "constraints": {
+          "required": true,
+          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/"
+        }
+      },
+      {
+        "name": "NumberPlotsSubmitted",
+        "type": "string",
+        "constraints": {
+          "type": true
+        }
+      },
+      {
+        "name": "ParentOrganization",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AdminComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "Disturbance.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "DisturbanceNumber",
+        "type": "number",
+        "constraints": {
+          "min": 12
+        }
+      },
+      {
+        "name": "DisturbanceCode",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/"
+        }
+      },
+      {
+        "name": "DisturbanceYear",
+        "type": "number",
+        "constraints": {
+          "min": 1800,
+          "max": 2050
+        }
+      },
+      {
+        "name": "DisturbanceMonth",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 12
+        }
+      },
+      {
+        "name": "DisturbanceDay",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 31
+        }
+      },
+      {
+        "name": "DisturbanceComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "PhotoAVI.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 9999999999
+        }
+      },
+      {
+        "name": "AVIVersion",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "PolygonNumber",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "YearPhotography",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "YearPhotoCall",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Moist_Reg",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Density",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(A|B|C|D)$/"
+        }
+      },
+      {
+        "name": "Height",
+        "type": "number",
+        "constraints": {
+          "min": 1.3,
+          "max": 45
+        }
+      },
+      {
+        "name": "Sp1",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp1_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp2",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp2_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp3",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp3_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp4",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp4_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp5",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Sp5_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Struc",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Struc_Val",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Origin",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Tpr",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UMoist_Reg",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UDensity",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UHeight",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp1",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp1_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp2",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp2_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp3",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp3_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp4",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp4_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp5",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "USp5_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UStruc",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UStruc_Val",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UOrigin",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "UTpr",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AMoist_Reg",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ADensity",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AHeight",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp1",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp1_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp2",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp2_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp3",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp3_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp4",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp4_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp5",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ASp5_Per",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AStruc",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AStruc_Val",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AOrigin",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ATpr",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "PhotoAVIComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "Plot.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true,
+          "unique": true
+        }
+      },
+      {
+        "name": "Company",
+        "type": "string",
+        "constraints": {
+          "required": true,
+          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/"
+        }
+      },
+      {
+        "name": "CompanyStandNumber",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "EstablishmentYear",
+        "type": "number",
+        "constraints": {
+          "min": 1800,
+          "max": 2050
+        }
+      },
+      {
+        "name": "EstablishmentMonth",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 12
+        }
+      },
+      {
+        "name": "EstablishmentDay",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 31
+        }
+      },
+      {
+        "name": "FMU",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(A10|A11|A12|A13|A14|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|FO1|G1|G10|G11|G12|G13|G14|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R13|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3|E14)$/"
+        }
+      },
+      {
+        "name": "FMA",
+        "type": "string",
+        "constraints": {
+          "type": true
+        }
+      },
+      {
+        "name": "Township",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 126
+        }
+      },
+      {
+        "name": "Range",
+        "type": "string",
+        "constraints": {
+          "min": 1,
+          "max": 26,
+          "colmap": true
+        }
+      },
+      {
+        "name": "Meridian",
+        "type": "number",
+        "constraints": {
+          "min": 4,
+          "max": 6
+        }
+      },
+      {
+        "name": "Section",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 36
+        }
+      },
+      {
+        "name": "OpeningNumber",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "SamplingUnitNumber",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "TopographicPosition",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(1|2|3|4|5|6|7)$/"
+        }
+      },
+      {
+        "name": "Elevation",
+        "type": "number",
+        "constraints": {
+          "min": 0,
+          "max": 3747
+        }
+      },
+      {
+        "name": "Slope",
+        "type": "number",
+        "constraints": {
+          "min": 0,
+          "max": 100
+        }
+      },
+      {
+        "name": "Aspect",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(N|E|S|W|NE|SE|SW|NW|NA)$/"
+        }
+      },
+      {
+        "name": "XCoord",
+        "type": "number",
+        "constraints": {
+          "min": -111700,
+          "max": -1030400
+        }
+      },
+      {
+        "name": "YCoord",
+        "type": "number",
+        "constraints": {
+          "min": 5643600,
+          "max": 6702500
+        }
+      },
+      {
+        "name": "UTMZone",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(UTM11|UTM12)$/"
+        }
+      },
+      {
+        "name": "Datum",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Latitude",
+        "type": "string",
+        "constraints": {
+          "type": true
+        }
+      },
+      {
+        "name": "Longitude",
+        "type": "string",
+        "constraints": {
+          "type": true
+        }
+      },
+      {
+        "name": "NaturalSubregion",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ProvincialAreaCode",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(N|WC|SW)$/"
+        }
+      },
+      {
+        "name": "Ecosite",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/"
+        }
+      },
+      {
+        "name": "EcositePhase",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(1|b1|b2|b3|b4|c1|d1|d2|d3|e1|e2|e3|f1|f2|f3|g1|h1|i1|i2|j1|j2|k1|k2|k3|l1|h2|j3|a2|a3|g2|h3|b5|c2|c3|c4|c5|d4|e4|f4|f5|f6|g3|i3|l2|l3|m1|m2|m3|n1)$/"
+        }
+      },
+      {
+        "name": "PlotComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "PlotMeasurement.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "MeasurementNumber",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "MeasurementYear",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "MeasurementMonth",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "MeasurementDay",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "StandOrigin",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(C|L|F|P|R|N|S|A|B)$/"
+        }
+      },
+      {
+        "name": "PlotType",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(1|2|3|4)$/"
+        }
+      },
+      {
+        "name": "StandType",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(1|2|3)$/"
+        }
+      },
+      {
+        "name": "PlotStatus",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(1|2|3|4|5|6|7|8|9|10|12|13|14|15|16|17|18|19|20|21|11)$/"
+        }
+      },
+      {
+        "name": "TreePlotArea",
+        "type": "number",
+        "constraints": {
+          "min": 400,
+          "max": 2500
+        }
+      },
+      {
+        "name": "TreePlotShape",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(C|R|S)$/"
+        }
+      },
+      {
+        "name": "TreeTaggingLimit",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 9.1
+        }
+      },
+      {
+        "name": "SaplingPlotArea",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 2500
+        }
+      },
+      {
+        "name": "SaplingPlotShape",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(C|R|S)$/"
+        }
+      },
+      {
+        "name": "SaplingTaggingLimit_DBH",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 12.0
+        }
+      },
+      {
+        "name": "SaplingTaggingLimit_Height",
+        "type": "number",
+        "constraints": {
+          "min": 1.3,
+          "max": 20.0
+        }
+      },
+      {
+        "name": "RegenPlotArea",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "RegenPlotShape",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(C|R|S)$/"
+        }
+      },
+      {
+        "name": "RegenTaggingLimitConifer",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "RegenTaggingLimitDecid",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "NumberRegenPlots",
+        "type": "number",
+        "constraints": {
+          "min": 0,
+          "max": 10
+        }
+      },
+      {
+        "name": "Contractor",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Cruiser1FirstName",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Cruiser1LastName",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Cruiser2FirstName",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Cruiser2LastName",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Ecomanual",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "ShrubCover",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "HerbForbCover",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "GrassCover",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "MossLichenCover",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "AVIFieldCall",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "PlotMeasurementComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "Regeneration.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "MeasurementNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "RegenerationPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "RegenerationPlotName",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/"
+        }
+      },
+      {
+        "name": "Species",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(Aw|Pb|Bw|Ax|Dd|Dc|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/"
+        }
+      },
+      {
+        "name": "RegenerationCount",
+        "type": "number",
+        "constraints": {
+          "min": 0,
+          "max": 9999
+        }
+      },
+      {
+        "name": "RegenerationComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "Treatment.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "TreatmentNumber",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 12
+        }
+      },
+      {
+        "name": "TreatmentCode",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(NT|P|H|M|C|B|TH|TW|F|PC|CT|S|UP|UA|D|NK)$/"
+        }
+      },
+      {
+        "name": "TreatmentYear",
+        "type": "number",
+        "constraints": {
+          "min": 1800,
+          "max": 2050
+        }
+      },
+      {
+        "name": "TreatmentMonth",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 12
+        }
+      },
+      {
+        "name": "TreatmentDay",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 31
+        }
+      },
+      {
+        "name": "TreatmentComment",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "Trees.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "TreeNumber",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 999999
+        }
+      },
+      {
+        "name": "TreeOrigin",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(0|1|2|3|4|5|6|7|8|9|10)$/"
+        }
+      },
+      {
+        "name": "Distance",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "Azimuth",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "TreeLocationID",
+        "type": "string",
+        "constraints": {
+          "none": true
+        }
+      },
+      {
+        "name": "SectorOrQuarter",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(A|B|C|D|E|1|2|3|4)$/"
+        }
+      },
+      {
+        "name": "Species",
+        "type": "string",
+        "constraints": {
+          "pattern": "/^(Aw|Pb|Bw|Ax|Dd|Dc|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/"
+        }
+      }
+    ]
+  }
+},
+{
+  "path": "TreesMeasurement.csv",
+  "schema": {
+    "fields": [
+      {
+        "name": "CompanyPlotNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "MeasurementNumber",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "TreeNumber",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 999999
+        }
+      },
+      {
+        "name": "TreeType",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "DBH",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 120
+        }
+      },
+      {
+        "name": "DBHHeight",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 3
+        }
+      },
+      {
+        "name": "RCD",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 15
+        }
+      },
+      {
+        "name": "RCDHeight",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 0.3
+        }
+      },
+      {
+        "name": "Height",
+        "type": "number",
+        "constraints": {
+          "min": 0.1,
+          "max": 45
+        }
+      },
+      {
+        "name": "CrownClass",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "DBHage",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "StumpAge",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 350
+        }
+      },
+      {
+        "name": "StumpHeight",
+        "type": "number",
+        "constraints": {
+          "min": 0,
+          "max": 30
+        }
+      },
+      {
+        "name": "TotalAge",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 350
+        }
+      },
+      {
+        "name": "HTLC",
+        "type": "number",
+        "constraints": {
+          "min": 1.3,
+          "max": 45
+        }
+      },
+      {
+        "name": "CrownDiameterNS",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 20
+        }
+      },
+      {
+        "name": "CrownDiameterEW",
+        "type": "number",
+        "constraints": {
+          "min": 1,
+          "max": 20
+        }
+      },
+      {
+        "name": "ConditionCode1",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "Cause1",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "Severity1",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "ConditionCode2",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "Cause2",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "Severity2",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "ConditionCode3",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "Cause3",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      },
+      {
+        "name": "Severity3",
+        "type": "string",
+        "constraints": {
+          "required": true
+        }
+      }
+    ]
+  }
+}
+]}

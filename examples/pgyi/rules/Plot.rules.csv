@@ -1,0 +1,52 @@
+option,mode,append
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,plot
+option,pkey,companyplotnumber:company
+option,fkey,admin company
+headers,names,CompanyPlotNumber|Company|CompanyStandNumber|EstablishmentYear|EstablishmentMonth|EstablishmentDay|FMU|FMA|Township|Range|Meridian|Section|OpeningNumber|SamplingUnitNumber|TopographicPosition|Elevation|Slope|Aspect|XCoord|YCoord|UTMZone|Datum|Latitude|Longitude|NaturalSubregion|ProvincialAreaCode|Ecosite|EcositePhase|PlotComment
+field,required,CompanyPlotNumber error
+field,unique,CompanyPlotNumber error
+field,required,Company error
+field,values,Company AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP error
+field,none,CompanyStandNumber error
+field,min,EstablishmentYear 1800 error
+field,max,EstablishmentYear 2050 error
+field,min,EstablishmentMonth 1 error
+field,max,EstablishmentMonth 12 error
+field,min,EstablishmentDay 1 error
+field,max,EstablishmentDay 31 error
+field,values,FMU A10|A11|A12|A13|A14|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|FO1|G1|G10|G11|G12|G13|G14|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R13|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3|E14 error
+field,type,FMA numeric error
+field,min,Township 1
+field,max,Township 126
+field,min,Range 1
+field,max,Range 26
+field,colmap,Range rangeno
+field,min,Meridian 4
+field,max,Meridian 6
+field,min,Section 1
+field,max,Section 36
+field,none,OpeningNumber
+field,none,SamplingUnitNumber
+field,values,TopographicPosition 1|2|3|4|5|6|7
+field,min,Elevation 0
+field,max,Elevation 3747
+field,min,Slope 0
+field,max,Slope 100
+field,values,Aspect N|E|S|W|NE|SE|SW|NW|NA
+field,min,XCoord -111700
+field,max,XCoord -1030400
+field,min,YCoord 5643600
+field,max,YCoord 6702500
+field,values,UTMZone UTM11|UTM12 error
+field,none,Datum error
+field,type,Latitude numeric
+field,type,Longitude numeric
+field,none,NaturalSubregion error
+field,values,ProvincialAreaCode N|WC|SW error
+field,values,Ecosite a|b|c|d|e|f|g|h|I|j|k|l|m|n
+field,values,EcositePhase 1|b1|b2|b3|b4|c1|d1|d2|d3|e1|e2|e3|f1|f2|f3|g1|h1|i1|i2|j1|j2|k1|k2|k3|l1|h2|j3|a2|a3|g2|h3|b5|c2|c3|c4|c5|d4|e4|f4|f5|f6|g3|i3|l2|l3|m1|m2|m3|n1
+field,none,PlotComment

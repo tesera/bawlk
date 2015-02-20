@@ -1,0 +1,68 @@
+option,mode,append
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,photo_avi
+option,pkey,companyplotnumber:company
+option,fkey,plot companyplotnumber:company
+headers,names,CompanyPlotNumber|AVIVersion|PolygonNumber|YearPhotography|YearPhotoCall|Moist_Reg|Density|Height|Sp1|Sp1_Per|Sp2|Sp2_Per|Sp3|Sp3_Per|Sp4|Sp4_Per|Sp5|Sp5_Per|Struc|Struc_Val|Origin|Tpr|UMoist_Reg|UDensity|UHeight|USp1|USp1_Per|USp2|USp2_Per|USp3|USp3_Per|USp4|USp4_Per|USp5|USp5_Per|UStruc|UStruc_Val|UOrigin|UTpr|AMoist_Reg|ADensity|AHeight|ASp1|ASp1_Per|ASp2|ASp2_Per|ASp3|ASp3_Per|ASp4|ASp4_Per|ASp5|ASp5_Per|AStruc|AStruc_Val|AOrigin|ATpr|PhotoAVIComment
+field,min,CompanyPlotNumber 1
+field,max,CompanyPlotNumber 9999999999
+field,none,AVIVersion
+field,none,PolygonNumber
+field,none,YearPhotography
+field,none,YearPhotoCall
+field,none,Moist_Reg
+field,values,Density A|B|C|D
+field,min,Height 1.3
+field,max,Height 45
+field,none,Sp1
+field,none,Sp1_Per
+field,none,Sp2
+field,none,Sp2_Per
+field,none,Sp3
+field,none,Sp3_Per
+field,none,Sp4
+field,none,Sp4_Per
+field,none,Sp5
+field,none,Sp5_Per
+field,none,Struc
+field,none,Struc_Val
+field,none,Origin
+field,none,Tpr
+field,none,UMoist_Reg
+field,none,UDensity
+field,none,UHeight
+field,none,USp1
+field,none,USp1_Per
+field,none,USp2
+field,none,USp2_Per
+field,none,USp3
+field,none,USp3_Per
+field,none,USp4
+field,none,USp4_Per
+field,none,USp5
+field,none,USp5_Per
+field,none,UStruc
+field,none,UStruc_Val
+field,none,UOrigin
+field,none,UTpr
+field,none,AMoist_Reg
+field,none,ADensity
+field,none,AHeight
+field,none,ASp1
+field,none,ASp1_Per
+field,none,ASp2
+field,none,ASp2_Per
+field,none,ASp3
+field,none,ASp3_Per
+field,none,ASp4
+field,none,ASp4_Per
+field,none,ASp5
+field,none,ASp5_Per
+field,none,AStruc
+field,none,AStruc_Val
+field,none,AOrigin
+field,none,ATpr
+field,none,PhotoAVIComment

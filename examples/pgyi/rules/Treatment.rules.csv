@@ -1,0 +1,19 @@
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,treatment
+option,pkey,companyplotnumber:company
+option,fkey,plot companyplotnumber:company
+headers,names,CompanyPlotNumber|TreatmentNumber|TreatmentCode|TreatmentYear|TreatmentMonth|TreatmentDay|TreatmentComment
+field,required,CompanyPlotNumber
+field,min,TreatmentNumber 1
+field,max,TreatmentNumber 12
+field,values,TreatmentCode NT|P|H|M|C|B|TH|TW|F|PC|CT|S|UP|UA|D|NK
+field,min,TreatmentYear 1800 error
+field,max,TreatmentYear 2050 error
+field,min,TreatmentMonth 1 error
+field,max,TreatmentMonth 12 error
+field,min,TreatmentDay 1 error
+field,max,TreatmentDay 31 error
+field,none,TreatmentComment

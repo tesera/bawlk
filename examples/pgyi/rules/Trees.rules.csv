@@ -1,0 +1,17 @@
+option,summary,false
+option,dcat,warning
+option,dvalnum,-9999
+option,dvalstr,NA
+option,table,trees
+option,pkey,companyplotnumber:company
+option,fkey,plot companyplotnumber:company
+headers,names,CompanyPlotNumber|TreeNumber|TreeOrigin|Distance|Azimuth|TreeLocationID|SectorOrQuarter|Species
+field,required,CompanyPlotNumber
+field,min,TreeNumber 1
+field,max,TreeNumber 999999
+field,values,TreeOrigin 0|1|2|3|4|5|6|7|8|9|10
+field,none,Distance
+field,none,Azimuth
+field,none,TreeLocationID
+field,values,SectorOrQuarter A|B|C|D|E|1|2|3|4
+field,values,Species Aw|Pb|Bw|Ax|Dd|Dc|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No
