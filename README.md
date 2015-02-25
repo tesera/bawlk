@@ -1,23 +1,32 @@
 # bawlk
 
-A simple tool to validate csv data. Uses awk under the hood but you don't need to know awk to use it. There are tools available to create a ruleset from existing data and another tool to create an awk validator from those ruleset.
+>A simple CSV to RDBMS bulk validating/loading toolset.
 
-awk is a very natural fit for validating csv data. Even though awk is a very complex language its quite simple in nature. With awk you get a free iterator, pattern matchin and rich expression language. awk is built-in most unix/linux systems and can be installed on windows based systems. gawk is a newer version of awk which extends the language further with more feature. Other variations like mawk take it a step further and optimizes awk for performance.
+The main tool bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common task invloved when bulk inserting data into a relational database system. Although bawlk uses awk under the hood you don't need to know how to code in awk to use it. 
 
-## Usage
-bawlk are a set of tools to automate building an awk validation script. Once the script is built it is self contained and can be used independently. 
+awk is a very natural fit for validating and manipulating csv data. Even though awk is a very complex language its quite simple in nature. With awk you get a free iterator, pattern matching and rich expression language. awk is built-in most unix/linux systems and can be installed on windows based systems. gawk is a newer version of awk which extends the language further with more feature. Other variations like mawk take it a step further and optimizes awk for performance. Bawlk uses the basic awk language so no need to installl gawk.
+
+## Tools Summary
+
+1. ``./bin/init.sh`` : Creates a basic ruleset from an existing csv file.
+2. ``./bin/bawlk.awk`` : Main tool which build an bulk loading awk script from a ruleset.
+3. ``./bin/jts2rules.js`` : Converts a JSON Table Schema to a ruleset.
+4. ``./bin/rules2jts.awk`` : Converts a ruleset to JSON Table Schema.
+
+## Typical Workflow
+Using the toolset you can build a bawlk awk script that can be used to validate, sanitize bulk insert data into a relational database system. Once the script is built it is self contained and can be used independently. 
 
 A typical workflow looks like this:
 
-1. Create a ruleset from existing data. 
+1. Create a ruleset from existing csv data. 
 2. Edit the ruleset to add additional field or file constraints.
 3. Generate your validator by passing in your ruleset to the bawlk.awk script.
-4. Validate your data
+4. Use the generated awk script to manage your csv data.
 
-#### 1. Create a ruleset from existing data.
+#### 1. Create a ruleset from existing csv data.
 
 ````
-$ ./bawlkinit.sh ./examples/pgyi/data/*.csv
+$ ./bin/init.sh ./examples/pgyi/data/Plot.csv
 field,required,CompanyPlotNumber
 field,required,MeasurementNumber
 field,required,TreeNumber
@@ -53,6 +62,11 @@ field,required,TreesComment
 # fields are:
 rule_type,rule_name,rule_params
 
+# rule_params for field rules (field_name rule_arg violation_category)
+field,required,CompanyPlotNumber true error
+field,min,TreeNumber 1 error
+field,max,TreeNumber 999999 error
+
 # controls how error are handled (default=text)
 # prints only errors inlcuding a desc and the resord itself
 option,mode,text
@@ -83,18 +97,9 @@ field,unique,CompanyPlotNumber
 field,min,TreeNumber 1
 field,max,TreeNumber 999999
 
-# check to make sure values are within accepted values
-field,values,TreeType T|S|PS|PO|R1|R2|R3|R4|B
-
 # check to make sure values match a certain pattern
-# not-implemented: field,pattern,TreeType /^(?:T|S|PS|PO|R1|R2|R3|R4|B)$/
+field,pattern,TreeType /^(?:T|S|PS|PO|R1|R2|R3|R4|B)$/
 
-# check composite/compound keys
-# not-implemented: file,unique,CompanyPlotNumber MeasurementNumber
-
-# set default values if value not  set
-# not-implemented: field,default,Elevation -9999
-# not-implemented: field,default,FMU NA
 ````
 
 #### 3. Generate your validator by passing in your ruleset to the bawlk.awk script.
@@ -103,15 +108,34 @@ field,values,TreeType T|S|PS|PO|R1|R2|R3|R4|B
 $ ./bawlk.awk < TreesMeasurement.rules.csv > TreesMeasurement.validator.awk
 ````
 
-#### 4. Validate your data
+#### 4. Use your bawlk awk script.
+
+##### Validate (default action)
+````
+$ TreesMeasurement.awk -v action=validate TreesMeasurement.csv > violations.csv
+````
+
+##### Sanitize
 
 ````
-$ TreesMeasurement.validator.awk < TreesMeasurement.csv > TreesMeasurement.violations.txt
+$ TreesMeasurement.awk -v action=sanitize TreesMeasurement.csv > TreesMeasurement.cleaned.csv
+````
+
+##### Create table
+
+````
+$ TreesMeasurement.awk -v action=table TreesMeasurement.csv | psql afgo_dev
+````
+
+##### Bulk insert data
+
+````
+$ TreesMeasurement.awk -v action=insert TreesMeasurement.csv | psql afgo_dev
 ````
 
 ## Advanced Usage
 
-Your validator can either be used as is or be further customized if you feel comfortable with the awk language. 
+Once your bawlk awk script is generated and you feel comfortable with awk you can edit it further if you have more comples rules by manual editing. The generated script is writen in a simple to understand syntax.
 
 ## Roadmap
 * add ability to pass in options from the ruleset i.e. error handling/messages/...
