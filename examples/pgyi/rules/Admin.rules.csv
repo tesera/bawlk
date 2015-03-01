@@ -1,7 +1,0 @@
-headers,names,Company|NumberPlotsSubmitted|ParentOrganization|AdminComment
-field,required,Company true
-field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
-field,type,NumberPlotsSubmitted number
-field,none,NumberPlotsSubmitted
-field,none,ParentOrganization
-field,none,AdminComment

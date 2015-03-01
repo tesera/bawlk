@@ -1,17 +1,22 @@
-headers,names,CompanyPlotNumber|Company|DisturbanceNumber|DisturbanceCode|DisturbanceYear|DisturbanceMonth|DisturbanceDay|DisturbanceComment
-field,required,CompanyPlotNumber true
-field,required,Company true
-field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
-field,type,DisturbanceNumber number
-field,min,DisturbanceNumber 12
-field,pattern,DisturbanceCode /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/
-field,type,DisturbanceYear number
-field,min,DisturbanceYear 1800
-field,max,DisturbanceYear 2050
-field,type,DisturbanceMonth number
-field,min,DisturbanceMonth 1
-field,max,DisturbanceMonth 12
-field,type,DisturbanceDay number
-field,min,DisturbanceDay 1
-field,max,DisturbanceDay 31
-field,none,DisturbanceComment
+headers,names,company|company_plot_number|disturbance_number|disturbance_code|disturbance_year|disturbance_month|disturbance_day|disturbance_comment
+field,type,company string
+field,required,company true
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
+field,type,company_plot_number string
+field,required,company_plot_number true
+field,type,disturbance_number integer
+field,min,disturbance_number 1
+field,max,disturbance_number 12
+field,type,disturbance_code string
+field,pattern,disturbance_code /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/
+field,type,disturbance_year integer
+field,min,disturbance_year 1900
+field,max,disturbance_year 2050
+field,type,disturbance_month integer
+field,min,disturbance_month 1
+field,max,disturbance_month 12
+field,type,disturbance_day integer
+field,min,disturbance_day 1
+field,max,disturbance_day 31
+field,type,disturbance_comment string
+field,none,disturbance_comment

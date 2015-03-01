@@ -1,13 +1,27 @@
-headers,names,CompanyPlotNumber|Company|TreeNumber|TreeOrigin|Distance|Azimuth|TreeLocationID|SectorOrQuarter|Species
-field,required,CompanyPlotNumber true
-field,required,Company true
-field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
-field,type,TreeNumber number
-field,min,TreeNumber 1
-field,max,TreeNumber 999999
-field,pattern,TreeOrigin /^(0|1|2|3|4|5|6|7|8|9|10)$/
-field,none,Distance
-field,none,Azimuth
-field,none,TreeLocationID
-field,pattern,SectorOrQuarter /^(A|B|C|D|E|1|2|3|4)$/
-field,pattern,Species /^(Aw|Pb|Bw|Ax|Dd|Dc|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+headers,names,company|company_plot_number|tree_number|tree_label|tree_location_id|tree_origin|sector_or_quarter|species|distance|azimuth|trees_comment
+field,type,company string
+field,required,company true
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
+field,type,company_plot_number string
+field,required,company_plot_number true
+field,type,tree_number number
+field,required,tree_number true
+field,min,tree_number 1
+field,max,tree_number 999999
+field,type,tree_label string
+field,type,tree_location_id integer
+field,required,tree_location_id true
+field,pattern,tree_location_id /^(0|1|2|3)$/
+field,type,tree_origin inetger
+field,required,tree_origin true
+field,pattern,tree_origin /^(0|1|2|3|4|5|6|7|8|9|10)$/
+field,type,sector_or_quarter string
+field,none,sector_or_quarter
+field,type,species string
+field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+field,type,distance number
+field,none,distance
+field,type,azimuth number
+field,none,azimuth
+field,type,trees_comment string
+field,none,trees_comment

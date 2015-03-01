@@ -1,0 +1,76 @@
+headers,names,company|company_plot_number|measurement_number|measurement_year|measurement_month|measurement_day|stand_origin|plot_type|stand_type|plot_status|tree_plot_area|tree_plot_shape|tree_tagging_limit|sapling_plot_area|sapling_plot_shape|sapling_tagging_limit_dbh|sapling_tagging_limit_height|regen_plot_area|regen_plot_shape|regen_tagging_limit_conifer|regen_tagging_limit_decid|number_regen_plots|contractor|cruiser_1_name|cruiser_2_name|shrub_cover|herb_forb_cover|grass_cover|moss_lichen_cover|avi_field_call|plot_measurement_comment
+field,type,company string
+field,required,company true
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
+field,type,company_plot_number string
+field,required,company_plot_number true
+field,type,measurement_number integer
+field,none,measurement_number
+field,type,measurement_year integer
+field,min,measurement_year 1900
+field,max,measurement_year 2050
+field,type,measurement_month integer
+field,min,measurement_month 1
+field,max,measurement_month 12
+field,type,measurement_day integer
+field,min,measurement_day 1
+field,max,measurement_day 31
+field,type,stand_origin string
+field,pattern,stand_origin /^(C|L|F|P|R|N|S|A|B)$/
+field,type,plot_type integer
+field,pattern,plot_type /^(1|2|3|4)$/
+field,type,stand_type integer
+field,pattern,stand_type /^(1|2|3)$/
+field,type,plot_status integer
+field,pattern,plot_status /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|)$/
+field,type,tree_plot_area number
+field,min,tree_plot_area 400
+field,max,tree_plot_area 2500
+field,type,tree_plot_shape string
+field,pattern,tree_plot_shape /^(C|R|S)$/
+field,type,tree_tagging_limit number
+field,min,tree_tagging_limit 0
+field,max,tree_tagging_limit 9.1
+field,type,sapling_plot_area number
+field,min,sapling_plot_area 40
+field,max,sapling_plot_area 2500
+field,type,sapling_plot_shape string
+field,pattern,sapling_plot_shape /^(C|R|S)$/
+field,type,sapling_tagging_limit_dbh number
+field,min,sapling_tagging_limit_dbh 0.1
+field,max,sapling_tagging_limit_dbh 12
+field,type,sapling_tagging_limit_height number
+field,min,sapling_tagging_limit_height 1.3
+field,max,sapling_tagging_limit_height 20
+field,type,regen_plot_area number
+field,min,regen_plot_area 0
+field,max,regen_plot_area 2500
+field,type,regen_plot_shape string
+field,pattern,regen_plot_shape /^(C|R|S)$/
+field,type,regen_tagging_limit_conifer number
+field,min,regen_tagging_limit_conifer 0.1
+field,max,regen_tagging_limit_conifer 1.3
+field,type,regen_tagging_limit_decid number
+field,min,regen_tagging_limit_decid 0.1
+field,max,regen_tagging_limit_decid 1.3
+field,type,number_regen_plots number
+field,min,number_regen_plots 0
+field,max,number_regen_plots 10
+field,type,contractor string
+field,none,contractor
+field,type,cruiser_1_name string
+field,none,cruiser_1_name
+field,type,cruiser_2_name string
+field,none,cruiser_2_name
+field,type,shrub_cover integer
+field,pattern,shrub_cover /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/
+field,type,herb_forb_cover integer
+field,pattern,herb_forb_cover /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/
+field,type,grass_cover integer
+field,pattern,grass_cover /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/
+field,type,moss_lichen_cover integer
+field,pattern,moss_lichen_cover /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/
+field,type,avi_field_call string
+field,none,avi_field_call
+field,type,plot_measurement_comment string
+field,none,plot_measurement_comment

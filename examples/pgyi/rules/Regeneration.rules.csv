@@ -1,12 +1,19 @@
-headers,names,CompanyPlotNumber|Company|MeasurementNumber|RegenerationPlotNumber|RegenerationPlotName|Species|RegenerationCount|RegenerationComment
-field,required,CompanyPlotNumber true
-field,required,Company true
-field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
-field,required,MeasurementNumber true
-field,required,RegenerationPlotNumber true
-field,pattern,RegenerationPlotName /^(R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/
-field,pattern,Species /^(Aw|Pb|Bw|Ax|Dd|Dc|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
-field,type,RegenerationCount number
-field,min,RegenerationCount 0
-field,max,RegenerationCount 9999
-field,none,RegenerationComment
+headers,names,company|company_plot_number|measurement_number|regeneration_plot_name|species|regeneration_count|regeneration_comment
+field,type,company string
+field,required,company true
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
+field,type,company_plot_number string
+field,required,company_plot_number true
+field,type,measurement_number integer
+field,required,measurement_number true
+field,type,regeneration_plot_name string
+field,pattern,regeneration_plot_name /^(R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/
+field,required,regeneration_plot_name true
+field,type,species string
+field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+field,required,species true
+field,type,regeneration_count number
+field,min,regeneration_count 0
+field,max,regeneration_count 9999
+field,type,regeneration_comment string
+field,none,regeneration_comment

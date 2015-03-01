@@ -19,7 +19,9 @@
     "url": "https://github.com/tesera/awk-bawlk/issues"
   },
   "dependencies": {
-    "lodash": "~3.2.0",
-    "fast-csv": "~0.5.5"
+    "JSONStream": "^0.10.0",
+    "event-stream": "^3.3.0",
+    "minimist": "~1.1.0",
+    "stream-reduce": "^1.0.3"
   }
 }

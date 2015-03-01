@@ -20,7 +20,7 @@ BEGIN {
 
     print "BEGIN {"
     print "    FS=\",\"; OFS=\",\"; err_count=0; cats[\"na\"]=0;"
-    print "    if(!action) action == \"validate\""
+    print "    if(!action) action = \"validate\""
     print "}" RS
 
     print "# builtin helper functions"
@@ -30,6 +30,9 @@ BEGIN {
     print "function is_numeric(x){ return(x==x+0) }"
     print "function print_cats(categories) { for (category in categories) { if (categories[category]) print \"      \" category \": \" categories[category]; } }"
     print "function log_err(cat) { cats[cat]++; err_count++; }"
+    print RS
+    print "#get rid of the evil windows cr"
+    print "{ sub(\"\\r$\", \"\") }"
     print RS
 }
 
@@ -49,7 +52,7 @@ $1 == "headers" && $2 == "names" {
 
     print "}" RS
     print "# awk rules based on user csv ruleset"
-    print "NR == 1 { headers=\"" $3 "\"; if (!are_headers_valid(headers)) print \"invalid headers\" }"
+    print "NR == 1 { headers=\"" $3 "\"; if (!are_headers_valid(headers)) print \"invalid headers in \" FILENAME }"
 }
 
 $1 == "file" {
@@ -57,7 +60,7 @@ $1 == "file" {
 }
 
 $1 == "field" {
-    defaults["mode"]="append"
+    defaults["mode"]="text"
     defaults["summary"]="true"
     defaults["dcat"]="warning"
     defaults["dvalnum"]=-9999
@@ -75,7 +78,7 @@ $1 == "field" {
 
     if (rule_type == "type") {
         type=params[2]
-        if (type == "number"){
+        if (type == "integer" || type == "number"){
             test=field " && !is_numeric(" field ")"
             msg="Field " field " in \" FILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
         }
@@ -90,29 +93,31 @@ $1 == "field" {
         limit=params[2]
         term=$2 == "max" ? "less" : "greater"
 
-        test=field " " comparator " " limit
-        msg=field " in line \" NR \" should be " term " than " limit " and was \" " field " \" "
+        test=field " != \"\" && " field " " comparator " " limit
+        msg=field " in \" FILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
     } else if (rule_type == "pattern") {
         pattern=params[2]
 
         test=field " != \"\" && " field " !~ " pattern
-        msg=field " in line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
+        msg=field " in \" FILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
     }
 
-    if (!options["mode"]) options["mode"] = "text"
-    if (!options["dcat"]) options["dcat"] = "na"
-    if (!cat) cat = options["dcat"]
-    handler_prefix="{ log_err(\"" cat "\"); "
-    if (options["mode"] == "text") {
-        err_handler= handler_prefix "print \"" msg "\" RS $0 RS; }" 
-    } else if (options["mode"] == "wrap") {
-        acc="$" field_index
-        err_handler= handler_prefix "FS=\",\";" acc "=\">>\" " acc " \"<<\"; print $0 }" 
-    } else if (options["mode"] == "append") {
-        err_handler= handler_prefix "print $0 FS \"" msg "\" }"
-    }
+    if (test) {
+        if (!options["mode"]) options["mode"] = "text"
+        if (!options["dcat"]) options["dcat"] = "na"
+        if (!cat) cat = options["dcat"]
+        handler_prefix="{ log_err(\"" cat "\"); "
+        if (options["mode"] == "text") {
+            err_handler= handler_prefix "print \"" msg "\" RS $0 RS; }" 
+        } else if (options["mode"] == "wrap") {
+            acc="$" field_index
+            err_handler= handler_prefix "FS=\",\";" acc "=\">>\" " acc " \"<<\"; print $0 }" 
+        } else if (options["mode"] == "append") {
+            err_handler= handler_prefix "print $0 FS \"" msg "\" }"
+        }
 
-    if (rule_type != "none") { print "action == \"validate\" && NR > 1 && " test " " err_handler " " }
+        if (rule_type != "none") { print "action == \"validate\" && NR > 1 && " test " " err_handler " " }
+    }
 }
 
 $1 == "field" {

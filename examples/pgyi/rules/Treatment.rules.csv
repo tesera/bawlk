@@ -1,18 +1,22 @@
-headers,names,CompanyPlotNumber|Company|TreatmentNumber|TreatmentCode|TreatmentYear|TreatmentMonth|TreatmentDay|TreatmentComment
-field,required,CompanyPlotNumber true
-field,required,Company true
-field,pattern,Company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WEYR|WEYR|UNKN|HPFP)$/
-field,type,TreatmentNumber number
-field,min,TreatmentNumber 1
-field,max,TreatmentNumber 12
-field,pattern,TreatmentCode /^(NT|P|H|M|C|B|TH|TW|F|PC|CT|S|UP|UA|D|NK)$/
-field,type,TreatmentYear number
-field,min,TreatmentYear 1800
-field,max,TreatmentYear 2050
-field,type,TreatmentMonth number
-field,min,TreatmentMonth 1
-field,max,TreatmentMonth 12
-field,type,TreatmentDay number
-field,min,TreatmentDay 1
-field,max,TreatmentDay 31
-field,none,TreatmentComment
+headers,names,company|company_plot_number|treatment_number|treatment_code|treatment_year|treatment_month|treatment_day|treatment_comment
+field,type,company string
+field,required,company true
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
+field,type,company_plot_number string
+field,required,company_plot_number true
+field,type,treatment_number integer
+field,min,treatment_number 1
+field,max,treatment_number 12
+field,type,treatment_code string
+field,pattern,treatment_code /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|NK)$/
+field,type,treatment_year integer
+field,min,treatment_year 1900
+field,max,treatment_year 2050
+field,type,treatment_month integer
+field,min,treatment_month 1
+field,max,treatment_month 12
+field,type,treatment_day integer
+field,min,treatment_day 1
+field,max,treatment_day 31
+field,type,treatment_comment string
+field,none,treatment_comment
