@@ -83,8 +83,14 @@ $1 == "field" {
             msg="Field " field " in \" FILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
         }
     } else if (rule_type == "required") {
-        test=field " == \"\""
-        msg="Field " field " in \" FILENAME \" line \" NR \" is required"
+        req=params[2]
+        if (req == "true") {
+            test=field " == \"\""
+            msg="Field " field " in \" FILENAME \" line \" NR \" is required"
+        } else if (req != "false") {
+            test=req " && " field " == \"\""
+            msg="Field " field " in \" FILENAME \" line \" NR \" is required if " req
+        }
     } else if (rule_type == "unique") {
         test="!is_unique(" field ")"
         msg="Field " field " in \" FILENAME \" line \" NR \" is a duplicate and should be unique"

@@ -9,6 +9,7 @@ field,type,avi_version string
 field,required,avi_version true
 field,type,polygon_number string
 field,required,polygon_number true
+field,maxLength,polygon_number 15
 field,type,year_photography integer
 field,required,year_photography true
 field,minimum,year_photography 1900

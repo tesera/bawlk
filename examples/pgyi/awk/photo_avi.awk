@@ -71,6 +71,7 @@ action == "validate" && NR > 1 && company_plot_number == "" { log_err("warning")
 action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("warning"); print "company_plot_number length in " FILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate" && NR > 1 && avi_version == "" { log_err("warning"); print "Field avi_version in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && polygon_number == "" { log_err("warning"); print "Field polygon_number in " FILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate" && NR > 1 && polygon_number != "" && length(polygon_number) > 15 { log_err("warning"); print "polygon_number length in " FILENAME " line " NR " should be less than 15 and was " length(polygon_number) " " RS $0 RS; } 
 action == "validate" && NR > 1 && year_photography && !is_numeric(year_photography) { log_err("warning"); print "Field year_photography in " FILENAME " line " NR " should be a numeric but was " year_photography " " RS $0 RS; } 
 action == "validate" && NR > 1 && year_photography == "" { log_err("warning"); print "Field year_photography in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && year_photography != "" && year_photography < 1900 { log_err("warning"); print "year_photography in " FILENAME " line " NR " should be greater than 1900 and was " year_photography " " RS $0 RS; } 

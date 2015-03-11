@@ -10,6 +10,7 @@ field,required,tree_number true
 field,minimum,tree_number 1
 field,maximum,tree_number 999999
 field,type,tree_label string
+field,maxLength,tree_label 15
 field,type,tree_location_id integer
 field,required,tree_location_id true
 field,pattern,tree_location_id /^(0|1|2|3)$/
@@ -17,7 +18,7 @@ field,type,tree_origin inetger
 field,required,tree_origin true
 field,pattern,tree_origin /^(0|1|2|3|4|5|6|7|8|9|10)$/
 field,type,sector_or_quarter string
-field,none,sector_or_quarter
+field,maxLength,sector_or_quarter 15
 field,type,species string
 field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
 field,type,distance number

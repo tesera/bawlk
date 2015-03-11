@@ -7,6 +7,7 @@ field,required,company_plot_number true
 field,maxLength,company_plot_number 15
 field,type,measurement_number integer
 field,required,measurement_number true
+field,maxLength,measurement_number 2
 field,type,tree_number integer
 field,minimum,tree_number 1
 field,maximum,tree_number 999999
@@ -14,19 +15,19 @@ field,type,tree_type string
 field,required,tree_type true
 field,pattern,tree_type /^(T|S|PS|PO|B|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/
 field,type,dbh number
-field,required,dbh rcd == ''
+field,required,dbh rcd==''
 field,minimum,dbh 0.1
 field,maximum,dbh 120
 field,type,dbh_height number
-field,required,dbh_height dbh != ''
+field,required,dbh_height dbh!=''
 field,minimum,dbh_height 1.1
 field,maximum,dbh_height 1.5
 field,type,rcd number
-field,required,rcd dbh == ''
+field,required,rcd dbh==''
 field,minimum,rcd 0.1
 field,maximum,rcd 15
 field,type,rcd_height number
-field,required,rcd_height rcd != ''
+field,required,rcd_height rcd!=''
 field,minimum,rcd_height 0
 field,maximum,rcd_height 0.3
 field,type,height number
@@ -41,7 +42,7 @@ field,type,stump_age integer
 field,minimum,stump_age 1
 field,maximum,stump_age 350
 field,type,stump_height number
-field,required,stump_height stump_age != ''
+field,required,stump_height stump_age!=''
 field,minimum,stump_height 0
 field,maximum,stump_height 0.3
 field,type,total_age integer
