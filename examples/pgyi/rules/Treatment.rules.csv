@@ -5,18 +5,18 @@ field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDF
 field,type,company_plot_number string
 field,required,company_plot_number true
 field,type,treatment_number integer
-field,min,treatment_number 1
-field,max,treatment_number 12
+field,minimum,treatment_number 1
+field,maximum,treatment_number 12
 field,type,treatment_code string
 field,pattern,treatment_code /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|NK)$/
 field,type,treatment_year integer
-field,min,treatment_year 1900
-field,max,treatment_year 2050
+field,minimum,treatment_year 1900
+field,maximum,treatment_year 2050
 field,type,treatment_month integer
-field,min,treatment_month 1
-field,max,treatment_month 12
+field,minimum,treatment_month 1
+field,maximum,treatment_month 12
 field,type,treatment_day integer
-field,min,treatment_day 1
-field,max,treatment_day 31
+field,minimum,treatment_day 1
+field,maximum,treatment_day 31
 field,type,treatment_comment string
 field,none,treatment_comment

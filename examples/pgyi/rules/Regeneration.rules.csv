@@ -13,7 +13,7 @@ field,type,species string
 field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
 field,required,species true
 field,type,regeneration_count number
-field,min,regeneration_count 0
-field,max,regeneration_count 9999
+field,minimum,regeneration_count 0
+field,maximum,regeneration_count 9999
 field,type,regeneration_comment string
 field,none,regeneration_comment

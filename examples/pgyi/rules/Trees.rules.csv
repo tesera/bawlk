@@ -6,8 +6,8 @@ field,type,company_plot_number string
 field,required,company_plot_number true
 field,type,tree_number number
 field,required,tree_number true
-field,min,tree_number 1
-field,max,tree_number 999999
+field,minimum,tree_number 1
+field,maximum,tree_number 999999
 field,type,tree_label string
 field,type,tree_location_id integer
 field,required,tree_location_id true

@@ -88,10 +88,10 @@ $1 == "field" {
     } else if (rule_type == "unique") {
         test="!is_unique(" field ")"
         msg="Field " field " in \" FILENAME \" line \" NR \" is a duplicate and should be unique"
-    } else if (rule_type ~ /^min|max$/) {
-        comparator=$2 == "max" ? ">" : "<"
+    } else if (rule_type ~ /^minimum|maximum$/) {
+        comparator=$2 == "maximum" ? ">" : "<"
         limit=params[2]
-        term=$2 == "max" ? "less" : "greater"
+        term=$2 == "maximum" ? "less" : "greater"
 
         test=field " != \"\" && " field " " comparator " " limit
         msg=field " in \" FILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
@@ -125,7 +125,7 @@ $1 == "field" {
     split($3,params," ")
     field=params[1]
 
-    if (rule_type ~ /^(min|max)$/ || (rule_type == "type" && params[2] == "number")) {
+    if (rule_type ~ /^(minimum|maximum)$/ || (rule_type == "type" && params[2] == "number")) {
         types[field] = "numeric"
     } else {
         types[field] = "text"

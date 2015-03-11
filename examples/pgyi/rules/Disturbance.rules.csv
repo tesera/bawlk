@@ -5,18 +5,18 @@ field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDF
 field,type,company_plot_number string
 field,required,company_plot_number true
 field,type,disturbance_number integer
-field,min,disturbance_number 1
-field,max,disturbance_number 12
+field,minimum,disturbance_number 1
+field,maximum,disturbance_number 12
 field,type,disturbance_code string
 field,pattern,disturbance_code /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/
 field,type,disturbance_year integer
-field,min,disturbance_year 1900
-field,max,disturbance_year 2050
+field,minimum,disturbance_year 1900
+field,maximum,disturbance_year 2050
 field,type,disturbance_month integer
-field,min,disturbance_month 1
-field,max,disturbance_month 12
+field,minimum,disturbance_month 1
+field,maximum,disturbance_month 12
 field,type,disturbance_day integer
-field,min,disturbance_day 1
-field,max,disturbance_day 31
+field,minimum,disturbance_day 1
+field,maximum,disturbance_day 31
 field,type,disturbance_comment string
 field,none,disturbance_comment
