@@ -4,12 +4,14 @@ field,required,company true
 field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
 field,type,company_plot_number string
 field,required,company_plot_number true
+field,maxLength,company_plot_number 15
 field,type,disturbance_number integer
 field,minimum,disturbance_number 1
 field,maximum,disturbance_number 12
 field,type,disturbance_code string
 field,pattern,disturbance_code /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/
 field,type,disturbance_year integer
+field,required,disturbance_year disturbance_code != ''
 field,minimum,disturbance_year 1900
 field,maximum,disturbance_year 2050
 field,type,disturbance_month integer

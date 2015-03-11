@@ -100,6 +100,13 @@ $1 == "field" {
 
         test=field " != \"\" && " field " !~ " pattern
         msg=field " in \" FILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
+    } else if (rule_type ~ /^minLength|maxLength$/) {
+        comparator=$2 == "maxLength" ? ">" : "<"
+        limit=params[2]
+        term=$2 == "maxLength" ? "less" : "greater"
+
+        test=field " != \"\" && length(" field ") " comparator " " limit
+        msg=field " length in \" FILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
     }
 
     if (test) {

@@ -68,16 +68,17 @@ NR == 1 { headers="company|company_plot_number|avi_version|polygon_number|year_p
 action == "validate" && NR > 1 && company == "" { log_err("warning"); print "Field company in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && company != "" && company !~ /^(AINS|GOA|APLY|ALPC|ANC|BLUE|BUCH|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ { log_err("warning"); print "company in " FILENAME " line " NR " should match the following pattern /^(AINS|GOA|APLY|ALPC|ANC|BLUE|BUCH|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ and was " company " " RS $0 RS; } 
 action == "validate" && NR > 1 && company_plot_number == "" { log_err("warning"); print "Field company_plot_number in " FILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("warning"); print "company_plot_number length in " FILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate" && NR > 1 && avi_version == "" { log_err("warning"); print "Field avi_version in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && polygon_number == "" { log_err("warning"); print "Field polygon_number in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && year_photography && !is_numeric(year_photography) { log_err("warning"); print "Field year_photography in " FILENAME " line " NR " should be a numeric but was " year_photography " " RS $0 RS; } 
+action == "validate" && NR > 1 && year_photography == "" { log_err("warning"); print "Field year_photography in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && year_photography != "" && year_photography < 1900 { log_err("warning"); print "year_photography in " FILENAME " line " NR " should be greater than 1900 and was " year_photography " " RS $0 RS; } 
 action == "validate" && NR > 1 && year_photography != "" && year_photography > 2050 { log_err("warning"); print "year_photography in " FILENAME " line " NR " should be less than 2050 and was " year_photography " " RS $0 RS; } 
-action == "validate" && NR > 1 && year_photography == "" { log_err("warning"); print "Field year_photography in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && year_photo_call && !is_numeric(year_photo_call) { log_err("warning"); print "Field year_photo_call in " FILENAME " line " NR " should be a numeric but was " year_photo_call " " RS $0 RS; } 
+action == "validate" && NR > 1 && year_photo_call == "" { log_err("warning"); print "Field year_photo_call in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && year_photo_call != "" && year_photo_call < 1900 { log_err("warning"); print "year_photo_call in " FILENAME " line " NR " should be greater than 1900 and was " year_photo_call " " RS $0 RS; } 
 action == "validate" && NR > 1 && year_photo_call != "" && year_photo_call > 2050 { log_err("warning"); print "year_photo_call in " FILENAME " line " NR " should be less than 2050 and was " year_photo_call " " RS $0 RS; } 
-action == "validate" && NR > 1 && year_photo_call == "" { log_err("warning"); print "Field year_photo_call in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && layer_type && !is_numeric(layer_type) { log_err("warning"); print "Field layer_type in " FILENAME " line " NR " should be a numeric but was " layer_type " " RS $0 RS; } 
 action == "validate" && NR > 1 && layer_type != "" && layer_type !~ /^(1|2|3|4|5)$/ { log_err("warning"); print "layer_type in " FILENAME " line " NR " should match the following pattern /^(1|2|3|4|5)$/ and was " layer_type " " RS $0 RS; } 
 action == "validate" && NR > 1 && moist_reg != "" && moist_reg !~ /^(a|b|c|d)$/ { log_err("warning"); print "moist_reg in " FILENAME " line " NR " should match the following pattern /^(a|b|c|d)$/ and was " moist_reg " " RS $0 RS; } 
@@ -117,14 +118,14 @@ action ~ /^(sanitize|insert)$/ && NR > 1 {
     if (sp5_per == "") $20 = "NA"
     if (tpr == "") $24 = "NA"
     if (polygon_number == "") $4 = "NA"
-    if (year_photography == "") $5 = "NA"
+    if (year_photography == "") $5 = "-9999"
     if (avi_version == "") $3 = "NA"
     if (sp3_per == "") $16 = "NA"
     if (sp1_per == "") $12 = "NA"
     if (layer_type == "") $7 = "NA"
     if (company_plot_number == "") $2 = "NA"
     if (density == "") $9 = "NA"
-    if (year_photo_call == "") $6 = "NA"
+    if (year_photo_call == "") $6 = "-9999"
     if (sp1 == "") $11 = "NA"
     if (sp4_per == "") $18 = "NA"
     if (sp2 == "") $13 = "NA"
@@ -148,7 +149,7 @@ action == "insert" && NR > 1 {
     print;
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS  (struc_val text,company_plot_number text,origin numeric,avi_version text,tpr text,polygon_number text,photo_avi_layer_comment text,year_photography text,year_photo_call text,layer_type text,moist_reg text,density text,height numeric,sp1 text,sp1_per text,sp2 text,sp2_per text,sp3 text,sp3_per text,sp4 text,sp4_per text,sp5 text,sp5_per text,struc text,company text);"
+     print "CREATE TABLE IF NOT EXISTS  (struc_val text,company_plot_number text,origin numeric,avi_version text,tpr text,polygon_number text,photo_avi_layer_comment text,year_photography numeric,year_photo_call numeric,layer_type text,moist_reg text,density text,height numeric,sp1 text,sp1_per text,sp2 text,sp2_per text,sp3 text,sp3_per text,sp4 text,sp4_per text,sp5 text,sp5_per text,struc text,company text);"
 }
 action == "sanitize" { print }
 

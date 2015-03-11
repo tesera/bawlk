@@ -4,16 +4,17 @@ field,required,company true
 field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
 field,type,company_plot_number string
 field,required,company_plot_number true
+field,maxLength,company_plot_number 15
 field,type,measurement_number integer
 field,required,measurement_number true
 field,type,regeneration_plot_name string
-field,pattern,regeneration_plot_name /^(R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/
 field,required,regeneration_plot_name true
+field,pattern,regeneration_plot_name /^(R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/
 field,type,species string
-field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
 field,required,species true
+field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
 field,type,regeneration_count number
-field,minimum,regeneration_count 0
+field,minimum,regeneration_count species == 'No',0,1
 field,maximum,regeneration_count 9999
 field,type,regeneration_comment string
 field,none,regeneration_comment

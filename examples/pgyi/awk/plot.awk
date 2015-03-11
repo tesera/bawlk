@@ -73,6 +73,7 @@ action == "validate" && NR > 1 && company == "" { log_err("warning"); print "Fie
 action == "validate" && NR > 1 && company != "" && company !~ /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ { log_err("warning"); print "company in " FILENAME " line " NR " should match the following pattern /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ and was " company " " RS $0 RS; } 
 action == "validate" && NR > 1 && company_plot_number == "" { log_err("warning"); print "Field company_plot_number in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && !is_unique(company_plot_number) { log_err("warning"); print "Field company_plot_number in " FILENAME " line " NR " is a duplicate and should be unique" RS $0 RS; } 
+action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("warning"); print "company_plot_number length in " FILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate" && NR > 1 && establishment_year && !is_numeric(establishment_year) { log_err("warning"); print "Field establishment_year in " FILENAME " line " NR " should be a numeric but was " establishment_year " " RS $0 RS; } 
 action == "validate" && NR > 1 && establishment_year == "" { log_err("warning"); print "Field establishment_year in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && establishment_year != "" && establishment_year < 1900 { log_err("warning"); print "establishment_year in " FILENAME " line " NR " should be greater than 1900 and was " establishment_year " " RS $0 RS; } 
@@ -140,7 +141,7 @@ action ~ /^(sanitize|insert)$/ && NR > 1 {
     if (aspect == "") $18 = "NA"
     if (topographic_position == "") $15 = "NA"
     if (elevation == "") $16 = "-9999"
-    if (ats_range == "") $10 = "NA"
+    if (ats_range == "") $10 = "-9999"
     if (ats_section == "") $12 = "-9999"
     if (latitude == "") $23 = "-9999"
     if (sampling_unit_number == "") $14 = "NA"
@@ -178,7 +179,7 @@ action == "insert" && NR > 1 {
     print;
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS  (datum text,company_plot_number text,latitude numeric,company_stand_number text,longitude numeric,establishment_year numeric,natural_subregion text,establishment_month numeric,ecosite_guide text,establishment_day numeric,ecosite text,fmu text,ecosite_phase text,fma text,plot_comment text,ats_township numeric,ats_range text,ats_meridian numeric,ats_section numeric,opening_number text,sampling_unit_number text,topographic_position text,elevation numeric,slope numeric,aspect text,x_coord numeric,y_coord numeric,utm_zone text,company text);"
+     print "CREATE TABLE IF NOT EXISTS  (datum text,company_plot_number text,latitude numeric,company_stand_number text,longitude numeric,establishment_year numeric,natural_subregion text,establishment_month numeric,ecosite_guide text,establishment_day numeric,ecosite text,fmu text,ecosite_phase text,fma text,plot_comment text,ats_township numeric,ats_range numeric,ats_meridian numeric,ats_section numeric,opening_number text,sampling_unit_number text,topographic_position text,elevation numeric,slope numeric,aspect text,x_coord numeric,y_coord numeric,utm_zone text,company text);"
 }
 action == "sanitize" { print }
 

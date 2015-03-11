@@ -5,6 +5,7 @@ field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDF
 field,type,company_plot_number string
 field,required,company_plot_number true
 field,unique,company_plot_number true
+field,maxLength,company_plot_number 15
 field,type,company_stand_number string
 field,none,company_stand_number
 field,type,establishment_year integer
@@ -29,7 +30,6 @@ field,type,ats_range integer
 field,required,ats_range true
 field,minimum,ats_range 1
 field,maximum,ats_range 26
-field,colmap,ats_range true
 field,type,ats_meridian integer
 field,required,ats_meridian true
 field,minimum,ats_meridian 4

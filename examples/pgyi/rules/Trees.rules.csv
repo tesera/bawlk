@@ -4,6 +4,7 @@ field,required,company true
 field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
 field,type,company_plot_number string
 field,required,company_plot_number true
+field,maxLength,company_plot_number 15
 field,type,tree_number number
 field,required,tree_number true
 field,minimum,tree_number 1

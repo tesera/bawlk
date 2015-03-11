@@ -71,6 +71,7 @@ NR == 1 { headers="company|company_plot_number|measurement_number|tree_number|tr
 action == "validate" && NR > 1 && company == "" { log_err("warning"); print "Field company in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && company != "" && company !~ /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ { log_err("warning"); print "company in " FILENAME " line " NR " should match the following pattern /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ and was " company " " RS $0 RS; } 
 action == "validate" && NR > 1 && company_plot_number == "" { log_err("warning"); print "Field company_plot_number in " FILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("warning"); print "company_plot_number length in " FILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate" && NR > 1 && measurement_number && !is_numeric(measurement_number) { log_err("warning"); print "Field measurement_number in " FILENAME " line " NR " should be a numeric but was " measurement_number " " RS $0 RS; } 
 action == "validate" && NR > 1 && measurement_number == "" { log_err("warning"); print "Field measurement_number in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && tree_number && !is_numeric(tree_number) { log_err("warning"); print "Field tree_number in " FILENAME " line " NR " should be a numeric but was " tree_number " " RS $0 RS; } 
@@ -79,15 +80,19 @@ action == "validate" && NR > 1 && tree_number != "" && tree_number > 999999 { lo
 action == "validate" && NR > 1 && tree_type == "" { log_err("warning"); print "Field tree_type in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && tree_type != "" && tree_type !~ /^(T|S|PS|PO|B|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/ { log_err("warning"); print "tree_type in " FILENAME " line " NR " should match the following pattern /^(T|S|PS|PO|B|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/ and was " tree_type " " RS $0 RS; } 
 action == "validate" && NR > 1 && dbh && !is_numeric(dbh) { log_err("warning"); print "Field dbh in " FILENAME " line " NR " should be a numeric but was " dbh " " RS $0 RS; } 
+action == "validate" && NR > 1 && dbh == "" { log_err("=="); print "Field dbh in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && dbh != "" && dbh < 0.1 { log_err("warning"); print "dbh in " FILENAME " line " NR " should be greater than 0.1 and was " dbh " " RS $0 RS; } 
 action == "validate" && NR > 1 && dbh != "" && dbh > 120 { log_err("warning"); print "dbh in " FILENAME " line " NR " should be less than 120 and was " dbh " " RS $0 RS; } 
 action == "validate" && NR > 1 && dbh_height && !is_numeric(dbh_height) { log_err("warning"); print "Field dbh_height in " FILENAME " line " NR " should be a numeric but was " dbh_height " " RS $0 RS; } 
+action == "validate" && NR > 1 && dbh_height == "" { log_err("!="); print "Field dbh_height in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && dbh_height != "" && dbh_height < 1.1 { log_err("warning"); print "dbh_height in " FILENAME " line " NR " should be greater than 1.1 and was " dbh_height " " RS $0 RS; } 
 action == "validate" && NR > 1 && dbh_height != "" && dbh_height > 1.5 { log_err("warning"); print "dbh_height in " FILENAME " line " NR " should be less than 1.5 and was " dbh_height " " RS $0 RS; } 
 action == "validate" && NR > 1 && rcd && !is_numeric(rcd) { log_err("warning"); print "Field rcd in " FILENAME " line " NR " should be a numeric but was " rcd " " RS $0 RS; } 
+action == "validate" && NR > 1 && rcd == "" { log_err("=="); print "Field rcd in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && rcd != "" && rcd < 0.1 { log_err("warning"); print "rcd in " FILENAME " line " NR " should be greater than 0.1 and was " rcd " " RS $0 RS; } 
 action == "validate" && NR > 1 && rcd != "" && rcd > 15 { log_err("warning"); print "rcd in " FILENAME " line " NR " should be less than 15 and was " rcd " " RS $0 RS; } 
 action == "validate" && NR > 1 && rcd_height && !is_numeric(rcd_height) { log_err("warning"); print "Field rcd_height in " FILENAME " line " NR " should be a numeric but was " rcd_height " " RS $0 RS; } 
+action == "validate" && NR > 1 && rcd_height == "" { log_err("!="); print "Field rcd_height in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && rcd_height != "" && rcd_height < 0 { log_err("warning"); print "rcd_height in " FILENAME " line " NR " should be greater than 0 and was " rcd_height " " RS $0 RS; } 
 action == "validate" && NR > 1 && rcd_height != "" && rcd_height > 0.3 { log_err("warning"); print "rcd_height in " FILENAME " line " NR " should be less than 0.3 and was " rcd_height " " RS $0 RS; } 
 action == "validate" && NR > 1 && height && !is_numeric(height) { log_err("warning"); print "Field height in " FILENAME " line " NR " should be a numeric but was " height " " RS $0 RS; } 
@@ -101,6 +106,7 @@ action == "validate" && NR > 1 && stump_age && !is_numeric(stump_age) { log_err(
 action == "validate" && NR > 1 && stump_age != "" && stump_age < 1 { log_err("warning"); print "stump_age in " FILENAME " line " NR " should be greater than 1 and was " stump_age " " RS $0 RS; } 
 action == "validate" && NR > 1 && stump_age != "" && stump_age > 350 { log_err("warning"); print "stump_age in " FILENAME " line " NR " should be less than 350 and was " stump_age " " RS $0 RS; } 
 action == "validate" && NR > 1 && stump_height && !is_numeric(stump_height) { log_err("warning"); print "Field stump_height in " FILENAME " line " NR " should be a numeric but was " stump_height " " RS $0 RS; } 
+action == "validate" && NR > 1 && stump_height == "" { log_err("!="); print "Field stump_height in " FILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate" && NR > 1 && stump_height != "" && stump_height < 0 { log_err("warning"); print "stump_height in " FILENAME " line " NR " should be greater than 0 and was " stump_height " " RS $0 RS; } 
 action == "validate" && NR > 1 && stump_height != "" && stump_height > 0.3 { log_err("warning"); print "stump_height in " FILENAME " line " NR " should be less than 0.3 and was " stump_height " " RS $0 RS; } 
 action == "validate" && NR > 1 && total_age && !is_numeric(total_age) { log_err("warning"); print "Field total_age in " FILENAME " line " NR " should be a numeric but was " total_age " " RS $0 RS; } 
