@@ -1,5 +1,6 @@
 #!/usr/bin/env node
 var fs = require('fs');
+var path = require('path');
 var argv = require('minimist')(process.argv.slice(2));
 var JSONStream = require('JSONStream');
 var es = require('event-stream');
@@ -19,17 +20,14 @@ var datapackage;
 
 if (argv.d) {
     datapackage = fs.readFileSync(argv.d);
-}
+} else throw new Error('datapackage required')
 
-if (argv.o) {
-    output = fs.createWriteStream(argv.o);
-}
 
+var outputPath = argv.o || '.'
 datapackage = JSON.parse(datapackage);
 
 datapackage.resources.forEach(function (resource) {
-    var outputFilePath;
-    var outputFile;
+    var outputFilePath = path.resolve(outputPath, resource.path);
 
     var resourceStream = new Readable({ objectMode: true });
     resourceStream.push(resource);
@@ -37,19 +35,17 @@ datapackage.resources.forEach(function (resource) {
 
     switch(cmd) {
         case 'rules':
-            outputFilePath = resource.path.replace('.csv', '.rules.csv');
-            outputFile = fs.createWriteStream(outputFilePath);
+            outputFilePath = outputFilePath.replace('.csv', '.rules.csv');
             resourceStream
                 .pipe(bawlk.getRuleset())
-                .pipe(outputFile);
+                .pipe(fs.createWriteStream(outputFilePath));
             break;
         case 'scripts':
-            outputFilePath = resource.path.replace('.csv', '.awk');
-            outputFile = fs.createWriteStream(outputFilePath);
+            outputFilePath = outputFilePath.replace('.csv', '.awk');
             resourceStream
                 .pipe(bawlk.getRuleset())
                 .pipe(bawlk.getScript())
-                .pipe(outputFile);
+                .pipe(fs.createWriteStream(outputFilePath));
             break;
         case 'validate':
             var csv = fs.createReadStream('./examples/pgyi/data/' + resource.path);
