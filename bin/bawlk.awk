@@ -21,6 +21,7 @@ BEGIN {
     print "BEGIN {"
     print "    FS=\",\"; OFS=\",\"; err_count=0; cats[\"na\"]=0;"
     print "    if(!action) action = \"validate\""
+    print "    summary_header=\"file_name,field_name,rule,message,violation_count\""
     print "}" RS
 
     print "# builtin helper functions"
@@ -52,7 +53,7 @@ $1 == "headers" && $2 == "names" {
 
     print "}" RS
     print "# awk rules based on user csv ruleset"
-    print "NR == 1 { headers=\"" $3 "\"; if (!are_headers_valid(headers)) print \"invalid headers in \" FILENAME }"
+    print "NR == 1 { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print RS \"INVALID HEADERS IN \" CSVFILENAME RS \"WAS: \" RS $0 RS \"EXPECTED:\" RS headers RS; exit 0; } }"
 }
 
 $1 == "file" {
@@ -80,39 +81,45 @@ $1 == "field" {
         type=params[2]
         if (type == "integer" || type == "number"){
             test=field " && !is_numeric(" field ")"
-            msg="Field " field " in \" FILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
+            msg="Field " field " in \" CSVFILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
         }
     } else if (rule_type == "required") {
         req=params[2]
         if (req == "true") {
             test=field " == \"\""
-            msg="Field " field " in \" FILENAME \" line \" NR \" is required"
+            mini_msg="value is required but was empty"
+            msg="Field " field " in \" CSVFILENAME \" line \" NR \" is required"
         } else if (req != "false") {
             test=req " && " field " == \"\""
-            msg="Field " field " in \" FILENAME \" line \" NR \" is required if " req
+            mini_msg="value is required if " req
+            msg="Field " field " in \" CSVFILENAME \" line \" NR \" is required if " req
         }
     } else if (rule_type == "unique") {
         test="!is_unique(" field ")"
-        msg="Field " field " in \" FILENAME \" line \" NR \" is a duplicate and should be unique"
+        mini_msg="value should be unique but had duplicates"
+        msg="Field " field " in \" CSVFILENAME \" line \" NR \" is a duplicate and should be unique"
     } else if (rule_type ~ /^minimum|maximum$/) {
         comparator=$2 == "maximum" ? ">" : "<"
         limit=params[2]
         term=$2 == "maximum" ? "less" : "greater"
 
         test=field " != \"\" && " field " " comparator " " limit
-        msg=field " in \" FILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
+        mini_msg="value should be " term " than: " limit
+        msg=field " in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
     } else if (rule_type == "pattern") {
         pattern=params[2]
 
         test=field " != \"\" && " field " !~ " pattern
-        msg=field " in \" FILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
+        mini_msg="value should match: " pattern
+        msg=field " in \" CSVFILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
     } else if (rule_type ~ /^minLength|maxLength$/) {
         comparator=$2 == "maxLength" ? ">" : "<"
         limit=params[2]
         term=$2 == "maxLength" ? "less" : "greater"
 
         test=field " != \"\" && length(" field ") " comparator " " limit
-        msg=field " length in \" FILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
+        mini_msg="max length is: " limit
+        msg=field " length in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
     }
 
     if (test) {
@@ -120,8 +127,9 @@ $1 == "field" {
         if (!options["dcat"]) options["dcat"] = "na"
         if (!cat) cat = options["dcat"]
         handler_prefix="{ log_err(\"" cat "\"); "
+
         if (options["mode"] == "text") {
-            err_handler= handler_prefix "print \"" msg "\" RS $0 RS; }" 
+            err_handler= handler_prefix "print \"" msg "\" RS $0 RS; }"
         } else if (options["mode"] == "wrap") {
             acc="$" field_index
             err_handler= handler_prefix "FS=\",\";" acc "=\">>\" " acc " \"<<\"; print $0 }" 
@@ -129,7 +137,11 @@ $1 == "field" {
             err_handler= handler_prefix "print $0 FS \"" msg "\" }"
         }
 
-        if (rule_type != "none") { print "action == \"validate\" && NR > 1 && " test " " err_handler " " }
+        if (rule_type != "none") {
+            print "action == \"validate\" && NR > 1 && " test " " err_handler " "
+            summary_handler="key=CSVFILENAME FS \"" field "\" FS  \"" rule_type "\" FS \"" mini_msg "\"; if(!violations[key]) { violations[key]=0; } violations[key]++;"
+            print "action == \"validate:summary\" && NR > 1 && " test " { " summary_handler " } "
+        }
     }
 }
 
@@ -171,27 +183,25 @@ END {
     print "action == \"table\" && NR == 1 {"
 
     fields=""
-    l=length(headers)
-    for (i in headers) {
-        c++
+    for (i = 1; i <= length(headers); i++) {
         field=headers[i]
         type=types[field]
-        if (length(mappings) && mappings[field]) field=mappings[field]
         fields=fields field " " type
-        if (c < l) fields=fields ","
+        if (i < length(headers)) fields=fields ","
     }
 
     if(file_options["pkey"]) {
         cols=file_options["pkey"]
-        gsub(":", ",", cols)
-        fields=fields ", PRIMARY KEY (" cols ") "
+        gsub(/\|/, ",", cols)
+        fields=fields ", CONSTRAINT " file_options["table"] "_pkey PRIMARY KEY (" cols ") "
     }
     if(file_options["fkey"]) {
         split(file_options["fkey"], ref, " ")
         ftable=ref[1]
         fcols=ref[2]
-        gsub(":", ",", fcols)
-        fields=fields ", FOREIGN KEY (" fcols ") REFERENCES " ftable " (" fcols ") MATCH FULL "
+        gsub(/\|/, ",", fcols)
+        fields=fields ", CONSTRAINT " file_options["table"] "_" ftable "_fkey FOREIGN KEY (" fcols ") REFERENCES " ftable " (" fcols ") MATCH FULL "
+        fields=fields "ON UPDATE CASCADE ON DELETE NO ACTION"
     }
 
     print "     print \"CREATE TABLE IF NOT EXISTS " file_options["table"] " (" fields ");\""
@@ -200,7 +210,8 @@ END {
     print "action == \"sanitize\" { print }" RS
 
     print "# la fin"
-    print "END {" 
+    print "END {"
+    print "    if (action == \"validate:summary\") { if (length(violations) > 0) { print summary_header; }; for (violation in violations) { print violation FS violations[violation]; } }"
     print "    if (action == \"insert\") print \"\\\\.\""
     print "    if (action == \"validate\" && options[\"summary\"] == \"true\") { print RS \"violation summary: \" RS \"   counts:   \" RS \"      total: \" err_count; print_cats(cats); }"
     print "}"

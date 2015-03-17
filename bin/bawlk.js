@@ -26,6 +26,8 @@ if (argv.d) {
 var outputPath = argv.o || '.'
 datapackage = JSON.parse(datapackage);
 
+var bawlkStreams;
+
 datapackage.resources.forEach(function (resource) {
     var outputFilePath = path.resolve(outputPath, resource.path);
 
@@ -50,7 +52,7 @@ datapackage.resources.forEach(function (resource) {
         case 'validate':
             var csv = fs.createReadStream('./examples/pgyi/data/' + resource.path);
 
-            var bawlkStream = resourceStream
+            bawlkStreams = resourceStream
                 .pipe(bawlk.getRuleset())
                 .pipe(bawlk.getScript())
                 .pipe(reduce(function (acc, chunk) {
@@ -63,18 +65,25 @@ datapackage.resources.forEach(function (resource) {
 
                     awk.stdout.setEncoding('utf8');
 
+                    awk.stdin.on('error', function (err) {
+                        self.emit('end');
+                    });
+
                     awk.stdout.on('data', function (data) {
                         self.emit('data', data);
                     });
 
                     awk.stdout.on('end', function (data) {
+                        console.log(resource.path);
                         self.emit('end');
                     });
 
                     csv.pipe(awk.stdin);
 
                     self.pause();
-                }))
-                .pipe(process.stdout);
+                })).pipe(process.stdout);
+            break;
     }
 });
+
+// if (bawlkStreams) console.log('yo'); //es.merge(bawlkStreams).pipe(process.stdout);
