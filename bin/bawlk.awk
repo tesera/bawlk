@@ -63,7 +63,7 @@ $1 == "headers" && $2 == "names" {
     print "}" RS
     print "# awk rules based on user csv ruleset"
     print "NR == 1 && action == \"validate\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print RS \"INVALID HEADERS IN \" CSVFILENAME RS \"WAS: \" RS $0 RS \"EXPECTED:\" RS headers RS; exit 0; } }"
-    print "NR == 1 && action == \"validate:summary\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS \"headers\" FS  \"names\" FS \"csv headers are invalid\"]=1; exit 0; } }"
+    print "NR == 1 && action == \"validate:summary\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS \"headers\" FS  \"names\" FS \"csv headers are invalid\" FS \"error\"]=1; exit 0; } }"
     print pkeycheck
 }
 
@@ -218,7 +218,7 @@ END {
 
     print "# la fin"
     print "END {"
-    print "    if (action == \"validate:summary\" && length(dupkeys) > 0) for (dup in dupkeys) { violation=CSVFILENAME FS \"" file_options["pkey"] "\" FS  \"duplicate\" FS dup \" violates pkey\"; violations[violation] = dupkeys[dup]}"
+    print "    if (action == \"validate:summary\" && length(dupkeys) > 0) for (dup in dupkeys) { violation=CSVFILENAME FS \"" file_options["pkey"] "\" FS  \"duplicate\" FS dup \" violates pkey\" FS \"error\"; violations[violation] = dupkeys[dup]}"
     print "    if (action == \"validate:summary\") { if (length(violations) > 0) for (violation in violations) { print violation FS violations[violation]; } }"
     #print "    if (action == \"insert\") print \"\\\\.\""
     print "    if (action == \"validate\" && options[\"summary\"] == \"true\") { print RS \"violation summary: \" RS \"   counts:   \" RS \"      total: \" err_count; print_cats(cats); }"

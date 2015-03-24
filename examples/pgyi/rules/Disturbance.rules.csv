@@ -1,24 +1,27 @@
+file,table,disturbance
+file,pkey,company|company_plot_number|disturbance_number
+file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|disturbance_number|disturbance_code|disturbance_year|disturbance_month|disturbance_day|disturbance_comment
-field,type,company string
-field,required,company true
-field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/
-field,type,company_plot_number string
-field,required,company_plot_number true
-field,maxLength,company_plot_number 15
-field,type,disturbance_number integer
-field,minimum,disturbance_number 1
-field,maximum,disturbance_number 12
-field,type,disturbance_code string
-field,pattern,disturbance_code /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/
-field,type,disturbance_year integer
-field,required,disturbance_year disturbance_code!=''
-field,minimum,disturbance_year 1900
-field,maximum,disturbance_year 2050
-field,type,disturbance_month integer
-field,minimum,disturbance_month 1
-field,maximum,disturbance_month 12
-field,type,disturbance_day integer
-field,minimum,disturbance_day 1
-field,maximum,disturbance_day 31
+field,type,company string error
+field,required,company true error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
+field,type,company_plot_number string error
+field,required,company_plot_number true error
+field,maxLength,company_plot_number 15 error
+field,type,disturbance_number integer error
+field,minimum,disturbance_number 1 error
+field,maximum,disturbance_number 12 error
+field,type,disturbance_code string error
+field,pattern,disturbance_code /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|FI|DA)$/ error
+field,type,disturbance_year integer error
+field,required,disturbance_year disturbance_code!="" error
+field,minimum,disturbance_year 1900 error
+field,maximum,disturbance_year 2050 error
+field,type,disturbance_month integer warning
+field,minimum,disturbance_month 1 warning
+field,maximum,disturbance_month 12 warning
+field,type,disturbance_day integer warning
+field,minimum,disturbance_day 1 warning
+field,maximum,disturbance_day 31 warning
 field,type,disturbance_comment string
 field,none,disturbance_comment
