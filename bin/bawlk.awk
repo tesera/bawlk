@@ -41,6 +41,15 @@ $1 == "option" {
     options[$2]=$3;
 }
 
+$1 == "file" {
+    file_options[$2]=$3;
+    if ($2 == "pkey") {
+        pkeys=$3
+        gsub(/\|/, " \"-\" ", pkeys)
+        pkeycheck="action ~ /validate/ && NR > 1 { pkey=" pkeys "; if(keys[pkey]) { if (dupkeys[pkey]) dupkeys[pkey]++; else dupkeys[pkey] = 1 } else { keys[pkey] = NR } }"
+    }
+}
+
 $1 == "headers" && $2 == "names" {
     split($3, headers, "|")
     print "# make header index/map"
@@ -53,11 +62,9 @@ $1 == "headers" && $2 == "names" {
 
     print "}" RS
     print "# awk rules based on user csv ruleset"
-    print "NR == 1 { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print RS \"INVALID HEADERS IN \" CSVFILENAME RS \"WAS: \" RS $0 RS \"EXPECTED:\" RS headers RS; exit 0; } }"
-}
-
-$1 == "file" {
-    file_options[$2]=$3;
+    print "NR == 1 && action == \"validate\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print RS \"INVALID HEADERS IN \" CSVFILENAME RS \"WAS: \" RS $0 RS \"EXPECTED:\" RS headers RS; exit 0; } }"
+    print "NR == 1 && action == \"validate:summary\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS \"headers\" FS  \"names\" FS \"csv headers are invalid\"]=1; exit 0; } }"
+    print pkeycheck
 }
 
 $1 == "field" {
@@ -139,7 +146,7 @@ $1 == "field" {
 
         if (rule_type != "none") {
             print "action == \"validate\" && NR > 1 && " test " " err_handler " "
-            summary_handler="key=CSVFILENAME FS \"" field "\" FS  \"" rule_type "\" FS \"" mini_msg "\"; if(!violations[key]) { violations[key]=0; } violations[key]++;"
+            summary_handler="key=CSVFILENAME FS \"" field "\" FS  \"" rule_type "\" FS \"" mini_msg "\" FS \"" cat "\"; if(!violations[key]) { violations[key]=0; } violations[key]++;"
             print "action == \"validate:summary\" && NR > 1 && " test " { " summary_handler " } "
         }
     }
@@ -170,14 +177,14 @@ END {
 
     print RS "# action handlers"
     print "action == \"insert\" && NR == 1 {"
-    print "    print \"SET client_encoding = 'UTF8';\""
-    print "    gsub(\"Range\", \"rangeno\");"
-    print "    print \"COPY " file_options["table"] " (\" $0 \") FROM stdin;\""
+    # print "    print \"SET client_encoding = 'UTF8';\""
+    # print "    gsub(\"Range\", \"rangeno\");"
+    print "    print \"COPY " file_options["table"] " (\" addfields FS \"source_row_index\" FS $0 \") FROM stdin;\""
     print "}"
 
     print "action == \"insert\" && NR > 1 {"
-    print "    gsub(\",\", \"\t\");"
-    print "    print;"
+    print "    gsub(\",\", \"\\t\");"
+    print "    print addvals \"\\t\" NR \"\\t\" $0;"
     print "}"
 
     print "action == \"table\" && NR == 1 {"
@@ -211,8 +218,9 @@ END {
 
     print "# la fin"
     print "END {"
-    print "    if (action == \"validate:summary\") { if (length(violations) > 0) { print summary_header; }; for (violation in violations) { print violation FS violations[violation]; } }"
-    print "    if (action == \"insert\") print \"\\\\.\""
+    print "    if (action == \"validate:summary\" && length(dupkeys) > 0) for (dup in dupkeys) { violation=CSVFILENAME FS \"" file_options["pkey"] "\" FS  \"duplicate\" FS dup \" violates pkey\"; violations[violation] = dupkeys[dup]}"
+    print "    if (action == \"validate:summary\") { if (length(violations) > 0) for (violation in violations) { print violation FS violations[violation]; } }"
+    #print "    if (action == \"insert\") print \"\\\\.\""
     print "    if (action == \"validate\" && options[\"summary\"] == \"true\") { print RS \"violation summary: \" RS \"   counts:   \" RS \"      total: \" err_count; print_cats(cats); }"
     print "}"
 }

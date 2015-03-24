@@ -60,7 +60,11 @@ datapackage.resources.forEach(function (resource) {
                 }, ''))
                 .pipe(es.through(function (script) {
                     var self = this;
-                    var args = ['-v', 'FILENAME='+resource.path, script.toString('utf8')];
+                    var args = [
+                        '-v', 'action=validate:summary',
+                        '-v', 'CSVFILENAME='+resource.path,
+                        script.toString('utf8')
+                    ];
                     var awk = spawn('awk', args);
 
                     awk.stdout.setEncoding('utf8');
@@ -74,7 +78,7 @@ datapackage.resources.forEach(function (resource) {
                     });
 
                     awk.stdout.on('end', function (data) {
-                        console.log(resource.path);
+                        // console.log(resource.path);
                         self.emit('end');
                     });
 

@@ -72,29 +72,16 @@ NR > 1 {
 NR == 1 && action == "validate" { headers="company|company_plot_number|company_stand_number|establishment_year|establishment_month|establishment_day|fmu|fma|ats_township|ats_range|ats_meridian|ats_section|opening_number|sampling_unit_number|topographic_position|elevation|slope|aspect|x_coord|y_coord|utm_zone|datum|latitude|longitude|natural_subregion|ecosite_guide|ecosite|ecosite_phase|plot_comment"; if (!are_headers_valid(headers)) { gsub(/\|/, FS, headers); print RS "INVALID HEADERS IN " CSVFILENAME RS "WAS: " RS $0 RS "EXPECTED:" RS headers RS; exit 0; } }
 NR == 1 && action == "validate:summary" { headers="company|company_plot_number|company_stand_number|establishment_year|establishment_month|establishment_day|fmu|fma|ats_township|ats_range|ats_meridian|ats_section|opening_number|sampling_unit_number|topographic_position|elevation|slope|aspect|x_coord|y_coord|utm_zone|datum|latitude|longitude|natural_subregion|ecosite_guide|ecosite|ecosite_phase|plot_comment"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS "headers" FS  "names" FS "csv headers are invalid"]=1; exit 0; } }
 action ~ /validate/ && NR > 1 { pkey=company "-" company_plot_number; if(keys[pkey]) { if (dupkeys[pkey]) dupkeys[pkey]++; else dupkeys[pkey] = 1 } else { keys[pkey] = NR } }
-
 action == "validate" && NR > 1 && company == "" { log_err("error"); print "Field company in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company == "" { key=CSVFILENAME FS "company" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && company != "" && company !~ /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ { log_err("error"); print "company in " CSVFILENAME " line " NR " should match the following pattern /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ and was " company " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company != "" && company !~ /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ { key=CSVFILENAME FS "company" FS  "pattern" FS "value should match: /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-
-action == "validate" && NR > 1 && company_plot_number == "" 
-{ 
-    log_err("error"); 
-    print "Field company_plot_number in " CSVFILENAME " line " NR " is required" RS $0 RS; 
-}
-
-action == "validate:summary" && NR > 1 && company_plot_number == "" 
-{ 
-    key=CSVFILENAME FS "company_plot_number" FS  "required" FS "value is required but was empty"; 
-    if(!violations[key]) { violations[key]=0; } violations[key]++; 
-} 
-
+action == "validate" && NR > 1 && company_plot_number == "" { log_err("error"); print "Field company_plot_number in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && company_plot_number == "" { key=CSVFILENAME FS "company_plot_number" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && !is_unique(company_plot_number) { log_err("error"); print "Field company_plot_number in " CSVFILENAME " line " NR " is a duplicate and should be unique" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && !is_unique(company_plot_number) { key=CSVFILENAME FS "company_plot_number" FS  "unique" FS "value should be unique but had duplicates"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("error"); print "company_plot_number length in " CSVFILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { key=CSVFILENAME FS "company_plot_number" FS  "maxLength" FS "max length is: 15"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-
 action == "validate" && NR > 1 && company_stand_number != "" && length(company_stand_number) > 15 { log_err("error"); print "company_stand_number length in " CSVFILENAME " line " NR " should be less than 15 and was " length(company_stand_number) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company_stand_number != "" && length(company_stand_number) > 15 { key=CSVFILENAME FS "company_stand_number" FS  "maxLength" FS "max length is: 15"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && establishment_year && !is_numeric(establishment_year) { log_err("error"); print "Field establishment_year in " CSVFILENAME " line " NR " should be a numeric but was " establishment_year " " RS $0 RS; } 
@@ -153,9 +140,9 @@ action == "validate" && NR > 1 && ats_section != "" && ats_section < 1 { log_err
 action == "validate:summary" && NR > 1 && ats_section != "" && ats_section < 1 { key=CSVFILENAME FS "ats_section" FS  "minimum" FS "value should be greater than: 1"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && ats_section != "" && ats_section > 36 { log_err("warning"); print "ats_section in " CSVFILENAME " line " NR " should be less than 36 and was " ats_section " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && ats_section != "" && ats_section > 36 { key=CSVFILENAME FS "ats_section" FS  "maximum" FS "value should be less than: 36"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && opening_number != "" && length(opening_number) > 11 { log_err("warning"); print "opening_number length in " CSVFILENAME " line " NR " should be less than 11 and was " length(opening_number) " " RS $0 RS; } 
+action == "validate" && NR > 1 && opening_number != "" && length(opening_number) > 11 { log_err("undefined"); print "opening_number length in " CSVFILENAME " line " NR " should be less than 11 and was " length(opening_number) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && opening_number != "" && length(opening_number) > 11 { key=CSVFILENAME FS "opening_number" FS  "maxLength" FS "max length is: 11"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && sampling_unit_number != "" && length(sampling_unit_number) > 15 { log_err("warning"); print "sampling_unit_number length in " CSVFILENAME " line " NR " should be less than 15 and was " length(sampling_unit_number) " " RS $0 RS; } 
+action == "validate" && NR > 1 && sampling_unit_number != "" && length(sampling_unit_number) > 15 { log_err("undefined"); print "sampling_unit_number length in " CSVFILENAME " line " NR " should be less than 15 and was " length(sampling_unit_number) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sampling_unit_number != "" && length(sampling_unit_number) > 15 { key=CSVFILENAME FS "sampling_unit_number" FS  "maxLength" FS "max length is: 15"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && topographic_position && !is_numeric(topographic_position) { log_err("warning"); print "Field topographic_position in " CSVFILENAME " line " NR " should be a numeric but was " topographic_position " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && topographic_position && !is_numeric(topographic_position) { key=CSVFILENAME FS "topographic_position" FS  "type" FS "max length is: 15"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
@@ -195,29 +182,29 @@ action == "validate" && NR > 1 && datum == "" { log_err("error"); print "Field d
 action == "validate:summary" && NR > 1 && datum == "" { key=CSVFILENAME FS "datum" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && datum != "" && datum !~ /^(NAD27|NAD83)$/ { log_err("error"); print "datum in " CSVFILENAME " line " NR " should match the following pattern /^(NAD27|NAD83)$/ and was " datum " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && datum != "" && datum !~ /^(NAD27|NAD83)$/ { key=CSVFILENAME FS "datum" FS  "pattern" FS "value should match: /^(NAD27|NAD83)$/"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && latitude && !is_numeric(latitude) { log_err("warning"); print "Field latitude in " CSVFILENAME " line " NR " should be a numeric but was " latitude " " RS $0 RS; } 
+action == "validate" && NR > 1 && latitude && !is_numeric(latitude) { log_err("undefined"); print "Field latitude in " CSVFILENAME " line " NR " should be a numeric but was " latitude " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && latitude && !is_numeric(latitude) { key=CSVFILENAME FS "latitude" FS  "type" FS "value should match: /^(NAD27|NAD83)$/"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && latitude != "" && latitude < 49 { log_err("warning"); print "latitude in " CSVFILENAME " line " NR " should be greater than 49 and was " latitude " " RS $0 RS; } 
+action == "validate" && NR > 1 && latitude != "" && latitude < 49 { log_err("undefined"); print "latitude in " CSVFILENAME " line " NR " should be greater than 49 and was " latitude " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && latitude != "" && latitude < 49 { key=CSVFILENAME FS "latitude" FS  "minimum" FS "value should be greater than: 49"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && latitude != "" && latitude > 60 { log_err("warning"); print "latitude in " CSVFILENAME " line " NR " should be less than 60 and was " latitude " " RS $0 RS; } 
+action == "validate" && NR > 1 && latitude != "" && latitude > 60 { log_err("undefined"); print "latitude in " CSVFILENAME " line " NR " should be less than 60 and was " latitude " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && latitude != "" && latitude > 60 { key=CSVFILENAME FS "latitude" FS  "maximum" FS "value should be less than: 60"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && longitude && !is_numeric(longitude) { log_err("warning"); print "Field longitude in " CSVFILENAME " line " NR " should be a numeric but was " longitude " " RS $0 RS; } 
+action == "validate" && NR > 1 && longitude && !is_numeric(longitude) { log_err("undefined"); print "Field longitude in " CSVFILENAME " line " NR " should be a numeric but was " longitude " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && longitude && !is_numeric(longitude) { key=CSVFILENAME FS "longitude" FS  "type" FS "value should be less than: 60"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && longitude != "" && longitude < -120 { log_err("warning"); print "longitude in " CSVFILENAME " line " NR " should be greater than -120 and was " longitude " " RS $0 RS; } 
+action == "validate" && NR > 1 && longitude != "" && longitude < -120 { log_err("undefined"); print "longitude in " CSVFILENAME " line " NR " should be greater than -120 and was " longitude " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && longitude != "" && longitude < -120 { key=CSVFILENAME FS "longitude" FS  "minimum" FS "value should be greater than: -120"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && longitude != "" && longitude > -110 { log_err("warning"); print "longitude in " CSVFILENAME " line " NR " should be less than -110 and was " longitude " " RS $0 RS; } 
+action == "validate" && NR > 1 && longitude != "" && longitude > -110 { log_err("undefined"); print "longitude in " CSVFILENAME " line " NR " should be less than -110 and was " longitude " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && longitude != "" && longitude > -110 { key=CSVFILENAME FS "longitude" FS  "maximum" FS "value should be less than: -110"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && natural_subregion == "" { log_err("error"); print "Field natural_subregion in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && natural_subregion == "" { key=CSVFILENAME FS "natural_subregion" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && natural_subregion != "" && natural_subregion !~ /^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/ { log_err("error"); print "natural_subregion in " CSVFILENAME " line " NR " should match the following pattern /^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/ and was " natural_subregion " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && natural_subregion != "" && natural_subregion !~ /^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/ { key=CSVFILENAME FS "natural_subregion" FS  "pattern" FS "value should match: /^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && ecosite_guide == "" { log_err("warning"); print "Field ecosite_guide in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate" && NR > 1 && ecosite_guide == "" { log_err("undefined"); print "Field ecosite_guide in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && ecosite_guide == "" { key=CSVFILENAME FS "ecosite_guide" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && ecosite_guide != "" && ecosite_guide !~ /^(N|WC|SW)$/ { log_err("warning"); print "ecosite_guide in " CSVFILENAME " line " NR " should match the following pattern /^(N|WC|SW)$/ and was " ecosite_guide " " RS $0 RS; } 
+action == "validate" && NR > 1 && ecosite_guide != "" && ecosite_guide !~ /^(N|WC|SW)$/ { log_err("undefined"); print "ecosite_guide in " CSVFILENAME " line " NR " should match the following pattern /^(N|WC|SW)$/ and was " ecosite_guide " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && ecosite_guide != "" && ecosite_guide !~ /^(N|WC|SW)$/ { key=CSVFILENAME FS "ecosite_guide" FS  "pattern" FS "value should match: /^(N|WC|SW)$/"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && ecosite == "" { log_err("warning"); print "Field ecosite in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate" && NR > 1 && ecosite == "" { log_err("undefined"); print "Field ecosite in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && ecosite == "" { key=CSVFILENAME FS "ecosite" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && ecosite != "" && ecosite !~ /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/ { log_err("warning"); print "ecosite in " CSVFILENAME " line " NR " should match the following pattern /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/ and was " ecosite " " RS $0 RS; } 
+action == "validate" && NR > 1 && ecosite != "" && ecosite !~ /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/ { log_err("undefined"); print "ecosite in " CSVFILENAME " line " NR " should match the following pattern /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/ and was " ecosite " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && ecosite != "" && ecosite !~ /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/ { key=CSVFILENAME FS "ecosite" FS  "pattern" FS "value should match: /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && ecosite_phase == "" { log_err("warning"); print "Field ecosite_phase in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && ecosite_phase == "" { key=CSVFILENAME FS "ecosite_phase" FS  "required" FS "value is required but was empty"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
