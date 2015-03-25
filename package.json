@@ -6,6 +6,9 @@
   "directories": {
     "example": "examples"
   },
+  "bin": {
+    "bawlk": "./bin/bawlk.js"
+  },
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },
