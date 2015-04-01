@@ -1,10 +1,18 @@
 # bawlk
 
->A simple CSV to RDBMS bulk validating/loading toolset.
+>A simple CSV to RDBMS bulk validating/loading toolsets.
+ bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common tasks involved when bulk inserting data into a relational database or quality checking flat files. To use this tool, you do not need to know how to code in awk.  
 
-The main tool bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common task invloved when bulk inserting data into a relational database system. Although bawlk uses awk under the hood you don't need to know how to code in awk to use it. 
+awk is a very natural fit for validating and manipulating csv data. awk is a language designed for text processing, and is typically used for data extraction and processing. With awk you get a free iterator, pattern matching and rich expression language. awk is included in most unix/linux systems and can be installed on windows based systems. 
 
-awk is a very natural fit for validating and manipulating csv data. Even though awk is a very complex language its quite simple in nature. With awk you get a free iterator, pattern matching and rich expression language. awk is built-in most unix/linux systems and can be installed on windows based systems. gawk is a newer version of awk which extends the language further with more feature. Other variations like mawk take it a step further and optimizes awk for performance. Bawlk uses the basic awk language so no need to installl gawk.
+### Rule Sets
+
+A rule set in this case is a set of constraints on a csv file. Contraints can include:
+- Headers
+- Field Types
+- Ranges and Code Lists
+- Ignored Values
+- Unique Values 
 
 ## Tools Summary
 
@@ -14,7 +22,7 @@ awk is a very natural fit for validating and manipulating csv data. Even though 
 4. ``./bin/rules2jts.awk`` : Converts a ruleset to JSON Table Schema.
 
 ## Typical Workflow
-Using the toolset you can build a bawlk awk script that can be used to validate, sanitize bulk insert data into a relational database system. Once the script is built it is self contained and can be used independently. 
+Using the toolset you can build a bawlk awk script that can be used to validate and sanitize bulk insert data into a relational database. Once the script is built it is self contained and can be used independently. 
 
 A typical workflow looks like this:
 
