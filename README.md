@@ -3,7 +3,7 @@
 >A simple CSV to RDBMS bulk validating/loading toolsets.
  bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common tasks involved when bulk inserting data into a relational database or quality checking flat files. To use this tool, you do not need to know how to code in awk.  
 
-awk is a very natural fit for validating and manipulating csv data. awk is a language designed for text processing, and is typically used a data extraction and processing tool. With awk you get a free iterator, pattern matching and rich expression language. awk is included in most unix/linux systems and can be installed on windows based systems. 
+awk is a very natural fit for validating and manipulating csv data. awk is a language designed for text processing, and is typically used for data extraction and processing. With awk you get a free iterator, pattern matching and rich expression language. awk is included in most unix/linux systems and can be installed on windows based systems. 
 
 ### Rule Sets
 
