@@ -91,14 +91,14 @@ action == "validate:summary" && NR > 1 && treatment_comment != "" && length(trea
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (treatment_month == "") $6 = "NA"
-    if (treatment_code == "") $4 = "NA"
-    if (treatment_year == "") $5 = "NA"
-    if (treatment_number == "") $3 = "NA"
-    if (treatment_comment == "") $8 = "NA"
-    if (treatment_day == "") $7 = "NA"
-    if (company_plot_number == "") $2 = "NA"
-    if (company == "") $1 = "NA"
+    if (treatment_month == "") $6 = "NULL"
+    if (treatment_code == "") $4 = "NULL"
+    if (treatment_year == "") $5 = "NULL"
+    if (treatment_number == "") $3 = "NULL"
+    if (treatment_comment == "") $8 = "NULL"
+    if (treatment_day == "") $7 = "NULL"
+    if (company_plot_number == "") $2 = "NULL"
+    if (company == "") $1 = "NULL"
 }
 
 # action handlers

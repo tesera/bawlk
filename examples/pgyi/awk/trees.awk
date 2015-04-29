@@ -106,17 +106,17 @@ action == "validate:summary" && NR > 1 && trees_comment != "" && length(trees_co
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (species == "") $8 = "NA"
-    if (distance == "") $9 = "NA"
-    if (tree_location_id == "") $5 = "NA"
-    if (azimuth == "") $10 = "NA"
-    if (tree_origin == "") $6 = "NA"
-    if (tree_number == "") $3 = "NA"
-    if (trees_comment == "") $11 = "NA"
-    if (company_plot_number == "") $2 = "NA"
-    if (sector_or_quarter == "") $7 = "NA"
-    if (company == "") $1 = "NA"
-    if (tree_label == "") $4 = "NA"
+    if (species == "") $8 = "NULL"
+    if (distance == "") $9 = "NULL"
+    if (tree_location_id == "") $5 = "NULL"
+    if (azimuth == "") $10 = "NULL"
+    if (tree_origin == "") $6 = "NULL"
+    if (tree_number == "") $3 = "NULL"
+    if (trees_comment == "") $11 = "NULL"
+    if (company_plot_number == "") $2 = "NULL"
+    if (sector_or_quarter == "") $7 = "NULL"
+    if (company == "") $1 = "NULL"
+    if (tree_label == "") $4 = "NULL"
 }
 
 # action handlers

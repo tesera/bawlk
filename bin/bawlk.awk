@@ -77,8 +77,8 @@ $1 == "field" {
     defaults["mode"]    = "text"
     defaults["summary"] = "true"
     defaults["dcat"]    = "warning"
-    defaults["dvalnum"] = -9999
-    defaults["dvalstr"] = "NA"
+    defaults["dvalnum"] = "NULL"
+    defaults["dvalstr"] = "NULL"
     for (option in defaults) {
         if (!options[option]) options[option] = defaults[option]
     }
@@ -196,7 +196,6 @@ END {
         sql_type    = sql_types[field]
         field_index = header_index[field]
         dval        = sql_type == "numeric" ? options["dvalnum"] : options["dvalstr"]
-        dval        = dval ? dval : "NULL"
 
         print "    if (" field " == \"\") $" field_index " = \"" dval "\""
     }
