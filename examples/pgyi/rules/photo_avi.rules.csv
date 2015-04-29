@@ -1,63 +1,63 @@
 file,table,photo_avi_layer
-file,pkey,company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type
+file,pkey,company|company_plot_number|polygon_number|year_photography|layer_type
 file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|photo_avi_layer_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|BUCH|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
 field,type,avi_version string error
-field,required,avi_version true error
-field,type,polygon_number string error
+field,pattern,avi_version /^(AVI10|AVI21|AVI211|AVI22)$/ error
+field,type,polygon_number integer error
 field,required,polygon_number true error
-field,maxLength,polygon_number 15 error
+field,minimum,polygon_number 1 error
+field,maximum,polygon_number 9999999999 error
 field,type,year_photography integer error
 field,required,year_photography true error
 field,minimum,year_photography 1900 error
 field,maximum,year_photography 2050 error
-field,type,year_photo_call integer error
-field,required,year_photo_call true error
-field,minimum,year_photo_call 1900 error
-field,maximum,year_photo_call 2050 error
+field,type,year_photo_call integer
+field,minimum,year_photo_call 1900
+field,maximum,year_photo_call 2050
 field,type,layer_type integer error
 field,pattern,layer_type /^(1|2|3|4|5)$/ error
 field,type,moist_reg string warning
 field,pattern,moist_reg /^(d|m|w|a)$/ warning
-field,type,density string warning
-field,pattern,density /^(A|B|C|D)$/ warning
-field,type,height number warning
+field,type,density string
+field,pattern,density /^(A|B|C|D)$/
+field,type,height integer warning
 field,minimum,height 0 warning
 field,maximum,height 50 warning
 field,type,sp1 string error
-field,pattern,sp1 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ error
-field,type,sp1_per integer warning
-field,pattern,sp1_per /^(0|2|3|4|5|6|7|8|9|10)$/ warning
-field,type,sp2 string error
-field,pattern,sp2 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ error
-field,type,sp2_per integer warning
-field,pattern,sp2_per /^(0|1|2|3|4|5)$/ warning
-field,type,sp3 string error
-field,pattern,sp3 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ error
-field,type,sp3_per integer warning
-field,pattern,sp3_per /^(0|1|2|3)$/ warning
-field,type,sp4 string error
-field,pattern,sp4 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ error
-field,type,sp4_per integer warning
-field,pattern,sp4_per /^(0|1|2)$/ warning
-field,type,sp5 string error
-field,pattern,sp5 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ error
-field,type,sp5_per integer warning
-field,pattern,sp5_per /^(0|1|2)$/ warning
-field,type,struc string warning
-field,pattern,struc /^(S|M|C|H)$/ warning
-field,type,struc_val integer warning
-field,pattern,struc_val /^(0|1|2|3|4|5|6|7|8|9)$/ warning
-field,type,origin integer warning
-field,minimum,origin 1400 warning
-field,maximum,origin 2050 warning
-field,type,tpr string warning
-field,pattern,tpr /^(U|F|M|G)$/ warning
+field,pattern,sp1 /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/ error
+field,type,sp1_per integer error
+field,pattern,sp1_per /^(0|2|3|4|5|6|7|8|9|10)$/ error
+field,type,sp2 string
+field,pattern,sp2 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+field,type,sp2_per integer error
+field,pattern,sp2_per /^(0|1|2|3|4|5)$/ error
+field,type,sp3 string
+field,pattern,sp3 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+field,type,sp3_per integer error
+field,pattern,sp3_per /^(0|1|2|3)$/ error
+field,type,sp4 string
+field,pattern,sp4 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+field,type,sp4_per integer error
+field,pattern,sp4_per /^(0|1|2)$/ error
+field,type,sp5 string
+field,pattern,sp5 /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/
+field,type,sp5_per integer error
+field,pattern,sp5_per /^(0|1|2)$/ error
+field,type,struc string
+field,pattern,struc /^(S|M|C|H)$/
+field,type,struc_val integer
+field,pattern,struc_val /^(0|1|2|3|4|5|6|7|8|9)$/
+field,type,origin integer
+field,minimum,origin 0
+field,maximum,origin 2050
+field,type,tpr string
+field,pattern,tpr /^(U|F|M|G)$/
 field,type,photo_avi_layer_comment string
-field,none,photo_avi_layer_comment
+field,maxLength,photo_avi_layer_comment 250

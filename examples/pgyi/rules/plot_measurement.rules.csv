@@ -4,7 +4,7 @@ file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|measurement_number|measurement_year|measurement_month|measurement_day|stand_origin|plot_type|stand_type|plot_status|tree_plot_area|tree_plot_shape|tree_tagging_limit|sapling_plot_area|sapling_plot_shape|sapling_tagging_limit_dbh|sapling_tagging_limit_height|regen_plot_area|regen_plot_shape|regen_tagging_limit_conifer|regen_tagging_limit_decid|number_regen_plots|contractor|cruiser_1_name|cruiser_2_name|shrub_cover|herb_forb_cover|grass_cover|moss_lichen_cover|avi_field_call|plot_measurement_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
@@ -15,12 +15,12 @@ field,type,measurement_year integer error
 field,required,measurement_year true error
 field,minimum,measurement_year 1900 error
 field,maximum,measurement_year 2050 error
-field,type,measurement_month integer error
-field,minimum,measurement_month 1 error
-field,maximum,measurement_month 12 error
-field,type,measurement_day integer error
-field,minimum,measurement_day 1 error
-field,maximum,measurement_day 31 error
+field,type,measurement_month integer warning
+field,minimum,measurement_month 1 warning
+field,maximum,measurement_month 12 warning
+field,type,measurement_day integer warning
+field,minimum,measurement_day 1 warning
+field,maximum,measurement_day 31 warning
 field,type,stand_origin string error
 field,required,stand_origin true error
 field,pattern,stand_origin /^(C|L|F|P|R|N|S|A|B)$/ error
@@ -30,44 +30,42 @@ field,pattern,plot_type /^(1|2|3|4)$/ error
 field,type,stand_type integer error
 field,required,stand_type true error
 field,pattern,stand_type /^(1|2|3)$/ error
-field,type,plot_status integer error
-field,required,plot_status true error
-field,pattern,plot_status /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21)$/ error
+field,type,plot_status integer warning
+field,required,plot_status true warning
+field,pattern,plot_status /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21)$/ warning
 field,type,tree_plot_area number error
 field,minimum,tree_plot_area 400 error
 field,maximum,tree_plot_area 2500 error
-field,type,tree_plot_shape string error
-field,pattern,tree_plot_shape /^(C|R|S)$/ error
+field,type,tree_plot_shape string warning
+field,pattern,tree_plot_shape /^(C|R|S)$/ warning
 field,type,tree_tagging_limit number error
-field,minimum,tree_tagging_limit 0 error
+field,minimum,tree_tagging_limit 0.1 error
 field,maximum,tree_tagging_limit 9.1 error
 field,type,sapling_plot_area number error
-field,minimum,sapling_plot_area 40 error
+field,minimum,sapling_plot_area 0 error
 field,maximum,sapling_plot_area 2500 error
-field,type,sapling_plot_shape string error
-field,pattern,sapling_plot_shape /^(C|R|S)$/ error
-field,type,sapling_tagging_limit_dbh number warning
-field,required,sapling_tagging_limit_dbh sapling_plot_area>0 warning
-field,minimum,sapling_tagging_limit_dbh 0.1 warning
-field,maximumimum,sapling_tagging_limit_dbh 12 warning
-field,type,sapling_tagging_limit_height number warning
-field,required,sapling_tagging_limit_height sapling_plot_area>0 warning
-field,minimum,sapling_tagging_limit_height 1.3 warning
-field,maximumimum,sapling_tagging_limit_height 20 warning
+field,type,sapling_plot_shape string warning
+field,pattern,sapling_plot_shape /^(C|R|S)$/ warning
+field,type,sapling_tagging_limit_dbh number
+field,minimum,sapling_tagging_limit_dbh 0.1
+field,maximum,sapling_tagging_limit_dbh 9.1
+field,type,sapling_tagging_limit_height number
+field,minimum,sapling_tagging_limit_height 1.3
+field,maximum,sapling_tagging_limit_height 1.5
 field,type,regen_plot_area number error
 field,minimum,regen_plot_area 0 error
 field,maximum,regen_plot_area 2500 error
-field,type,regen_plot_shape string error
-field,pattern,regen_plot_shape /^(C|R|S)$/ error
-field,type,regen_tagging_limit_conifer number warning
-field,minimum,regen_tagging_limit_conifer 0.1 warning
-field,maximum,regen_tagging_limit_conifer 1.3 warning
-field,type,regen_tagging_limit_decid number warning
-field,minimum,regen_tagging_limit_decid 0.1 warning
-field,maximum,regen_tagging_limit_decid 1.3 warning
-field,type,number_regen_plots number warning
-field,minimum,number_regen_plots 0 warning
-field,maximum,number_regen_plots 10 warning
+field,type,regen_plot_shape string warning
+field,pattern,regen_plot_shape /^(C|R|S)$/ warning
+field,type,regen_tagging_limit_conifer number
+field,minimum,regen_tagging_limit_conifer 0.1
+field,maximum,regen_tagging_limit_conifer 1.3
+field,type,regen_tagging_limit_decid number
+field,minimum,regen_tagging_limit_decid 0.1
+field,maximum,regen_tagging_limit_decid 1.3
+field,type,number_regen_plots integer error
+field,minimum,number_regen_plots 0 error
+field,maximum,number_regen_plots 10 error
 field,type,contractor string
 field,maxLength,contractor 50
 field,type,cruiser_1_name string
@@ -83,6 +81,6 @@ field,pattern,grass_cover /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85
 field,type,moss_lichen_cover integer warning
 field,pattern,moss_lichen_cover /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ warning
 field,type,avi_field_call string
-field,none,avi_field_call
+field,maxLength,avi_field_call 80
 field,type,plot_measurement_comment string
-field,none,plot_measurement_comment
+field,maxLength,plot_measurement_comment 250

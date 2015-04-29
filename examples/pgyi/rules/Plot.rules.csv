@@ -3,27 +3,27 @@ file,pkey,company|company_plot_number
 headers,names,company|company_plot_number|company_stand_number|establishment_year|establishment_month|establishment_day|fmu|fma|ats_township|ats_range|ats_meridian|ats_section|opening_number|sampling_unit_number|topographic_position|elevation|slope|aspect|x_coord|y_coord|utm_zone|datum|latitude|longitude|natural_subregion|ecosite_guide|ecosite|ecosite_phase|plot_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|BUCH|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,unique,company_plot_number true error
 field,maxLength,company_plot_number 15 error
-field,type,company_stand_number string error
-field,maxLength,company_stand_number 15 error
+field,type,company_stand_number string
+field,maxLength,company_stand_number 15
 field,type,establishment_year integer error
 field,required,establishment_year true error
 field,minimum,establishment_year 1900 error
 field,maximum,establishment_year 2050 error
-field,type,establishment_month integer error
-field,minimum,establishment_month 1 error
-field,maximum,establishment_month 12 error
-field,type,establishment_day integer error
-field,minimum,establishment_day 1 error
-field,maximum,establishment_day 31 error
-field,type,fmu string error
-field,pattern,fmu /^(A10|A11|A12|A13|A14|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|FO1|G1|G10|G11|G12|G13|G14|G16|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R13|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3|E14)$/ error
-field,type,fma string error
-field,maxLength,fma 30 error
+field,type,establishment_month integer warning
+field,minimum,establishment_month 1 warning
+field,maximum,establishment_month 12 warning
+field,type,establishment_day integer warning
+field,minimum,establishment_day 1 warning
+field,maximum,establishment_day 31 warning
+field,type,fmu string warning
+field,pattern,fmu /^(A10|A11|A12|A13|A14|A15|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E13|E14|E15|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|FO1|G1|G10|G11|G12|G13|G14|G15|G16|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P14|P19|P20|P21|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R12|R13|R14|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S23|S24|S25|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3|E14)$/ warning
+field,type,fma string warning
+field,maxLength,fma 30 warning
 field,type,ats_township integer warning
 field,required,ats_township true warning
 field,minimum,ats_township 1 warning
@@ -43,13 +43,13 @@ field,maximum,ats_section 36 warning
 field,type,opening_number string
 field,maxLength,opening_number 11
 field,type,sampling_unit_number string
-field,maxLength,sampling_unit_number 15
+field,maxLength,sampling_unit_number 3
 field,type,topographic_position integer warning
 field,pattern,topographic_position /^(1|2|3|4|5|6|7)$/ warning
-field,type,elevation number warning
+field,type,elevation integer warning
 field,minimum,elevation 0 warning
 field,maximum,elevation 3747 warning
-field,type,slope number warning
+field,type,slope integer warning
 field,minimum,slope 0 warning
 field,maximum,slope 200 warning
 field,type,aspect string warning
@@ -60,12 +60,12 @@ field,maximum,x_coord -111700 warning
 field,type,y_coord number warning
 field,minimum,y_coord 5643600 warning
 field,maximum,y_coord 6702500 warning
-field,type,utm_zone string error
-field,required,utm_zone true error
-field,pattern,utm_zone /^(UTM11|UTM12)$/ error
-field,type,datum string error
-field,required,datum true error
-field,pattern,datum /^(NAD27|NAD83)$/ error
+field,type,utm_zone string warning
+field,required,utm_zone true warning
+field,pattern,utm_zone /^(UTM11|UTM12)$/ warning
+field,type,datum string warning
+field,required,datum true warning
+field,pattern,datum /^(NAD27|NAD83)$/ warning
 field,type,latitude number
 field,minimum,latitude 49
 field,maximum,latitude 60
@@ -75,14 +75,14 @@ field,maximum,longitude -110
 field,type,natural_subregion string error
 field,required,natural_subregion true error
 field,pattern,natural_subregion /^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/ error
-field,type,ecosite_guide string
-field,required,ecosite_guide true
-field,pattern,ecosite_guide /^(N|WC|SW)$/
-field,type,ecosite string
-field,required,ecosite true
-field,pattern,ecosite /^(a|b|c|d|e|f|g|h|I|j|k|l|m|n)$/
+field,type,ecosite_guide string warning
+field,required,ecosite_guide true warning
+field,pattern,ecosite_guide /^(N|WC|SW)$/ warning
+field,type,ecosite string warning
+field,required,ecosite true warning
+field,pattern,ecosite /^(a|b|c|d|e|f|g|h|i|j|k|l|m|n)$/ warning
 field,type,ecosite_phase string warning
 field,required,ecosite_phase true warning
-field,pattern,ecosite_phase /^(1|b1|b2|b3|b4|c1|d1|d2|d3|e1|e2|e3|f1|f2|f3|g1|h1|i1|i2|j1|j2|k1|k2|k3|l1|h2|j3|a2|a3|g2|h3|b5|c2|c3|c4|c5|d4|e4|f4|f5|f6|g3|i3|l2|l3|m1|m2|m3|n1)$/ warning
+field,pattern,ecosite_phase /^(a1|b1|b2|b3|b4|c1|d1|d2|d3|e1|e2|e3|f1|f2|f3|g1|h1|i1|i2|j1|j2|k1|k2|k3|l1|h2|j3|a2|a3|g2|h3|b5|c2|c3|c4|c5|d4|e4|f4|f5|f6|g3|i3|l2|l3|m1|m2|m3|n1)$/ warning
 field,type,plot_comment string
-field,none,plot_comment
+field,maxLength,plot_comment 250

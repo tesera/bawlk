@@ -1,6 +1,6 @@
 {
   "name": "bawlk",
-  "version": "0.0.1",
+  "version": "0.0.4",
   "description": "Collection of utilities for bulk loading tabular data into relational databases.",
   "main": "index.js",
   "directories": {

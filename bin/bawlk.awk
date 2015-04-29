@@ -22,6 +22,7 @@ BEGIN {
     print "    FS=\",\"; OFS=\",\"; err_count=0; cats[\"na\"]=0;"
     print "    if(!action) action = \"validate\""
     print "    summary_header=\"file_name,field_name,rule,message,violation_count\""
+    print "    CSVFILENAME = CSVFILENAME ? CSVFILENAME : FILENAME"
     print "}" RS
 
     print "# builtin helper functions"
@@ -37,10 +38,12 @@ BEGIN {
     print RS
 }
 
+# BUILD OPTIONS MAP
 $1 == "option" {
     options[$2]=$3;
 }
 
+# RENDER PFKEY CHECK
 $1 == "file" {
     file_options[$2]=$3;
     if ($2 == "pkey") {
@@ -50,6 +53,7 @@ $1 == "file" {
     }
 }
 
+# RENDER HEADERS CHECK
 $1 == "headers" && $2 == "names" {
     split($3, headers, "|")
     print "# make header index/map"
@@ -67,118 +71,140 @@ $1 == "headers" && $2 == "names" {
     print pkeycheck
 }
 
+# RENDER VALUE CHECKS
 $1 == "field" {
-    defaults["mode"]="text"
-    defaults["summary"]="true"
-    defaults["dcat"]="warning"
-    defaults["dvalnum"]=-9999
-    defaults["dvalstr"]="NA"
+    # SET DEFAULTS IF NOT PASSED IN VIA RULES
+    defaults["mode"]    = "text"
+    defaults["summary"] = "true"
+    defaults["dcat"]    = "warning"
+    defaults["dvalnum"] = -9999
+    defaults["dvalstr"] = "NA"
     for (option in defaults) {
         if (!options[option]) options[option] = defaults[option]
     }
-    rule_type=$2
+
+    # PARSE RULE FIELDS
+    rule_type     = $2
     split($3,params," ")
-    field=params[1]
-    cat=params[3]
-    field_index=header_index[field]
-    test=""
-    msg=""
+    field         = params[1]
+    cat           = params[3]
+    field_index   = header_index[field]
+    test          = ""
+    msg           = ""
 
+    # BUILD VIOLATION TEST
     if (rule_type == "type") {
-        type=params[2]
-        if (type == "integer" || type == "number"){
-            test=field " && !is_numeric(" field ")"
-            msg="Field " field " in \" CSVFILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
+        type = params[2]
+
+        if (type ~ /^integer|number$/) {
+            cat       = "error"
+            test      = field " && !is_numeric(" field ")"
+            msg       = "Field " field " in \" CSVFILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
         }
+
     } else if (rule_type == "required") {
-        req=params[2]
+        req = params[2]
+
         if (req == "true") {
-            test=field " == \"\""
-            mini_msg="value is required but was empty"
-            msg="Field " field " in \" CSVFILENAME \" line \" NR \" is required"
+            test        = field " == \"\""
+            mini_msg    = "value is required but was empty"
+            msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is required"
         } else if (req != "false") {
-            test=req " && " field " == \"\""
-            mini_msg="value is required if " req
-            msg="Field " field " in \" CSVFILENAME \" line \" NR \" is required if " req
+            test        = req " && " field " == \"\""
+            mini_msg    = "value is required if " req
+            msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is required if " req
         }
+
     } else if (rule_type == "unique") {
-        test="!is_unique(" field ")"
-        mini_msg="value should be unique but had duplicates"
-        msg="Field " field " in \" CSVFILENAME \" line \" NR \" is a duplicate and should be unique"
+        cat         = "error"
+        test        = "!is_unique(" field ")"
+        mini_msg    = "value should be unique but had duplicates"
+        msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is a duplicate and should be unique"
+
     } else if (rule_type ~ /^minimum|maximum$/) {
-        comparator=$2 == "maximum" ? ">" : "<"
-        limit=params[2]
-        term=$2 == "maximum" ? "less" : "greater"
+        comparator  = $2 == "maximum" ? ">" : "<"
+        limit       = params[2]
+        term        = $2 == "maximum" ? "less" : "greater"
 
-        test=field " != \"\" && " field " " comparator " " limit
-        mini_msg="value should be " term " than: " limit
-        msg=field " in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
+        cat         = "error"
+        test        = field " != \"\" && " field " " comparator " " limit
+        mini_msg    = "value should be " term " than: " limit
+        msg         = field " in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
+
     } else if (rule_type == "pattern") {
-        pattern=params[2]
+        pattern     = params[2]
 
-        test=field " != \"\" && " field " !~ " pattern
-        mini_msg="value should match: " pattern
-        msg=field " in \" CSVFILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
+        cat         = "error"
+        test        = field " != \"\" && " field " !~ " pattern
+        mini_msg    = "value should match: " pattern
+        msg         = field " in \" CSVFILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
+
     } else if (rule_type ~ /^minLength|maxLength$/) {
-        comparator=$2 == "maxLength" ? ">" : "<"
-        limit=params[2]
-        term=$2 == "maxLength" ? "less" : "greater"
+        comparator  = $2 == "maxLength" ? ">" : "<"
+        limit       = params[2]
+        term        = $2 == "maxLength" ? "less" : "greater"
 
-        test=field " != \"\" && length(" field ") " comparator " " limit
-        mini_msg="max length is: " limit
-        msg=field " length in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
+        cat         = "error"
+        test        = field " != \"\" && length(" field ") " comparator " " limit
+        mini_msg    = "max length is: " limit
+        msg         = field " length in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
     }
 
+    # RENDER VIOLATION HANDLER
     if (test) {
-        if (!options["mode"]) options["mode"] = "text"
-        if (!options["dcat"]) options["dcat"] = "na"
         if (!cat) cat = options["dcat"]
-        handler_prefix="{ log_err(\"" cat "\"); "
+        handler_prefix = "{ log_err(\"" cat "\"); "
 
         if (options["mode"] == "text") {
-            err_handler= handler_prefix "print \"" msg "\" RS $0 RS; }"
+            err_handler = handler_prefix "print \"" msg "\" RS $0 RS; }"
+
         } else if (options["mode"] == "wrap") {
-            acc="$" field_index
-            err_handler= handler_prefix "FS=\",\";" acc "=\">>\" " acc " \"<<\"; print $0 }" 
+            acc = "$" field_index
+            err_handler = handler_prefix "FS=\",\";" acc "=\">>\" " acc " \"<<\"; print $0 }"
+
         } else if (options["mode"] == "append") {
-            err_handler= handler_prefix "print $0 FS \"" msg "\" }"
+            err_handler = handler_prefix "print $0 FS \"" msg "\" }"
         }
 
         if (rule_type != "none") {
             print "action == \"validate\" && NR > 1 && " test " " err_handler " "
-            summary_handler="key=CSVFILENAME FS \"" field "\" FS  \"" rule_type "\" FS \"" mini_msg "\" FS \"" cat "\"; if(!violations[key]) { violations[key]=0; } violations[key]++;"
+            summary_handler = "key=CSVFILENAME FS \"" field "\" FS  \"" rule_type "\" FS \"" mini_msg "\" FS \"" cat "\"; if(!violations[key]) { violations[key]=0; } violations[key]++;"
             print "action == \"validate:summary\" && NR > 1 && " test " { " summary_handler " } "
         }
     }
 }
 
+# BUILD MAP OF SQL TYPES FOR SQL CREATE AND COPY
 $1 == "field" {
-    rule_type=$2
-    split($3,params," ")
-    field=params[1]
+    sql_types_map["string"] = "text"
+    sql_types_map["integer"] = "integer"
+    sql_types_map["number"] = "numeric"
 
-    if (rule_type ~ /^(minimum|maximum)$/ || (rule_type == "type" && params[2] == "number")) {
-        types[field] = "numeric"
-    } else {
-        types[field] = "text"
-    }
+    rule_type = $2 ? sql_types_map[$2] : sql_types_map["string"]
+
+    split($3, params, " ")
+    field = params[1]
+
+    sql_types[field] = rule_type
 }
 
 END {
+    # SANITIZE EMPTY VALUES TO PASSED IN DEFAULTS OR NULL
     print RS "# sanitize rules"
     print "action ~ /^(sanitize|insert)$/ && NR > 1 {"
-    for (field in types) {
-        type=types[field]
-        field_index=header_index[field]
-        dval= type == "numeric" ? options["dvalnum"] : options["dvalstr"]
+    for (field in sql_types) {
+        sql_type    = sql_types[field]
+        field_index = header_index[field]
+        dval        = sql_type == "numeric" ? options["dvalnum"] : options["dvalstr"]
+        dval        = dval ? dval : "NULL"
+
         print "    if (" field " == \"\") $" field_index " = \"" dval "\""
     }
     print "}"
 
+    # SQL COPY
     print RS "# action handlers"
     print "action == \"insert\" && NR == 1 {"
-    # print "    print \"SET client_encoding = 'UTF8';\""
-    # print "    gsub(\"Range\", \"rangeno\");"
     print "    print \"COPY " file_options["table"] " (\" addfields FS \"source_row_index\" FS $0 \") FROM stdin;\""
     print "}"
 
@@ -187,35 +213,35 @@ END {
     print "    print addvals \"\\t\" NR \"\\t\" $0;"
     print "}"
 
+    # SQL CREATE TABLE
     print "action == \"table\" && NR == 1 {"
-
     fields=""
     for (i = 1; i <= length(headers); i++) {
-        field=headers[i]
-        type=types[field]
-        fields=fields field " " type
-        if (i < length(headers)) fields=fields ","
+        field     = headers[i]
+        sql_type  = sql_types[field]
+        fields    = fields field " " sql_type
+        if (i < length(headers)) fields = fields ","
     }
 
     if(file_options["pkey"]) {
-        cols=file_options["pkey"]
+        cols    = file_options["pkey"]
         gsub(/\|/, ",", cols)
-        fields=fields ", CONSTRAINT " file_options["table"] "_pkey PRIMARY KEY (" cols ") "
+        fields  = fields ", CONSTRAINT " file_options["table"] "_pkey PRIMARY KEY (" cols ") "
     }
     if(file_options["fkey"]) {
         split(file_options["fkey"], ref, " ")
-        ftable=ref[1]
-        fcols=ref[2]
+        ftable  = ref[1]
+        fcols   = ref[2]
         gsub(/\|/, ",", fcols)
-        fields=fields ", CONSTRAINT " file_options["table"] "_" ftable "_fkey FOREIGN KEY (" fcols ") REFERENCES " ftable " (" fcols ") MATCH FULL "
-        fields=fields "ON UPDATE CASCADE ON DELETE NO ACTION"
+        fields  = fields ", CONSTRAINT " file_options["table"] "_" ftable "_fkey FOREIGN KEY (" fcols ") REFERENCES " ftable " (" fcols ") MATCH FULL "
+        fields  = fields "ON UPDATE CASCADE ON DELETE NO ACTION"
     }
-
     print "     print \"CREATE TABLE IF NOT EXISTS " file_options["table"] " (" fields ");\""
     print "}"
 
-    print "action == \"sanitize\" { print }" RS
+    print "action == \"sanitize\" { print }"
 
+    # END
     print "# la fin"
     print "END {"
     print "    if (action == \"validate:summary\" && length(dupkeys) > 0) for (dup in dupkeys) { violation=CSVFILENAME FS \"" file_options["pkey"] "\" FS  \"duplicate\" FS dup \" violates pkey\" FS \"error\"; violations[violation] = dupkeys[dup]}"
