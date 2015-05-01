@@ -2,7 +2,7 @@
 
 > bawlk as in bulk as in bulk loading
 
-### A simple CSV to RDBMS bulk validating/loading toolset.
+### A simple CSV to relational bulk validating/loading toolset.
 The main tool bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common task invloved when bulk inserting data into a relational database system. Although bawlk uses awk under the hood you don't need to know how to code in awk to use it. Bawlk also have some facilities to work with JSON Table Schemas.
 
 ### Why AWK?
