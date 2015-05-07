@@ -9,7 +9,7 @@ field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
 field,type,avi_version string error
-field,pattern,avi_version /^(AVI10|AVI21|AVI211|AVI22)$/ error
+field,pattern,avi_version /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ error
 field,type,polygon_number integer error
 field,required,polygon_number true error
 field,minimum,polygon_number 1 error

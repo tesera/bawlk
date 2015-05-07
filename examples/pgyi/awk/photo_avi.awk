@@ -77,10 +77,10 @@ action == "validate" && NR > 1 && company_plot_number == "" { log_err("error"); 
 action == "validate:summary" && NR > 1 && company_plot_number == "" { key=CSVFILENAME FS "company_plot_number" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("error"); print "company_plot_number length in " CSVFILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { key=CSVFILENAME FS "company_plot_number" FS  "maxLength" FS "max length is: 15" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && avi_version != "" && avi_version !~ /^(AVI10|AVI21|AVI211|AVI22)$/ { log_err("error"); print "avi_version in " CSVFILENAME " line " NR " should match the following pattern /^(AVI10|AVI21|AVI211|AVI22)$/ and was " avi_version " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && avi_version != "" && avi_version !~ /^(AVI10|AVI21|AVI211|AVI22)$/ { key=CSVFILENAME FS "avi_version" FS  "pattern" FS "value should match: /^(AVI10|AVI21|AVI211|AVI22)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && avi_version != "" && avi_version !~ /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ { log_err("error"); print "avi_version in " CSVFILENAME " line " NR " should match the following pattern /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ and was " avi_version " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && avi_version != "" && avi_version !~ /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ { key=CSVFILENAME FS "avi_version" FS  "pattern" FS "value should match: /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && polygon_number && !is_numeric(polygon_number) { log_err("error"); print "Field polygon_number in " CSVFILENAME " line " NR " should be a numeric but was " polygon_number " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && polygon_number && !is_numeric(polygon_number) { key=CSVFILENAME FS "polygon_number" FS  "type" FS "value should match: /^(AVI10|AVI21|AVI211|AVI22)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate:summary" && NR > 1 && polygon_number && !is_numeric(polygon_number) { key=CSVFILENAME FS "polygon_number" FS  "type" FS "value should match: /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && polygon_number == "" { log_err("error"); print "Field polygon_number in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && polygon_number == "" { key=CSVFILENAME FS "polygon_number" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && polygon_number != "" && polygon_number < 1 { log_err("error"); print "polygon_number in " CSVFILENAME " line " NR " should be greater than 1 and was " polygon_number " " RS $0 RS; } 
@@ -164,31 +164,31 @@ action == "validate:summary" && NR > 1 && photo_avi_layer_comment != "" && lengt
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (struc == "") $21 = "NULL"
-    if (height == "") $10 = "NULL"
-    if (photo_avi_layer_comment == "") $25 = "NULL"
-    if (origin == "") $23 = "NULL"
-    if (sp5_per == "") $20 = "NULL"
-    if (tpr == "") $24 = "NULL"
-    if (polygon_number == "") $4 = "NULL"
-    if (year_photography == "") $5 = "NULL"
-    if (avi_version == "") $3 = "NULL"
-    if (sp3_per == "") $16 = "NULL"
-    if (sp1_per == "") $12 = "NULL"
-    if (layer_type == "") $7 = "NULL"
-    if (company_plot_number == "") $2 = "NULL"
-    if (density == "") $9 = "NULL"
-    if (year_photo_call == "") $6 = "NULL"
-    if (sp1 == "") $11 = "NULL"
-    if (sp4_per == "") $18 = "NULL"
-    if (sp2 == "") $13 = "NULL"
-    if (sp3 == "") $15 = "NULL"
-    if (sp4 == "") $17 = "NULL"
-    if (sp5 == "") $19 = "NULL"
-    if (moist_reg == "") $8 = "NULL"
-    if (company == "") $1 = "NULL"
-    if (struc_val == "") $22 = "NULL"
-    if (sp2_per == "") $14 = "NULL"
+    if (struc == "") $21 = "\\N"
+    if (height == "") $10 = "\\N"
+    if (photo_avi_layer_comment == "") $25 = "\\N"
+    if (origin == "") $23 = "\\N"
+    if (sp5_per == "") $20 = "\\N"
+    if (tpr == "") $24 = "\\N"
+    if (polygon_number == "") $4 = "\\N"
+    if (year_photography == "") $5 = "\\N"
+    if (avi_version == "") $3 = "\\N"
+    if (sp3_per == "") $16 = "\\N"
+    if (sp1_per == "") $12 = "\\N"
+    if (layer_type == "") $7 = "\\N"
+    if (company_plot_number == "") $2 = "\\N"
+    if (density == "") $9 = "\\N"
+    if (year_photo_call == "") $6 = "\\N"
+    if (sp1 == "") $11 = "\\N"
+    if (sp4_per == "") $18 = "\\N"
+    if (sp2 == "") $13 = "\\N"
+    if (sp3 == "") $15 = "\\N"
+    if (sp4 == "") $17 = "\\N"
+    if (sp5 == "") $19 = "\\N"
+    if (moist_reg == "") $8 = "\\N"
+    if (company == "") $1 = "\\N"
+    if (struc_val == "") $22 = "\\N"
+    if (sp2_per == "") $14 = "\\N"
 }
 
 # action handlers

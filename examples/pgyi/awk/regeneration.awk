@@ -84,13 +84,13 @@ action == "validate:summary" && NR > 1 && regeneration_comment != "" && length(r
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (species == "") $5 = "NULL"
-    if (regeneration_count == "") $6 = "NULL"
-    if (regeneration_plot_name == "") $4 = "NULL"
-    if (measurement_number == "") $3 = "NULL"
-    if (company_plot_number == "") $2 = "NULL"
-    if (regeneration_comment == "") $7 = "NULL"
-    if (company == "") $1 = "NULL"
+    if (species == "") $5 = "\\N"
+    if (regeneration_count == "") $6 = "\\N"
+    if (regeneration_plot_name == "") $4 = "\\N"
+    if (measurement_number == "") $3 = "\\N"
+    if (company_plot_number == "") $2 = "\\N"
+    if (regeneration_comment == "") $7 = "\\N"
+    if (company == "") $1 = "\\N"
 }
 
 # action handlers

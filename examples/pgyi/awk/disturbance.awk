@@ -91,14 +91,14 @@ action == "validate:summary" && NR > 1 && disturbance_comment != "" && length(di
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (disturbance_number == "") $3 = "NULL"
-    if (disturbance_day == "") $7 = "NULL"
-    if (disturbance_code == "") $4 = "NULL"
-    if (disturbance_year == "") $5 = "NULL"
-    if (company_plot_number == "") $2 = "NULL"
-    if (disturbance_month == "") $6 = "NULL"
-    if (disturbance_comment == "") $8 = "NULL"
-    if (company == "") $1 = "NULL"
+    if (disturbance_number == "") $3 = "\\N"
+    if (disturbance_day == "") $7 = "\\N"
+    if (disturbance_code == "") $4 = "\\N"
+    if (disturbance_year == "") $5 = "\\N"
+    if (company_plot_number == "") $2 = "\\N"
+    if (disturbance_month == "") $6 = "\\N"
+    if (disturbance_comment == "") $8 = "\\N"
+    if (company == "") $1 = "\\N"
 }
 
 # action handlers
