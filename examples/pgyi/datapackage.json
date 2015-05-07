@@ -237,7 +237,7 @@
       {
         "name": "ecosite",
         "type": "string",
-        "raises": "warning",
+        "raises": "warning",        
         "constraints": {
           "required": true,
           "pattern": "/^(a|b|c|d|e|f|g|h|i|j|k|l|m|n)$/"
@@ -970,7 +970,7 @@
         "type": "string",
         "raises": "error",
         "constraints": {
-          "pattern": "/^(AVI10|AVI21|AVI211|AVI22)$/"
+          "pattern": "/^(AVI1\\.0|AVI2\\.1|AVI2\\.1\\.1|AVI2\\.2)$/"
         }
       },
       {
@@ -1169,7 +1169,8 @@
       }
     }
   ]
-},
+}
+,
 {
   "name": "treatment",
   "path": "treatment.csv",
