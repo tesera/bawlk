@@ -1,22 +1,39 @@
 # bawlk
 
->A simple CSV to RDBMS bulk validating/loading toolset.
+> bawlk as in bulk as in bulk loading
 
-The main tool bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common task invloved when bulk inserting data into a relational database system. Although bawlk uses awk under the hood you don't need to know how to code in awk to use it. 
+### A simple CSV to relational bulk validating/loading toolset.
+The main tool bawlk.awk will generate an awk file which can be used to act on csv data in order to accomplish common task invloved when bulk inserting data into a relational database system. Although bawlk uses awk under the hood you don't need to know how to code in awk to use it. Bawlk also have some facilities to work with JSON Table Schemas.
 
+### Why AWK?
 awk is a very natural fit for validating and manipulating csv data. Even though awk is a very complex language its quite simple in nature. With awk you get a free iterator, pattern matching and rich expression language. awk is built-in most unix/linux systems and can be installed on windows based systems. gawk is a newer version of awk which extends the language further with more feature. Other variations like mawk take it a step further and optimizes awk for performance. Bawlk uses the basic awk language so no need to installl gawk.
 
-## Tools Summary
+### What is a JSON Table Schema?
+A [JSON Table Schema](http://dataprotocols.org/json-table-schema/) (jts) is an open data meta definition of a resource represented in a JSON format. A schema defines the resource, its fields, field types, field constraints and many other meta related information required to be able to use the data. 
+
+### Tools Summary
 
 1. ``./bin/init.sh`` : Creates a basic ruleset from an existing csv file.
 2. ``./bin/bawlk.awk`` : Main tool which build an bulk loading awk script from a ruleset.
+3. ``./bin/bawlk.js`` : A bawlk.awk nodejswrapper w/ helpers.
 3. ``./bin/jts2rules.js`` : Converts a JSON Table Schema to a ruleset.
 4. ``./bin/rules2jts.awk`` : Converts a ruleset to JSON Table Schema.
 
 ## Typical Workflow
-Using the toolset you can build a bawlk awk script that can be used to validate, sanitize bulk insert data into a relational database system. Once the script is built it is self contained and can be used independently. 
+The end result is one awk script per resource which encasulates many actions you can take on your CSV resource. The awk script is portable and can be used to validate, sanitize, create host table and bulk insert data into a postgreSQL relational database. By portable we mean that the script is sefl contain and does not have any dependency other that awk itself.
 
-A typical workflow looks like this:
+There are two typical workflows you can use depending on your situation.
+
+If you are starting out with an existing jts you will be using ``bawlk.js``:
+
+1. create your ruleset: ``node ./bin/bawlk.js rules -d ./examples/pgyi/datapackage.json -o ./examples/pgyi/rules``
+2. create your scripts: ``node ./bin/bawlk.js scripts -d ./examples/pgyi/datapackage.json -o ./examples/pgyi/awk``
+3. use your scripts: ``awk -f ./examples/pgyi/plot.rules.csv ./examples/pgyi/data/plot.csv``
+
+You can also jump straight to validate if you simply want to validate.
+``node ./bin/bawlk.js validate -d ./examples/pgyi/datapackage.json > violations.csv``
+
+If you are starting out with only csv files:
 
 1. Create a ruleset from existing csv data. 
 2. Edit the ruleset to add additional field or file constraints.
