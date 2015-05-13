@@ -26,12 +26,22 @@ There are two typical workflows you can use depending on your situation.
 
 If you are starting out with an existing jts you will be using ``bawlk.js``:
 
-1. create your ruleset: ``node ./bin/bawlk.js rules -d ./examples/pgyi/datapackage.json -o ./examples/pgyi/rules``
-2. create your scripts: ``node ./bin/bawlk.js scripts -d ./examples/pgyi/datapackage.json -o ./examples/pgyi/awk``
-3. use your scripts: ``awk -f ./examples/pgyi/plot.rules.csv ./examples/pgyi/data/plot.csv``
+````
+# create your ruleset
+# creates a associated .rules.csv file for each resource in the jts and outputs to -o folder
+$ node ./bin/bawlk.js rules -d ./examples/pgyi/datapackage.json -o ./examples/pgyi/rules
 
-You can also jump straight to validate if you simply want to validate.
-``node ./bin/bawlk.js validate -d ./examples/pgyi/datapackage.json > violations.csv``
+# create your scripts
+# creates a associated .awk file for each resource in the jts and outputs to -o folder
+$ node ./bin/bawlk.js scripts -d ./examples/pgyi/datapackage.json -o ./examples/pgyi/awk
+
+# use your scripts
+# actions can be: validate, validate:summary (default), sanitize, table, insert
+$ awk -f ./examples/pgyi/plot.awk -v action=validate:summary ./examples/pgyi/data/plot.csv
+
+# jump straight to the point
+$ node ./bin/bawlk.js validate -d ./examples/pgyi/datapackage.json > violations.csv
+````
 
 If you are starting out with only csv files:
 
