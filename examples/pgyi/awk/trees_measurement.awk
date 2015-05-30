@@ -36,21 +36,25 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
-    condition_code2=$22
+    company=$1
     company_plot_number=$2
-    cause2=$23
     measurement_number=$3
-    severity2=$24
     tree_number=$4
-    condition_code3=$25
     tree_type=$5
-    cause3=$26
     dbh=$6
-    severity3=$27
     dbh_height=$7
-    trees_measurement_comment=$28
     rcd=$8
     rcd_height=$9
     height=$10
@@ -65,7 +69,13 @@ NR > 1 {
     condition_code1=$19
     cause1=$20
     severity1=$21
-    company=$1
+    condition_code2=$22
+    cause2=$23
+    severity2=$24
+    condition_code3=$25
+    cause3=$26
+    severity3=$27
+    trees_measurement_comment=$28
 }
 
 # awk rules based on user csv ruleset
@@ -88,6 +98,8 @@ action == "validate" && NR > 1 && measurement_number != "" && length(measurement
 action == "validate:summary" && NR > 1 && measurement_number != "" && length(measurement_number) > 2 { key=CSVFILENAME FS "measurement_number" FS  "maxLength" FS "max length is: 2" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_number && !is_numeric(tree_number) { log_err("error"); print "Field tree_number in " CSVFILENAME " line " NR " should be a numeric but was " tree_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_number && !is_numeric(tree_number) { key=CSVFILENAME FS "tree_number" FS  "type" FS "max length is: 2" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && tree_number == "" { log_err("error"); print "Field tree_number in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && tree_number == "" { key=CSVFILENAME FS "tree_number" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_number != "" && tree_number < 1 { log_err("error"); print "tree_number in " CSVFILENAME " line " NR " should be greater than 1 and was " tree_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_number != "" && tree_number < 1 { key=CSVFILENAME FS "tree_number" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_number != "" && tree_number > 9999999 { log_err("error"); print "tree_number in " CSVFILENAME " line " NR " should be less than 9999999 and was " tree_number " " RS $0 RS; } 
@@ -126,6 +138,8 @@ action == "validate" && NR > 1 && height != "" && height < 0.01 { log_err("error
 action == "validate:summary" && NR > 1 && height != "" && height < 0.01 { key=CSVFILENAME FS "height" FS  "minimum" FS "value should be greater than: 0.01" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && height != "" && height > 45 { log_err("error"); print "height in " CSVFILENAME " line " NR " should be less than 45 and was " height " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && height != "" && height > 45 { key=CSVFILENAME FS "height" FS  "maximum" FS "value should be less than: 45" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && crown_class == "" { log_err("warning"); print "Field crown_class in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && crown_class == "" { key=CSVFILENAME FS "crown_class" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && crown_class != "" && crown_class !~ /^(D|C|I|S|N)$/ { log_err("error"); print "crown_class in " CSVFILENAME " line " NR " should match the following pattern /^(D|C|I|S|N)$/ and was " crown_class " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && crown_class != "" && crown_class !~ /^(D|C|I|S|N)$/ { key=CSVFILENAME FS "crown_class" FS  "pattern" FS "value should match: /^(D|C|I|S|N)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && dbh_age && !is_numeric(dbh_age) { log_err("error"); print "Field dbh_age in " CSVFILENAME " line " NR " should be a numeric but was " dbh_age " " RS $0 RS; } 
@@ -214,33 +228,33 @@ action == "validate:summary" && NR > 1 && trees_measurement_comment != "" && len
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
     if (stump_age == "") $13 = "\\N"
-    if (height == "") $10 = "\\N"
-    if (trees_measurement_comment == "") $28 = "\\N"
-    if (crown_diameter_ew == "") $18 = "\\N"
-    if (dbh_age == "") $12 = "\\N"
+    if (dbh == "") $6 = "\\N"
     if (tree_number == "") $4 = "\\N"
-    if (rcd == "") $8 = "\\N"
-    if (condition_code1 == "") $19 = "\\N"
-    if (total_age == "") $15 = "\\N"
-    if (condition_code2 == "") $22 = "\\N"
-    if (condition_code3 == "") $25 = "\\N"
-    if (cause1 == "") $20 = "\\N"
-    if (dbh_height == "") $7 = "\\N"
     if (measurement_number == "") $3 = "\\N"
+    if (crown_diameter_ew == "") $18 = "\\N"
+    if (condition_code1 == "") $19 = "\\N"
+    if (rcd_height == "") $9 = "\\N"
+    if (rcd == "") $8 = "\\N"
+    if (condition_code2 == "") $22 = "\\N"
+    if (cause1 == "") $20 = "\\N"
+    if (height == "") $10 = "\\N"
+    if (dbh_height == "") $7 = "\\N"
+    if (trees_measurement_comment == "") $28 = "\\N"
+    if (condition_code3 == "") $25 = "\\N"
     if (cause2 == "") $23 = "\\N"
-    if (cause3 == "") $26 = "\\N"
+    if (dbh_age == "") $12 = "\\N"
     if (company_plot_number == "") $2 = "\\N"
-    if (crown_class == "") $11 = "\\N"
-    if (stump_height == "") $14 = "\\N"
+    if (cause3 == "") $26 = "\\N"
     if (htlc == "") $16 = "\\N"
     if (crown_diameter_ns == "") $17 = "\\N"
-    if (severity1 == "") $21 = "\\N"
-    if (dbh == "") $6 = "\\N"
-    if (severity2 == "") $24 = "\\N"
-    if (company == "") $1 = "\\N"
-    if (severity3 == "") $27 = "\\N"
+    if (total_age == "") $15 = "\\N"
+    if (stump_height == "") $14 = "\\N"
     if (tree_type == "") $5 = "\\N"
-    if (rcd_height == "") $9 = "\\N"
+    if (severity1 == "") $21 = "\\N"
+    if (crown_class == "") $11 = "\\N"
+    if (company == "") $1 = "\\N"
+    if (severity2 == "") $24 = "\\N"
+    if (severity3 == "") $27 = "\\N"
 }
 
 # action handlers
@@ -248,8 +262,11 @@ action == "insert" && NR == 1 {
     print "COPY trees_measurement (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
      print "CREATE TABLE IF NOT EXISTS trees_measurement (company ,company_plot_number ,measurement_number ,tree_number ,tree_type ,dbh ,dbh_height ,rcd ,rcd_height ,height ,crown_class ,dbh_age ,stump_age ,stump_height ,total_age ,htlc ,crown_diameter_ns ,crown_diameter_ew ,condition_code1 ,cause1 ,severity1 ,condition_code2 ,cause2 ,severity2 ,condition_code3 ,cause3 ,severity3 ,trees_measurement_comment , CONSTRAINT trees_measurement_pkey PRIMARY KEY (company,company_plot_number,measurement_number,tree_number) , CONSTRAINT trees_measurement_trees_fkey FOREIGN KEY (company,company_plot_number,tree_number) REFERENCES trees (company,company_plot_number,tree_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"

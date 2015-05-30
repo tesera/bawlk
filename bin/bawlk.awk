@@ -36,6 +36,15 @@ BEGIN {
     print "#get rid of the evil windows cr"
     print "{ sub(\"\\r$\", \"\") }"
     print RS
+    print "{"
+    print "     for (i = 1; i <= NF; i++) {"
+    print "         if (substr($i, 1, 1) == \"\\\"\") {"
+    print "             len = length($i)"
+    print "             $i = substr($i, 2, len - 2)"
+    print "         }"
+    print "     }"
+    print "}"
+    print RS
 }
 
 # BUILD OPTIONS MAP
@@ -206,10 +215,13 @@ END {
     print "    print \"COPY " file_options["table"] " (\" addfields FS \"source_row_index\" FS $0 \") FROM stdin;\""
     print "}"
 
-    print "action == \"insert\" && NR > 1 {"
-    print "    gsub(\",\", \"\\t\");"
-    print "    print addvals \"\\t\" NR \"\\t\" $0;"
-    print "}"
+    print   "action == \"insert\" && NR > 1 {"
+    print   "   record = addvals \"\\t\" NR"
+    print   "   for (i = 1; i <= NF; i++) {"
+    print   "       record = record \"\\t\" $i"
+    print   "   }"
+    print   "   print record"
+    print   "}"
 
     # SQL CREATE TABLE
     print "action == \"table\" && NR == 1 {"

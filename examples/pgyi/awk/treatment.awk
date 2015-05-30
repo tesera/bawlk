@@ -36,8 +36,19 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
+    company=$1
     company_plot_number=$2
     treatment_number=$3
     treatment_code=$4
@@ -45,7 +56,6 @@ NR > 1 {
     treatment_month=$6
     treatment_day=$7
     treatment_comment=$8
-    company=$1
 }
 
 # awk rules based on user csv ruleset
@@ -62,10 +72,14 @@ action == "validate" && NR > 1 && company_plot_number != "" && length(company_pl
 action == "validate:summary" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { key=CSVFILENAME FS "company_plot_number" FS  "maxLength" FS "max length is: 15" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && treatment_number && !is_numeric(treatment_number) { log_err("error"); print "Field treatment_number in " CSVFILENAME " line " NR " should be a numeric but was " treatment_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && treatment_number && !is_numeric(treatment_number) { key=CSVFILENAME FS "treatment_number" FS  "type" FS "max length is: 15" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && treatment_number == "" { log_err("error"); print "Field treatment_number in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && treatment_number == "" { key=CSVFILENAME FS "treatment_number" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && treatment_number != "" && treatment_number < 1 { log_err("error"); print "treatment_number in " CSVFILENAME " line " NR " should be greater than 1 and was " treatment_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && treatment_number != "" && treatment_number < 1 { key=CSVFILENAME FS "treatment_number" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && treatment_number != "" && treatment_number > 12 { log_err("error"); print "treatment_number in " CSVFILENAME " line " NR " should be less than 12 and was " treatment_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && treatment_number != "" && treatment_number > 12 { key=CSVFILENAME FS "treatment_number" FS  "maximum" FS "value should be less than: 12" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && treatment_code == "" { log_err("error"); print "Field treatment_code in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && treatment_code == "" { key=CSVFILENAME FS "treatment_code" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && treatment_code != "" && treatment_code !~ /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|SA|SM|NK)$/ { log_err("error"); print "treatment_code in " CSVFILENAME " line " NR " should match the following pattern /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|SA|SM|NK)$/ and was " treatment_code " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && treatment_code != "" && treatment_code !~ /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|SA|SM|NK)$/ { key=CSVFILENAME FS "treatment_code" FS  "pattern" FS "value should match: /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|SA|SM|NK)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && treatment_year && !is_numeric(treatment_year) { log_err("error"); print "Field treatment_year in " CSVFILENAME " line " NR " should be a numeric but was " treatment_year " " RS $0 RS; } 
@@ -91,14 +105,14 @@ action == "validate:summary" && NR > 1 && treatment_comment != "" && length(trea
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
+    if (company_plot_number == "") $2 = "\\N"
     if (treatment_month == "") $6 = "\\N"
-    if (treatment_code == "") $4 = "\\N"
     if (treatment_year == "") $5 = "\\N"
     if (treatment_number == "") $3 = "\\N"
+    if (company == "") $1 = "\\N"
     if (treatment_comment == "") $8 = "\\N"
     if (treatment_day == "") $7 = "\\N"
-    if (company_plot_number == "") $2 = "\\N"
-    if (company == "") $1 = "\\N"
+    if (treatment_code == "") $4 = "\\N"
 }
 
 # action handlers
@@ -106,8 +120,11 @@ action == "insert" && NR == 1 {
     print "COPY treatment (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
      print "CREATE TABLE IF NOT EXISTS treatment (company ,company_plot_number ,treatment_number ,treatment_code ,treatment_year ,treatment_month ,treatment_day ,treatment_comment , CONSTRAINT treatment_pkey PRIMARY KEY (company,company_plot_number,treatment_number) , CONSTRAINT treatment_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"

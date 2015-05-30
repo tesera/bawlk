@@ -36,23 +36,26 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
-    number_regen_plots=$22
+    company=$1
     company_plot_number=$2
-    contractor=$23
     measurement_number=$3
-    cruiser_1_name=$24
     measurement_year=$4
-    cruiser_2_name=$25
     measurement_month=$5
-    shrub_cover=$26
     measurement_day=$6
-    herb_forb_cover=$27
     stand_origin=$7
-    grass_cover=$28
     plot_type=$8
-    moss_lichen_cover=$29
     stand_type=$9
     plot_status=$10
     tree_plot_area=$11
@@ -64,11 +67,18 @@ NR > 1 {
     sapling_tagging_limit_height=$17
     regen_plot_area=$18
     regen_plot_shape=$19
-    avi_field_call=$30
-    plot_measurement_comment=$31
     regen_tagging_limit_conifer=$20
     regen_tagging_limit_decid=$21
-    company=$1
+    number_regen_plots=$22
+    contractor=$23
+    cruiser_1_name=$24
+    cruiser_2_name=$25
+    shrub_cover=$26
+    herb_forb_cover=$27
+    grass_cover=$28
+    moss_lichen_cover=$29
+    avi_field_call=$30
+    plot_measurement_comment=$31
 }
 
 # awk rules based on user csv ruleset
@@ -99,12 +109,16 @@ action == "validate" && NR > 1 && measurement_year != "" && measurement_year > 2
 action == "validate:summary" && NR > 1 && measurement_year != "" && measurement_year > 2050 { key=CSVFILENAME FS "measurement_year" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && measurement_month && !is_numeric(measurement_month) { log_err("error"); print "Field measurement_month in " CSVFILENAME " line " NR " should be a numeric but was " measurement_month " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && measurement_month && !is_numeric(measurement_month) { key=CSVFILENAME FS "measurement_month" FS  "type" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && measurement_month == "" { log_err("warning"); print "Field measurement_month in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && measurement_month == "" { key=CSVFILENAME FS "measurement_month" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && measurement_month != "" && measurement_month < 1 { log_err("error"); print "measurement_month in " CSVFILENAME " line " NR " should be greater than 1 and was " measurement_month " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && measurement_month != "" && measurement_month < 1 { key=CSVFILENAME FS "measurement_month" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && measurement_month != "" && measurement_month > 12 { log_err("error"); print "measurement_month in " CSVFILENAME " line " NR " should be less than 12 and was " measurement_month " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && measurement_month != "" && measurement_month > 12 { key=CSVFILENAME FS "measurement_month" FS  "maximum" FS "value should be less than: 12" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && measurement_day && !is_numeric(measurement_day) { log_err("error"); print "Field measurement_day in " CSVFILENAME " line " NR " should be a numeric but was " measurement_day " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && measurement_day && !is_numeric(measurement_day) { key=CSVFILENAME FS "measurement_day" FS  "type" FS "value should be less than: 12" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && measurement_day == "" { log_err("warning"); print "Field measurement_day in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && measurement_day == "" { key=CSVFILENAME FS "measurement_day" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && measurement_day != "" && measurement_day < 1 { log_err("error"); print "measurement_day in " CSVFILENAME " line " NR " should be greater than 1 and was " measurement_day " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && measurement_day != "" && measurement_day < 1 { key=CSVFILENAME FS "measurement_day" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && measurement_day != "" && measurement_day > 31 { log_err("error"); print "measurement_day in " CSVFILENAME " line " NR " should be less than 31 and was " measurement_day " " RS $0 RS; } 
@@ -133,24 +147,34 @@ action == "validate" && NR > 1 && plot_status != "" && plot_status !~ /^(1|2|3|4
 action == "validate:summary" && NR > 1 && plot_status != "" && plot_status !~ /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21)$/ { key=CSVFILENAME FS "plot_status" FS  "pattern" FS "value should match: /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_plot_area && !is_numeric(tree_plot_area) { log_err("error"); print "Field tree_plot_area in " CSVFILENAME " line " NR " should be a numeric but was " tree_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_plot_area && !is_numeric(tree_plot_area) { key=CSVFILENAME FS "tree_plot_area" FS  "type" FS "value should match: /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && tree_plot_area == "" { log_err("error"); print "Field tree_plot_area in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && tree_plot_area == "" { key=CSVFILENAME FS "tree_plot_area" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_plot_area != "" && tree_plot_area < 400 { log_err("error"); print "tree_plot_area in " CSVFILENAME " line " NR " should be greater than 400 and was " tree_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_plot_area != "" && tree_plot_area < 400 { key=CSVFILENAME FS "tree_plot_area" FS  "minimum" FS "value should be greater than: 400" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_plot_area != "" && tree_plot_area > 2500 { log_err("error"); print "tree_plot_area in " CSVFILENAME " line " NR " should be less than 2500 and was " tree_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_plot_area != "" && tree_plot_area > 2500 { key=CSVFILENAME FS "tree_plot_area" FS  "maximum" FS "value should be less than: 2500" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && tree_plot_shape == "" { log_err("warning"); print "Field tree_plot_shape in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && tree_plot_shape == "" { key=CSVFILENAME FS "tree_plot_shape" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_plot_shape != "" && tree_plot_shape !~ /^(C|R|S)$/ { log_err("error"); print "tree_plot_shape in " CSVFILENAME " line " NR " should match the following pattern /^(C|R|S)$/ and was " tree_plot_shape " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_plot_shape != "" && tree_plot_shape !~ /^(C|R|S)$/ { key=CSVFILENAME FS "tree_plot_shape" FS  "pattern" FS "value should match: /^(C|R|S)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_tagging_limit && !is_numeric(tree_tagging_limit) { log_err("error"); print "Field tree_tagging_limit in " CSVFILENAME " line " NR " should be a numeric but was " tree_tagging_limit " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_tagging_limit && !is_numeric(tree_tagging_limit) { key=CSVFILENAME FS "tree_tagging_limit" FS  "type" FS "value should match: /^(C|R|S)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && tree_tagging_limit == "" { log_err("error"); print "Field tree_tagging_limit in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && tree_tagging_limit == "" { key=CSVFILENAME FS "tree_tagging_limit" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_tagging_limit != "" && tree_tagging_limit < 0.1 { log_err("error"); print "tree_tagging_limit in " CSVFILENAME " line " NR " should be greater than 0.1 and was " tree_tagging_limit " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_tagging_limit != "" && tree_tagging_limit < 0.1 { key=CSVFILENAME FS "tree_tagging_limit" FS  "minimum" FS "value should be greater than: 0.1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tree_tagging_limit != "" && tree_tagging_limit > 9.1 { log_err("error"); print "tree_tagging_limit in " CSVFILENAME " line " NR " should be less than 9.1 and was " tree_tagging_limit " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tree_tagging_limit != "" && tree_tagging_limit > 9.1 { key=CSVFILENAME FS "tree_tagging_limit" FS  "maximum" FS "value should be less than: 9.1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sapling_plot_area && !is_numeric(sapling_plot_area) { log_err("error"); print "Field sapling_plot_area in " CSVFILENAME " line " NR " should be a numeric but was " sapling_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sapling_plot_area && !is_numeric(sapling_plot_area) { key=CSVFILENAME FS "sapling_plot_area" FS  "type" FS "value should be less than: 9.1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sapling_plot_area == "" { log_err("error"); print "Field sapling_plot_area in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sapling_plot_area == "" { key=CSVFILENAME FS "sapling_plot_area" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sapling_plot_area != "" && sapling_plot_area < 0 { log_err("error"); print "sapling_plot_area in " CSVFILENAME " line " NR " should be greater than 0 and was " sapling_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sapling_plot_area != "" && sapling_plot_area < 0 { key=CSVFILENAME FS "sapling_plot_area" FS  "minimum" FS "value should be greater than: 0" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sapling_plot_area != "" && sapling_plot_area > 2500 { log_err("error"); print "sapling_plot_area in " CSVFILENAME " line " NR " should be less than 2500 and was " sapling_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sapling_plot_area != "" && sapling_plot_area > 2500 { key=CSVFILENAME FS "sapling_plot_area" FS  "maximum" FS "value should be less than: 2500" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sapling_plot_shape == "" { log_err("warning"); print "Field sapling_plot_shape in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sapling_plot_shape == "" { key=CSVFILENAME FS "sapling_plot_shape" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sapling_plot_shape != "" && sapling_plot_shape !~ /^(C|R|S)$/ { log_err("error"); print "sapling_plot_shape in " CSVFILENAME " line " NR " should match the following pattern /^(C|R|S)$/ and was " sapling_plot_shape " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sapling_plot_shape != "" && sapling_plot_shape !~ /^(C|R|S)$/ { key=CSVFILENAME FS "sapling_plot_shape" FS  "pattern" FS "value should match: /^(C|R|S)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sapling_tagging_limit_dbh && !is_numeric(sapling_tagging_limit_dbh) { log_err("error"); print "Field sapling_tagging_limit_dbh in " CSVFILENAME " line " NR " should be a numeric but was " sapling_tagging_limit_dbh " " RS $0 RS; } 
@@ -167,10 +191,14 @@ action == "validate" && NR > 1 && sapling_tagging_limit_height != "" && sapling_
 action == "validate:summary" && NR > 1 && sapling_tagging_limit_height != "" && sapling_tagging_limit_height > 1.5 { key=CSVFILENAME FS "sapling_tagging_limit_height" FS  "maximum" FS "value should be less than: 1.5" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && regen_plot_area && !is_numeric(regen_plot_area) { log_err("error"); print "Field regen_plot_area in " CSVFILENAME " line " NR " should be a numeric but was " regen_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && regen_plot_area && !is_numeric(regen_plot_area) { key=CSVFILENAME FS "regen_plot_area" FS  "type" FS "value should be less than: 1.5" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && regen_plot_area == "" { log_err("error"); print "Field regen_plot_area in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && regen_plot_area == "" { key=CSVFILENAME FS "regen_plot_area" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && regen_plot_area != "" && regen_plot_area < 0 { log_err("error"); print "regen_plot_area in " CSVFILENAME " line " NR " should be greater than 0 and was " regen_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && regen_plot_area != "" && regen_plot_area < 0 { key=CSVFILENAME FS "regen_plot_area" FS  "minimum" FS "value should be greater than: 0" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && regen_plot_area != "" && regen_plot_area > 2500 { log_err("error"); print "regen_plot_area in " CSVFILENAME " line " NR " should be less than 2500 and was " regen_plot_area " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && regen_plot_area != "" && regen_plot_area > 2500 { key=CSVFILENAME FS "regen_plot_area" FS  "maximum" FS "value should be less than: 2500" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && regen_plot_shape == "" { log_err("warning"); print "Field regen_plot_shape in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && regen_plot_shape == "" { key=CSVFILENAME FS "regen_plot_shape" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && regen_plot_shape != "" && regen_plot_shape !~ /^(C|R|S)$/ { log_err("error"); print "regen_plot_shape in " CSVFILENAME " line " NR " should match the following pattern /^(C|R|S)$/ and was " regen_plot_shape " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && regen_plot_shape != "" && regen_plot_shape !~ /^(C|R|S)$/ { key=CSVFILENAME FS "regen_plot_shape" FS  "pattern" FS "value should match: /^(C|R|S)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && regen_tagging_limit_conifer && !is_numeric(regen_tagging_limit_conifer) { log_err("error"); print "Field regen_tagging_limit_conifer in " CSVFILENAME " line " NR " should be a numeric but was " regen_tagging_limit_conifer " " RS $0 RS; } 
@@ -187,6 +215,8 @@ action == "validate" && NR > 1 && regen_tagging_limit_decid != "" && regen_taggi
 action == "validate:summary" && NR > 1 && regen_tagging_limit_decid != "" && regen_tagging_limit_decid > 1.3 { key=CSVFILENAME FS "regen_tagging_limit_decid" FS  "maximum" FS "value should be less than: 1.3" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && number_regen_plots && !is_numeric(number_regen_plots) { log_err("error"); print "Field number_regen_plots in " CSVFILENAME " line " NR " should be a numeric but was " number_regen_plots " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && number_regen_plots && !is_numeric(number_regen_plots) { key=CSVFILENAME FS "number_regen_plots" FS  "type" FS "value should be less than: 1.3" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && number_regen_plots == "" { log_err("error"); print "Field number_regen_plots in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && number_regen_plots == "" { key=CSVFILENAME FS "number_regen_plots" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && number_regen_plots != "" && number_regen_plots < 0 { log_err("error"); print "number_regen_plots in " CSVFILENAME " line " NR " should be greater than 0 and was " number_regen_plots " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && number_regen_plots != "" && number_regen_plots < 0 { key=CSVFILENAME FS "number_regen_plots" FS  "minimum" FS "value should be greater than: 0" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && number_regen_plots != "" && number_regen_plots > 10 { log_err("error"); print "number_regen_plots in " CSVFILENAME " line " NR " should be less than 10 and was " number_regen_plots " " RS $0 RS; } 
@@ -199,20 +229,30 @@ action == "validate" && NR > 1 && cruiser_2_name != "" && length(cruiser_2_name)
 action == "validate:summary" && NR > 1 && cruiser_2_name != "" && length(cruiser_2_name) > 25 { key=CSVFILENAME FS "cruiser_2_name" FS  "maxLength" FS "max length is: 25" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && shrub_cover && !is_numeric(shrub_cover) { log_err("error"); print "Field shrub_cover in " CSVFILENAME " line " NR " should be a numeric but was " shrub_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && shrub_cover && !is_numeric(shrub_cover) { key=CSVFILENAME FS "shrub_cover" FS  "type" FS "max length is: 25" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && shrub_cover == "" { log_err("warning"); print "Field shrub_cover in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && shrub_cover == "" { key=CSVFILENAME FS "shrub_cover" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && shrub_cover != "" && shrub_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { log_err("error"); print "shrub_cover in " CSVFILENAME " line " NR " should match the following pattern /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ and was " shrub_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && shrub_cover != "" && shrub_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { key=CSVFILENAME FS "shrub_cover" FS  "pattern" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && herb_forb_cover && !is_numeric(herb_forb_cover) { log_err("error"); print "Field herb_forb_cover in " CSVFILENAME " line " NR " should be a numeric but was " herb_forb_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && herb_forb_cover && !is_numeric(herb_forb_cover) { key=CSVFILENAME FS "herb_forb_cover" FS  "type" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && herb_forb_cover == "" { log_err("warning"); print "Field herb_forb_cover in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && herb_forb_cover == "" { key=CSVFILENAME FS "herb_forb_cover" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && herb_forb_cover != "" && herb_forb_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { log_err("error"); print "herb_forb_cover in " CSVFILENAME " line " NR " should match the following pattern /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ and was " herb_forb_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && herb_forb_cover != "" && herb_forb_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { key=CSVFILENAME FS "herb_forb_cover" FS  "pattern" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && grass_cover && !is_numeric(grass_cover) { log_err("error"); print "Field grass_cover in " CSVFILENAME " line " NR " should be a numeric but was " grass_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && grass_cover && !is_numeric(grass_cover) { key=CSVFILENAME FS "grass_cover" FS  "type" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && grass_cover == "" { log_err("warning"); print "Field grass_cover in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && grass_cover == "" { key=CSVFILENAME FS "grass_cover" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && grass_cover != "" && grass_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { log_err("error"); print "grass_cover in " CSVFILENAME " line " NR " should match the following pattern /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ and was " grass_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && grass_cover != "" && grass_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { key=CSVFILENAME FS "grass_cover" FS  "pattern" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && moss_lichen_cover && !is_numeric(moss_lichen_cover) { log_err("error"); print "Field moss_lichen_cover in " CSVFILENAME " line " NR " should be a numeric but was " moss_lichen_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && moss_lichen_cover && !is_numeric(moss_lichen_cover) { key=CSVFILENAME FS "moss_lichen_cover" FS  "type" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && moss_lichen_cover == "" { log_err("warning"); print "Field moss_lichen_cover in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && moss_lichen_cover == "" { key=CSVFILENAME FS "moss_lichen_cover" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && moss_lichen_cover != "" && moss_lichen_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { log_err("error"); print "moss_lichen_cover in " CSVFILENAME " line " NR " should match the following pattern /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ and was " moss_lichen_cover " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && moss_lichen_cover != "" && moss_lichen_cover !~ /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/ { key=CSVFILENAME FS "moss_lichen_cover" FS  "pattern" FS "value should match: /^(0|5|10|15|20|25|30|35|40|45|50|55|60|65|70|75|80|85|90|95|100)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && avi_field_call == "" { log_err("warning"); print "Field avi_field_call in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && avi_field_call == "" { key=CSVFILENAME FS "avi_field_call" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && avi_field_call != "" && length(avi_field_call) > 80 { log_err("error"); print "avi_field_call length in " CSVFILENAME " line " NR " should be less than 80 and was " length(avi_field_call) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && avi_field_call != "" && length(avi_field_call) > 80 { key=CSVFILENAME FS "avi_field_call" FS  "maxLength" FS "max length is: 80" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && plot_measurement_comment != "" && length(plot_measurement_comment) > 250 { log_err("error"); print "plot_measurement_comment length in " CSVFILENAME " line " NR " should be less than 250 and was " length(plot_measurement_comment) " " RS $0 RS; } 
@@ -220,37 +260,37 @@ action == "validate:summary" && NR > 1 && plot_measurement_comment != "" && leng
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (regen_tagging_limit_decid == "") $21 = "\\N"
-    if (measurement_year == "") $4 = "\\N"
-    if (regen_plot_shape == "") $19 = "\\N"
-    if (moss_lichen_cover == "") $29 = "\\N"
-    if (number_regen_plots == "") $22 = "\\N"
-    if (stand_type == "") $9 = "\\N"
-    if (measurement_day == "") $6 = "\\N"
-    if (plot_measurement_comment == "") $31 = "\\N"
-    if (avi_field_call == "") $30 = "\\N"
-    if (sapling_plot_area == "") $14 = "\\N"
-    if (sapling_plot_shape == "") $15 = "\\N"
-    if (plot_type == "") $8 = "\\N"
-    if (regen_tagging_limit_conifer == "") $20 = "\\N"
-    if (contractor == "") $23 = "\\N"
-    if (grass_cover == "") $28 = "\\N"
-    if (measurement_number == "") $3 = "\\N"
-    if (company_plot_number == "") $2 = "\\N"
-    if (shrub_cover == "") $26 = "\\N"
-    if (tree_tagging_limit == "") $13 = "\\N"
     if (plot_status == "") $10 = "\\N"
-    if (sapling_tagging_limit_dbh == "") $16 = "\\N"
-    if (measurement_month == "") $5 = "\\N"
-    if (cruiser_1_name == "") $24 = "\\N"
-    if (cruiser_2_name == "") $25 = "\\N"
-    if (stand_origin == "") $7 = "\\N"
-    if (tree_plot_shape == "") $12 = "\\N"
-    if (tree_plot_area == "") $11 = "\\N"
-    if (herb_forb_cover == "") $27 = "\\N"
-    if (company == "") $1 = "\\N"
-    if (sapling_tagging_limit_height == "") $17 = "\\N"
+    if (measurement_number == "") $3 = "\\N"
     if (regen_plot_area == "") $18 = "\\N"
+    if (tree_tagging_limit == "") $13 = "\\N"
+    if (contractor == "") $23 = "\\N"
+    if (sapling_tagging_limit_height == "") $17 = "\\N"
+    if (tree_plot_shape == "") $12 = "\\N"
+    if (sapling_plot_shape == "") $15 = "\\N"
+    if (sapling_plot_area == "") $14 = "\\N"
+    if (tree_plot_area == "") $11 = "\\N"
+    if (company_plot_number == "") $2 = "\\N"
+    if (regen_tagging_limit_conifer == "") $20 = "\\N"
+    if (regen_plot_shape == "") $19 = "\\N"
+    if (plot_measurement_comment == "") $31 = "\\N"
+    if (grass_cover == "") $28 = "\\N"
+    if (cruiser_2_name == "") $25 = "\\N"
+    if (number_regen_plots == "") $22 = "\\N"
+    if (avi_field_call == "") $30 = "\\N"
+    if (herb_forb_cover == "") $27 = "\\N"
+    if (moss_lichen_cover == "") $29 = "\\N"
+    if (cruiser_1_name == "") $24 = "\\N"
+    if (measurement_day == "") $6 = "\\N"
+    if (company == "") $1 = "\\N"
+    if (shrub_cover == "") $26 = "\\N"
+    if (regen_tagging_limit_decid == "") $21 = "\\N"
+    if (stand_type == "") $9 = "\\N"
+    if (plot_type == "") $8 = "\\N"
+    if (sapling_tagging_limit_dbh == "") $16 = "\\N"
+    if (stand_origin == "") $7 = "\\N"
+    if (measurement_year == "") $4 = "\\N"
+    if (measurement_month == "") $5 = "\\N"
 }
 
 # action handlers
@@ -258,8 +298,11 @@ action == "insert" && NR == 1 {
     print "COPY plot_measurement (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
      print "CREATE TABLE IF NOT EXISTS plot_measurement (company ,company_plot_number ,measurement_number ,measurement_year ,measurement_month ,measurement_day ,stand_origin ,plot_type ,stand_type ,plot_status ,tree_plot_area ,tree_plot_shape ,tree_tagging_limit ,sapling_plot_area ,sapling_plot_shape ,sapling_tagging_limit_dbh ,sapling_tagging_limit_height ,regen_plot_area ,regen_plot_shape ,regen_tagging_limit_conifer ,regen_tagging_limit_decid ,number_regen_plots ,contractor ,cruiser_1_name ,cruiser_2_name ,shrub_cover ,herb_forb_cover ,grass_cover ,moss_lichen_cover ,avi_field_call ,plot_measurement_comment , CONSTRAINT plot_measurement_pkey PRIMARY KEY (company,company_plot_number,measurement_number) , CONSTRAINT plot_measurement_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"

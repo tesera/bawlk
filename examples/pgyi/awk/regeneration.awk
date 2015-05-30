@@ -36,15 +36,25 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
+    company=$1
     company_plot_number=$2
     measurement_number=$3
     regeneration_plot_name=$4
     species=$5
     regeneration_count=$6
     regeneration_comment=$7
-    company=$1
 }
 
 # awk rules based on user csv ruleset
@@ -84,13 +94,13 @@ action == "validate:summary" && NR > 1 && regeneration_comment != "" && length(r
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (species == "") $5 = "\\N"
-    if (regeneration_count == "") $6 = "\\N"
-    if (regeneration_plot_name == "") $4 = "\\N"
     if (measurement_number == "") $3 = "\\N"
+    if (species == "") $5 = "\\N"
+    if (regeneration_plot_name == "") $4 = "\\N"
     if (company_plot_number == "") $2 = "\\N"
     if (regeneration_comment == "") $7 = "\\N"
     if (company == "") $1 = "\\N"
+    if (regeneration_count == "") $6 = "\\N"
 }
 
 # action handlers
@@ -98,8 +108,11 @@ action == "insert" && NR == 1 {
     print "COPY regeneration (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
      print "CREATE TABLE IF NOT EXISTS regeneration (company ,company_plot_number ,measurement_number ,regeneration_plot_name ,species ,regeneration_count ,regeneration_comment , CONSTRAINT regeneration_pkey PRIMARY KEY (company,company_plot_number,measurement_number,regeneration_plot_name,species) , CONSTRAINT regeneration_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"

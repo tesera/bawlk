@@ -9,9 +9,11 @@ field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
 field,type,treatment_number integer error
+field,required,treatment_number true error
 field,minimum,treatment_number 1 error
 field,maximum,treatment_number 12 error
 field,type,treatment_code string error
+field,required,treatment_code true error
 field,pattern,treatment_code /^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|SA|SM|NK)$/ error
 field,type,treatment_year integer
 field,minimum,treatment_year 1900

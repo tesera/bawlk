@@ -36,8 +36,19 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
+    company=$1
     company_plot_number=$2
     disturbance_number=$3
     disturbance_code=$4
@@ -45,7 +56,6 @@ NR > 1 {
     disturbance_month=$6
     disturbance_day=$7
     disturbance_comment=$8
-    company=$1
 }
 
 # awk rules based on user csv ruleset
@@ -62,26 +72,36 @@ action == "validate" && NR > 1 && company_plot_number != "" && length(company_pl
 action == "validate:summary" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { key=CSVFILENAME FS "company_plot_number" FS  "maxLength" FS "max length is: 15" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_number && !is_numeric(disturbance_number) { log_err("error"); print "Field disturbance_number in " CSVFILENAME " line " NR " should be a numeric but was " disturbance_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_number && !is_numeric(disturbance_number) { key=CSVFILENAME FS "disturbance_number" FS  "type" FS "max length is: 15" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && disturbance_number == "" { log_err("error"); print "Field disturbance_number in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && disturbance_number == "" { key=CSVFILENAME FS "disturbance_number" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_number != "" && disturbance_number < 1 { log_err("error"); print "disturbance_number in " CSVFILENAME " line " NR " should be greater than 1 and was " disturbance_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_number != "" && disturbance_number < 1 { key=CSVFILENAME FS "disturbance_number" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_number != "" && disturbance_number > 12 { log_err("error"); print "disturbance_number in " CSVFILENAME " line " NR " should be less than 12 and was " disturbance_number " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_number != "" && disturbance_number > 12 { key=CSVFILENAME FS "disturbance_number" FS  "maximum" FS "value should be less than: 12" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && disturbance_code == "" { log_err("error"); print "Field disturbance_code in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && disturbance_code == "" { key=CSVFILENAME FS "disturbance_code" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_code != "" && disturbance_code !~ /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|DA)$/ { log_err("error"); print "disturbance_code in " CSVFILENAME " line " NR " should match the following pattern /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|DA)$/ and was " disturbance_code " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_code != "" && disturbance_code !~ /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|DA)$/ { key=CSVFILENAME FS "disturbance_code" FS  "pattern" FS "value should match: /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|DA)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_year && !is_numeric(disturbance_year) { log_err("error"); print "Field disturbance_year in " CSVFILENAME " line " NR " should be a numeric but was " disturbance_year " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_year && !is_numeric(disturbance_year) { key=CSVFILENAME FS "disturbance_year" FS  "type" FS "value should match: /^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|DA)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && disturbance_year == "" { log_err("warning"); print "Field disturbance_year in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && disturbance_year == "" { key=CSVFILENAME FS "disturbance_year" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_year != "" && disturbance_year < 1900 { log_err("error"); print "disturbance_year in " CSVFILENAME " line " NR " should be greater than 1900 and was " disturbance_year " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_year != "" && disturbance_year < 1900 { key=CSVFILENAME FS "disturbance_year" FS  "minimum" FS "value should be greater than: 1900" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_year != "" && disturbance_year > 2050 { log_err("error"); print "disturbance_year in " CSVFILENAME " line " NR " should be less than 2050 and was " disturbance_year " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_year != "" && disturbance_year > 2050 { key=CSVFILENAME FS "disturbance_year" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_month && !is_numeric(disturbance_month) { log_err("error"); print "Field disturbance_month in " CSVFILENAME " line " NR " should be a numeric but was " disturbance_month " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_month && !is_numeric(disturbance_month) { key=CSVFILENAME FS "disturbance_month" FS  "type" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && disturbance_month == "" { log_err("warning"); print "Field disturbance_month in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && disturbance_month == "" { key=CSVFILENAME FS "disturbance_month" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_month != "" && disturbance_month < 1 { log_err("error"); print "disturbance_month in " CSVFILENAME " line " NR " should be greater than 1 and was " disturbance_month " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_month != "" && disturbance_month < 1 { key=CSVFILENAME FS "disturbance_month" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_month != "" && disturbance_month > 12 { log_err("error"); print "disturbance_month in " CSVFILENAME " line " NR " should be less than 12 and was " disturbance_month " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_month != "" && disturbance_month > 12 { key=CSVFILENAME FS "disturbance_month" FS  "maximum" FS "value should be less than: 12" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_day && !is_numeric(disturbance_day) { log_err("error"); print "Field disturbance_day in " CSVFILENAME " line " NR " should be a numeric but was " disturbance_day " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_day && !is_numeric(disturbance_day) { key=CSVFILENAME FS "disturbance_day" FS  "type" FS "value should be less than: 12" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && disturbance_day == "" { log_err("warning"); print "Field disturbance_day in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && disturbance_day == "" { key=CSVFILENAME FS "disturbance_day" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_day != "" && disturbance_day < 1 { log_err("error"); print "disturbance_day in " CSVFILENAME " line " NR " should be greater than 1 and was " disturbance_day " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && disturbance_day != "" && disturbance_day < 1 { key=CSVFILENAME FS "disturbance_day" FS  "minimum" FS "value should be greater than: 1" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && disturbance_day != "" && disturbance_day > 31 { log_err("error"); print "disturbance_day in " CSVFILENAME " line " NR " should be less than 31 and was " disturbance_day " " RS $0 RS; } 
@@ -91,14 +111,14 @@ action == "validate:summary" && NR > 1 && disturbance_comment != "" && length(di
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (disturbance_number == "") $3 = "\\N"
-    if (disturbance_day == "") $7 = "\\N"
-    if (disturbance_code == "") $4 = "\\N"
-    if (disturbance_year == "") $5 = "\\N"
-    if (company_plot_number == "") $2 = "\\N"
     if (disturbance_month == "") $6 = "\\N"
-    if (disturbance_comment == "") $8 = "\\N"
+    if (company_plot_number == "") $2 = "\\N"
+    if (disturbance_code == "") $4 = "\\N"
+    if (disturbance_number == "") $3 = "\\N"
     if (company == "") $1 = "\\N"
+    if (disturbance_day == "") $7 = "\\N"
+    if (disturbance_comment == "") $8 = "\\N"
+    if (disturbance_year == "") $5 = "\\N"
 }
 
 # action handlers
@@ -106,8 +126,11 @@ action == "insert" && NR == 1 {
     print "COPY disturbance (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
      print "CREATE TABLE IF NOT EXISTS disturbance (company ,company_plot_number ,disturbance_number ,disturbance_code ,disturbance_year ,disturbance_month ,disturbance_day ,disturbance_comment , CONSTRAINT disturbance_pkey PRIMARY KEY (company,company_plot_number,disturbance_number) , CONSTRAINT disturbance_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"

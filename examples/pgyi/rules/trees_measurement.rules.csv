@@ -13,6 +13,7 @@ field,type,measurement_number integer error
 field,required,measurement_number true error
 field,maxLength,measurement_number 2 error
 field,type,tree_number integer error
+field,required,tree_number true error
 field,minimum,tree_number 1 error
 field,maximum,tree_number 9999999 error
 field,type,tree_type string error
@@ -34,6 +35,7 @@ field,type,height number
 field,minimum,height 0.01
 field,maximum,height 45
 field,type,crown_class string warning
+field,required,crown_class true warning
 field,pattern,crown_class /^(D|C|I|S|N)$/ warning
 field,type,dbh_age integer
 field,minimum,dbh_age 1
@@ -59,10 +61,10 @@ field,maximum,crown_diameter_ew 20
 field,type,condition_code1 integer error
 field,required,condition_code1 true error
 field,pattern,condition_code1 /^(0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16)$/ error
-field,type,cause1 integer error
-field,pattern,cause1 /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|99)$/ error
-field,type,severity1 integer error
-field,pattern,severity1 /^(1|2|3|9)$/ error
+field,type,cause1 integer
+field,pattern,cause1 /^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|99)$/
+field,type,severity1 integer
+field,pattern,severity1 /^(1|2|3|9)$/
 field,type,condition_code2 integer
 field,pattern,condition_code2 /^(3|4|5|6|7|8|9|10|11|12|16)$/
 field,type,cause2 integer

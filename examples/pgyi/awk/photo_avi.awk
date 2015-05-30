@@ -36,15 +36,22 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
-    struc_val=$22
+    company=$1
     company_plot_number=$2
-    origin=$23
     avi_version=$3
-    tpr=$24
     polygon_number=$4
-    photo_avi_layer_comment=$25
     year_photography=$5
     year_photo_call=$6
     layer_type=$7
@@ -62,12 +69,29 @@ NR > 1 {
     sp5=$19
     sp5_per=$20
     struc=$21
-    company=$1
+    struc_val=$22
+    origin=$23
+    tpr=$24
+    initials=$25
+    nfl=$26
+    nfl_per=$27
+    nat_non=$28
+    anth_veg=$29
+    anth_non=$30
+    mod1=$31
+    mod1_ext=$32
+    mod1_yr=$33
+    mod2=$34
+    mod2_ext=$35
+    mod2_yr=$36
+    data=$37
+    data_yr=$38
+    photo_avi_layer_comment=$39
 }
 
 # awk rules based on user csv ruleset
-NR == 1 && action == "validate" { headers="company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|photo_avi_layer_comment"; if (!are_headers_valid(headers)) { gsub(/\|/, FS, headers); print RS "INVALID HEADERS IN " CSVFILENAME RS "WAS: " RS $0 RS "EXPECTED:" RS headers RS; exit 0; } }
-NR == 1 && action == "validate:summary" { headers="company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|photo_avi_layer_comment"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS "headers" FS  "names" FS "csv headers are invalid" FS "error"]=1; exit 0; } }
+NR == 1 && action == "validate" { headers="company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|initials|nfl|nfl_per|nat_non|anth_veg|anth_non|mod1|mod1_ext|mod1_yr|mod2|mod2_ext|mod2_yr|data|data_yr|photo_avi_layer_comment"; if (!are_headers_valid(headers)) { gsub(/\|/, FS, headers); print RS "INVALID HEADERS IN " CSVFILENAME RS "WAS: " RS $0 RS "EXPECTED:" RS headers RS; exit 0; } }
+NR == 1 && action == "validate:summary" { headers="company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|initials|nfl|nfl_per|nat_non|anth_veg|anth_non|mod1|mod1_ext|mod1_yr|mod2|mod2_ext|mod2_yr|data|data_yr|photo_avi_layer_comment"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS "headers" FS  "names" FS "csv headers are invalid" FS "error"]=1; exit 0; } }
 action ~ /validate/ && NR > 1 { pkey=company "-" company_plot_number "-" polygon_number "-" year_photography "-" layer_type; if(keys[pkey]) { if (dupkeys[pkey]) dupkeys[pkey]++; else dupkeys[pkey] = 1 } else { keys[pkey] = NR } }
 action == "validate" && NR > 1 && company == "" { log_err("error"); print "Field company in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company == "" { key=CSVFILENAME FS "company" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
@@ -77,6 +101,8 @@ action == "validate" && NR > 1 && company_plot_number == "" { log_err("error"); 
 action == "validate:summary" && NR > 1 && company_plot_number == "" { key=CSVFILENAME FS "company_plot_number" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { log_err("error"); print "company_plot_number length in " CSVFILENAME " line " NR " should be less than 15 and was " length(company_plot_number) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company_plot_number != "" && length(company_plot_number) > 15 { key=CSVFILENAME FS "company_plot_number" FS  "maxLength" FS "max length is: 15" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && avi_version == "" { log_err("error"); print "Field avi_version in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && avi_version == "" { key=CSVFILENAME FS "avi_version" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && avi_version != "" && avi_version !~ /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ { log_err("error"); print "avi_version in " CSVFILENAME " line " NR " should match the following pattern /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ and was " avi_version " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && avi_version != "" && avi_version !~ /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/ { key=CSVFILENAME FS "avi_version" FS  "pattern" FS "value should match: /^(AVI1\.0|AVI2\.1|AVI2\.1\.1|AVI2\.2)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && polygon_number && !is_numeric(polygon_number) { log_err("error"); print "Field polygon_number in " CSVFILENAME " line " NR " should be a numeric but was " polygon_number " " RS $0 RS; } 
@@ -103,46 +129,64 @@ action == "validate" && NR > 1 && year_photo_call != "" && year_photo_call > 205
 action == "validate:summary" && NR > 1 && year_photo_call != "" && year_photo_call > 2050 { key=CSVFILENAME FS "year_photo_call" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && layer_type && !is_numeric(layer_type) { log_err("error"); print "Field layer_type in " CSVFILENAME " line " NR " should be a numeric but was " layer_type " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && layer_type && !is_numeric(layer_type) { key=CSVFILENAME FS "layer_type" FS  "type" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && layer_type == "" { log_err("error"); print "Field layer_type in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && layer_type == "" { key=CSVFILENAME FS "layer_type" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && layer_type != "" && layer_type !~ /^(1|2|3|4|5)$/ { log_err("error"); print "layer_type in " CSVFILENAME " line " NR " should match the following pattern /^(1|2|3|4|5)$/ and was " layer_type " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && layer_type != "" && layer_type !~ /^(1|2|3|4|5)$/ { key=CSVFILENAME FS "layer_type" FS  "pattern" FS "value should match: /^(1|2|3|4|5)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && moist_reg == "" { log_err("warning"); print "Field moist_reg in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && moist_reg == "" { key=CSVFILENAME FS "moist_reg" FS  "required" FS "value is required but was empty" FS "warning"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && moist_reg != "" && moist_reg !~ /^(d|m|w|a)$/ { log_err("error"); print "moist_reg in " CSVFILENAME " line " NR " should match the following pattern /^(d|m|w|a)$/ and was " moist_reg " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && moist_reg != "" && moist_reg !~ /^(d|m|w|a)$/ { key=CSVFILENAME FS "moist_reg" FS  "pattern" FS "value should match: /^(d|m|w|a)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && density != "" && density !~ /^(A|B|C|D)$/ { log_err("error"); print "density in " CSVFILENAME " line " NR " should match the following pattern /^(A|B|C|D)$/ and was " density " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && density != "" && density !~ /^(A|B|C|D)$/ { key=CSVFILENAME FS "density" FS  "pattern" FS "value should match: /^(A|B|C|D)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && height && !is_numeric(height) { log_err("error"); print "Field height in " CSVFILENAME " line " NR " should be a numeric but was " height " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && height && !is_numeric(height) { key=CSVFILENAME FS "height" FS  "type" FS "value should match: /^(A|B|C|D)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && height == "" { log_err("error"); print "Field height in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && height == "" { key=CSVFILENAME FS "height" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && height != "" && height < 0 { log_err("error"); print "height in " CSVFILENAME " line " NR " should be greater than 0 and was " height " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && height != "" && height < 0 { key=CSVFILENAME FS "height" FS  "minimum" FS "value should be greater than: 0" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && height != "" && height > 50 { log_err("error"); print "height in " CSVFILENAME " line " NR " should be less than 50 and was " height " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && height != "" && height > 50 { key=CSVFILENAME FS "height" FS  "maximum" FS "value should be less than: 50" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp1 == "" { log_err("error"); print "Field sp1 in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp1 == "" { key=CSVFILENAME FS "sp1" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp1 != "" && sp1 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/ { log_err("error"); print "sp1 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/ and was " sp1 " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp1 != "" && sp1 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/ { key=CSVFILENAME FS "sp1" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp1_per && !is_numeric(sp1_per) { log_err("error"); print "Field sp1_per in " CSVFILENAME " line " NR " should be a numeric but was " sp1_per " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp1_per && !is_numeric(sp1_per) { key=CSVFILENAME FS "sp1_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp1_per == "" { log_err("error"); print "Field sp1_per in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp1_per == "" { key=CSVFILENAME FS "sp1_per" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp1_per != "" && sp1_per !~ /^(0|2|3|4|5|6|7|8|9|10)$/ { log_err("error"); print "sp1_per in " CSVFILENAME " line " NR " should match the following pattern /^(0|2|3|4|5|6|7|8|9|10)$/ and was " sp1_per " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp1_per != "" && sp1_per !~ /^(0|2|3|4|5|6|7|8|9|10)$/ { key=CSVFILENAME FS "sp1_per" FS  "pattern" FS "value should match: /^(0|2|3|4|5|6|7|8|9|10)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && sp2 != "" && sp2 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { log_err("error"); print "sp2 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ and was " sp2 " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp2 != "" && sp2 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { key=CSVFILENAME FS "sp2" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp2 != "" && sp2 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { log_err("error"); print "sp2 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ and was " sp2 " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp2 != "" && sp2 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { key=CSVFILENAME FS "sp2" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp2_per && !is_numeric(sp2_per) { log_err("error"); print "Field sp2_per in " CSVFILENAME " line " NR " should be a numeric but was " sp2_per " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp2_per && !is_numeric(sp2_per) { key=CSVFILENAME FS "sp2_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate:summary" && NR > 1 && sp2_per && !is_numeric(sp2_per) { key=CSVFILENAME FS "sp2_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp2_per == "" { log_err("error"); print "Field sp2_per in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp2_per == "" { key=CSVFILENAME FS "sp2_per" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp2_per != "" && sp2_per !~ /^(0|1|2|3|4|5)$/ { log_err("error"); print "sp2_per in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2|3|4|5)$/ and was " sp2_per " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp2_per != "" && sp2_per !~ /^(0|1|2|3|4|5)$/ { key=CSVFILENAME FS "sp2_per" FS  "pattern" FS "value should match: /^(0|1|2|3|4|5)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && sp3 != "" && sp3 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { log_err("error"); print "sp3 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ and was " sp3 " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp3 != "" && sp3 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { key=CSVFILENAME FS "sp3" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp3 != "" && sp3 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { log_err("error"); print "sp3 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ and was " sp3 " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp3 != "" && sp3 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { key=CSVFILENAME FS "sp3" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp3_per && !is_numeric(sp3_per) { log_err("error"); print "Field sp3_per in " CSVFILENAME " line " NR " should be a numeric but was " sp3_per " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp3_per && !is_numeric(sp3_per) { key=CSVFILENAME FS "sp3_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate:summary" && NR > 1 && sp3_per && !is_numeric(sp3_per) { key=CSVFILENAME FS "sp3_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp3_per == "" { log_err("error"); print "Field sp3_per in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp3_per == "" { key=CSVFILENAME FS "sp3_per" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp3_per != "" && sp3_per !~ /^(0|1|2|3)$/ { log_err("error"); print "sp3_per in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2|3)$/ and was " sp3_per " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp3_per != "" && sp3_per !~ /^(0|1|2|3)$/ { key=CSVFILENAME FS "sp3_per" FS  "pattern" FS "value should match: /^(0|1|2|3)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && sp4 != "" && sp4 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { log_err("error"); print "sp4 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ and was " sp4 " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp4 != "" && sp4 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { key=CSVFILENAME FS "sp4" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp4 != "" && sp4 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { log_err("error"); print "sp4 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ and was " sp4 " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp4 != "" && sp4 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { key=CSVFILENAME FS "sp4" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp4_per && !is_numeric(sp4_per) { log_err("error"); print "Field sp4_per in " CSVFILENAME " line " NR " should be a numeric but was " sp4_per " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp4_per && !is_numeric(sp4_per) { key=CSVFILENAME FS "sp4_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate:summary" && NR > 1 && sp4_per && !is_numeric(sp4_per) { key=CSVFILENAME FS "sp4_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp4_per == "" { log_err("error"); print "Field sp4_per in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp4_per == "" { key=CSVFILENAME FS "sp4_per" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp4_per != "" && sp4_per !~ /^(0|1|2)$/ { log_err("error"); print "sp4_per in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2)$/ and was " sp4_per " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp4_per != "" && sp4_per !~ /^(0|1|2)$/ { key=CSVFILENAME FS "sp4_per" FS  "pattern" FS "value should match: /^(0|1|2)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
-action == "validate" && NR > 1 && sp5 != "" && sp5 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { log_err("error"); print "sp5 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ and was " sp5 " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp5 != "" && sp5 !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { key=CSVFILENAME FS "sp5" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp5 != "" && sp5 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { log_err("error"); print "sp5 in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ and was " sp5 " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp5 != "" && sp5 !~ /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/ { key=CSVFILENAME FS "sp5" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp5_per && !is_numeric(sp5_per) { log_err("error"); print "Field sp5_per in " CSVFILENAME " line " NR " should be a numeric but was " sp5_per " " RS $0 RS; } 
-action == "validate:summary" && NR > 1 && sp5_per && !is_numeric(sp5_per) { key=CSVFILENAME FS "sp5_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate:summary" && NR > 1 && sp5_per && !is_numeric(sp5_per) { key=CSVFILENAME FS "sp5_per" FS  "type" FS "value should match: /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && sp5_per == "" { log_err("error"); print "Field sp5_per in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && sp5_per == "" { key=CSVFILENAME FS "sp5_per" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sp5_per != "" && sp5_per !~ /^(0|1|2)$/ { log_err("error"); print "sp5_per in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2)$/ and was " sp5_per " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sp5_per != "" && sp5_per !~ /^(0|1|2)$/ { key=CSVFILENAME FS "sp5_per" FS  "pattern" FS "value should match: /^(0|1|2)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && struc != "" && struc !~ /^(S|M|C|H)$/ { log_err("error"); print "struc in " CSVFILENAME " line " NR " should match the following pattern /^(S|M|C|H)$/ and was " struc " " RS $0 RS; } 
@@ -159,36 +203,90 @@ action == "validate" && NR > 1 && origin != "" && origin > 2050 { log_err("error
 action == "validate:summary" && NR > 1 && origin != "" && origin > 2050 { key=CSVFILENAME FS "origin" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && tpr != "" && tpr !~ /^(U|F|M|G)$/ { log_err("error"); print "tpr in " CSVFILENAME " line " NR " should match the following pattern /^(U|F|M|G)$/ and was " tpr " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && tpr != "" && tpr !~ /^(U|F|M|G)$/ { key=CSVFILENAME FS "tpr" FS  "pattern" FS "value should match: /^(U|F|M|G)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && initials != "" && length(initials) > 2 { log_err("error"); print "initials length in " CSVFILENAME " line " NR " should be less than 2 and was " length(initials) " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && initials != "" && length(initials) > 2 { key=CSVFILENAME FS "initials" FS  "maxLength" FS "max length is: 2" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && nfl != "" && nfl !~ /^(SC|SO|HG|HF|BR)$/ { log_err("error"); print "nfl in " CSVFILENAME " line " NR " should match the following pattern /^(SC|SO|HG|HF|BR)$/ and was " nfl " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && nfl != "" && nfl !~ /^(SC|SO|HG|HF|BR)$/ { key=CSVFILENAME FS "nfl" FS  "pattern" FS "value should match: /^(SC|SO|HG|HF|BR)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && nfl_per != "" && nfl_per !~ /^(0|1|2|3|4|5|6|7|8|9|10)$/ { log_err("error"); print "nfl_per in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2|3|4|5|6|7|8|9|10)$/ and was " nfl_per " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && nfl_per != "" && nfl_per !~ /^(0|1|2|3|4|5|6|7|8|9|10)$/ { key=CSVFILENAME FS "nfl_per" FS  "pattern" FS "value should match: /^(0|1|2|3|4|5|6|7|8|9|10)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && nat_non != "" && nat_non !~ /^(NWI|NWL|NWR|NWF|NMB|NMC|NMR|NMS)$/ { log_err("error"); print "nat_non in " CSVFILENAME " line " NR " should match the following pattern /^(NWI|NWL|NWR|NWF|NMB|NMC|NMR|NMS)$/ and was " nat_non " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && nat_non != "" && nat_non !~ /^(NWI|NWL|NWR|NWF|NMB|NMC|NMR|NMS)$/ { key=CSVFILENAME FS "nat_non" FS  "pattern" FS "value should match: /^(NWI|NWL|NWR|NWF|NMB|NMC|NMR|NMS)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && anth_veg != "" && anth_veg !~ /^(CA|CP|CPR|CIP|CIW)$/ { log_err("error"); print "anth_veg in " CSVFILENAME " line " NR " should match the following pattern /^(CA|CP|CPR|CIP|CIW)$/ and was " anth_veg " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && anth_veg != "" && anth_veg !~ /^(CA|CP|CPR|CIP|CIW)$/ { key=CSVFILENAME FS "anth_veg" FS  "pattern" FS "value should match: /^(CA|CP|CPR|CIP|CIW)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && anth_non != "" && anth_non !~ /^(ASC|ASR|AIH|AIE|AIG|AIF|AIM|AII)$/ { log_err("error"); print "anth_non in " CSVFILENAME " line " NR " should match the following pattern /^(ASC|ASR|AIH|AIE|AIG|AIF|AIM|AII)$/ and was " anth_non " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && anth_non != "" && anth_non !~ /^(ASC|ASR|AIH|AIE|AIG|AIF|AIM|AII)$/ { key=CSVFILENAME FS "anth_non" FS  "pattern" FS "value should match: /^(ASC|ASR|AIH|AIE|AIG|AIF|AIM|AII)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod1 != "" && mod1 !~ /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/ { log_err("error"); print "mod1 in " CSVFILENAME " line " NR " should match the following pattern /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/ and was " mod1 " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod1 != "" && mod1 !~ /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/ { key=CSVFILENAME FS "mod1" FS  "pattern" FS "value should match: /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod1_ext != "" && mod1_ext !~ /^(0|1|2|3|4|5)$/ { log_err("error"); print "mod1_ext in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2|3|4|5)$/ and was " mod1_ext " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod1_ext != "" && mod1_ext !~ /^(0|1|2|3|4|5)$/ { key=CSVFILENAME FS "mod1_ext" FS  "pattern" FS "value should match: /^(0|1|2|3|4|5)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod1_yr && !is_numeric(mod1_yr) { log_err("error"); print "Field mod1_yr in " CSVFILENAME " line " NR " should be a numeric but was " mod1_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod1_yr && !is_numeric(mod1_yr) { key=CSVFILENAME FS "mod1_yr" FS  "type" FS "value should match: /^(0|1|2|3|4|5)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod1_yr != "" && mod1_yr < 1900 { log_err("error"); print "mod1_yr in " CSVFILENAME " line " NR " should be greater than 1900 and was " mod1_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod1_yr != "" && mod1_yr < 1900 { key=CSVFILENAME FS "mod1_yr" FS  "minimum" FS "value should be greater than: 1900" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod1_yr != "" && mod1_yr > 2050 { log_err("error"); print "mod1_yr in " CSVFILENAME " line " NR " should be less than 2050 and was " mod1_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod1_yr != "" && mod1_yr > 2050 { key=CSVFILENAME FS "mod1_yr" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod2 != "" && mod2 !~ /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/ { log_err("error"); print "mod2 in " CSVFILENAME " line " NR " should match the following pattern /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/ and was " mod2 " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod2 != "" && mod2 !~ /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/ { key=CSVFILENAME FS "mod2" FS  "pattern" FS "value should match: /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod2_ext != "" && mod2_ext !~ /^(0|1|2|3|4|5)$/ { log_err("error"); print "mod2_ext in " CSVFILENAME " line " NR " should match the following pattern /^(0|1|2|3|4|5)$/ and was " mod2_ext " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod2_ext != "" && mod2_ext !~ /^(0|1|2|3|4|5)$/ { key=CSVFILENAME FS "mod2_ext" FS  "pattern" FS "value should match: /^(0|1|2|3|4|5)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod2_yr && !is_numeric(mod2_yr) { log_err("error"); print "Field mod2_yr in " CSVFILENAME " line " NR " should be a numeric but was " mod2_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod2_yr && !is_numeric(mod2_yr) { key=CSVFILENAME FS "mod2_yr" FS  "type" FS "value should match: /^(0|1|2|3|4|5)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod2_yr != "" && mod2_yr < 1900 { log_err("error"); print "mod2_yr in " CSVFILENAME " line " NR " should be greater than 1900 and was " mod2_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod2_yr != "" && mod2_yr < 1900 { key=CSVFILENAME FS "mod2_yr" FS  "minimum" FS "value should be greater than: 1900" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && mod2_yr != "" && mod2_yr > 2050 { log_err("error"); print "mod2_yr in " CSVFILENAME " line " NR " should be less than 2050 and was " mod2_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && mod2_yr != "" && mod2_yr > 2050 { key=CSVFILENAME FS "mod2_yr" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && data != "" && data !~ /^(F|A|I|S|P|C|V|L)$/ { log_err("error"); print "data in " CSVFILENAME " line " NR " should match the following pattern /^(F|A|I|S|P|C|V|L)$/ and was " data " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && data != "" && data !~ /^(F|A|I|S|P|C|V|L)$/ { key=CSVFILENAME FS "data" FS  "pattern" FS "value should match: /^(F|A|I|S|P|C|V|L)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && data_yr && !is_numeric(data_yr) { log_err("error"); print "Field data_yr in " CSVFILENAME " line " NR " should be a numeric but was " data_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && data_yr && !is_numeric(data_yr) { key=CSVFILENAME FS "data_yr" FS  "type" FS "value should match: /^(F|A|I|S|P|C|V|L)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && data_yr != "" && data_yr < 1900 { log_err("error"); print "data_yr in " CSVFILENAME " line " NR " should be greater than 1900 and was " data_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && data_yr != "" && data_yr < 1900 { key=CSVFILENAME FS "data_yr" FS  "minimum" FS "value should be greater than: 1900" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && data_yr != "" && data_yr > 2050 { log_err("error"); print "data_yr in " CSVFILENAME " line " NR " should be less than 2050 and was " data_yr " " RS $0 RS; } 
+action == "validate:summary" && NR > 1 && data_yr != "" && data_yr > 2050 { key=CSVFILENAME FS "data_yr" FS  "maximum" FS "value should be less than: 2050" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && photo_avi_layer_comment != "" && length(photo_avi_layer_comment) > 250 { log_err("error"); print "photo_avi_layer_comment length in " CSVFILENAME " line " NR " should be less than 250 and was " length(photo_avi_layer_comment) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && photo_avi_layer_comment != "" && length(photo_avi_layer_comment) > 250 { key=CSVFILENAME FS "photo_avi_layer_comment" FS  "maxLength" FS "max length is: 250" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
-    if (struc == "") $21 = "\\N"
-    if (height == "") $10 = "\\N"
-    if (photo_avi_layer_comment == "") $25 = "\\N"
+    if (sp1_per == "") $12 = "\\N"
     if (origin == "") $23 = "\\N"
+    if (mod2_ext == "") $35 = "\\N"
+    if (nat_non == "") $28 = "\\N"
+    if (initials == "") $25 = "\\N"
+    if (photo_avi_layer_comment == "") $39 = "\\N"
+    if (sp2_per == "") $14 = "\\N"
+    if (avi_version == "") $3 = "\\N"
+    if (data_yr == "") $38 = "\\N"
+    if (mod2_yr == "") $36 = "\\N"
+    if (nfl_per == "") $27 = "\\N"
+    if (moist_reg == "") $8 = "\\N"
+    if (sp3_per == "") $16 = "\\N"
+    if (polygon_number == "") $4 = "\\N"
+    if (anth_veg == "") $29 = "\\N"
+    if (sp4_per == "") $18 = "\\N"
+    if (mod1_yr == "") $33 = "\\N"
+    if (height == "") $10 = "\\N"
+    if (company_plot_number == "") $2 = "\\N"
+    if (struc == "") $21 = "\\N"
     if (sp5_per == "") $20 = "\\N"
     if (tpr == "") $24 = "\\N"
-    if (polygon_number == "") $4 = "\\N"
+    if (struc_val == "") $22 = "\\N"
+    if (company == "") $1 = "\\N"
     if (year_photography == "") $5 = "\\N"
-    if (avi_version == "") $3 = "\\N"
-    if (sp3_per == "") $16 = "\\N"
-    if (sp1_per == "") $12 = "\\N"
-    if (layer_type == "") $7 = "\\N"
-    if (company_plot_number == "") $2 = "\\N"
-    if (density == "") $9 = "\\N"
-    if (year_photo_call == "") $6 = "\\N"
     if (sp1 == "") $11 = "\\N"
-    if (sp4_per == "") $18 = "\\N"
     if (sp2 == "") $13 = "\\N"
     if (sp3 == "") $15 = "\\N"
+    if (data == "") $37 = "\\N"
     if (sp4 == "") $17 = "\\N"
     if (sp5 == "") $19 = "\\N"
-    if (moist_reg == "") $8 = "\\N"
-    if (company == "") $1 = "\\N"
-    if (struc_val == "") $22 = "\\N"
-    if (sp2_per == "") $14 = "\\N"
+    if (year_photo_call == "") $6 = "\\N"
+    if (anth_non == "") $30 = "\\N"
+    if (nfl == "") $26 = "\\N"
+    if (mod1_ext == "") $32 = "\\N"
+    if (mod1 == "") $31 = "\\N"
+    if (mod2 == "") $34 = "\\N"
+    if (density == "") $9 = "\\N"
+    if (layer_type == "") $7 = "\\N"
 }
 
 # action handlers
@@ -196,11 +294,14 @@ action == "insert" && NR == 1 {
     print "COPY photo_avi_layer (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS photo_avi_layer (company ,company_plot_number ,avi_version ,polygon_number ,year_photography ,year_photo_call ,layer_type ,moist_reg ,density ,height ,sp1 ,sp1_per ,sp2 ,sp2_per ,sp3 ,sp3_per ,sp4 ,sp4_per ,sp5 ,sp5_per ,struc ,struc_val ,origin ,tpr ,photo_avi_layer_comment , CONSTRAINT photo_avi_layer_pkey PRIMARY KEY (company,company_plot_number,polygon_number,year_photography,layer_type) , CONSTRAINT photo_avi_layer_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"
+     print "CREATE TABLE IF NOT EXISTS photo_avi_layer (company ,company_plot_number ,avi_version ,polygon_number ,year_photography ,year_photo_call ,layer_type ,moist_reg ,density ,height ,sp1 ,sp1_per ,sp2 ,sp2_per ,sp3 ,sp3_per ,sp4 ,sp4_per ,sp5 ,sp5_per ,struc ,struc_val ,origin ,tpr ,initials ,nfl ,nfl_per ,nat_non ,anth_veg ,anth_non ,mod1 ,mod1_ext ,mod1_yr ,mod2 ,mod2_ext ,mod2_yr ,data ,data_yr ,photo_avi_layer_comment , CONSTRAINT photo_avi_layer_pkey PRIMARY KEY (company,company_plot_number,polygon_number,year_photography,layer_type) , CONSTRAINT photo_avi_layer_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"
 }
 action == "sanitize" { print }
 # la fin

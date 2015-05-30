@@ -36,8 +36,19 @@ function log_err(cat) { cats[cat]++; err_count++; }
 { sub("\r$", "") }
 
 
+{
+     for (i = 1; i <= NF; i++) {
+         if (substr($i, 1, 1) == "\"") {
+             len = length($i)
+             $i = substr($i, 2, len - 2)
+         }
+     }
+}
+
+
 # make header index/map
 NR > 1 {
+    company=$1
     company_plot_number=$2
     tree_number=$3
     tree_label=$4
@@ -48,7 +59,6 @@ NR > 1 {
     distance=$9
     azimuth=$10
     trees_comment=$11
-    company=$1
 }
 
 # awk rules based on user csv ruleset
@@ -87,6 +97,8 @@ action == "validate" && NR > 1 && tree_origin != "" && tree_origin !~ /^(0|1|2|3
 action == "validate:summary" && NR > 1 && tree_origin != "" && tree_origin !~ /^(0|1|2|3|4|5|6|7|8|9|10)$/ { key=CSVFILENAME FS "tree_origin" FS  "pattern" FS "value should match: /^(0|1|2|3|4|5|6|7|8|9|10)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && sector_or_quarter != "" && length(sector_or_quarter) > 2 { log_err("error"); print "sector_or_quarter length in " CSVFILENAME " line " NR " should be less than 2 and was " length(sector_or_quarter) " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && sector_or_quarter != "" && length(sector_or_quarter) > 2 { key=CSVFILENAME FS "sector_or_quarter" FS  "maxLength" FS "max length is: 2" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
+action == "validate" && NR > 1 && species == "" { log_err("error"); print "Field species in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && species == "" { key=CSVFILENAME FS "species" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && species != "" && species !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { log_err("error"); print "species in " CSVFILENAME " line " NR " should match the following pattern /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ and was " species " " RS $0 RS; } 
 action == "validate:summary" && NR > 1 && species != "" && species !~ /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ { key=CSVFILENAME FS "species" FS  "pattern" FS "value should match: /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && distance && !is_numeric(distance) { log_err("error"); print "Field distance in " CSVFILENAME " line " NR " should be a numeric but was " distance " " RS $0 RS; } 
@@ -106,16 +118,16 @@ action == "validate:summary" && NR > 1 && trees_comment != "" && length(trees_co
 
 # sanitize rules
 action ~ /^(sanitize|insert)$/ && NR > 1 {
+    if (tree_number == "") $3 = "\\N"
     if (species == "") $8 = "\\N"
     if (distance == "") $9 = "\\N"
-    if (tree_location_id == "") $5 = "\\N"
-    if (azimuth == "") $10 = "\\N"
     if (tree_origin == "") $6 = "\\N"
-    if (tree_number == "") $3 = "\\N"
-    if (trees_comment == "") $11 = "\\N"
+    if (azimuth == "") $10 = "\\N"
     if (company_plot_number == "") $2 = "\\N"
-    if (sector_or_quarter == "") $7 = "\\N"
+    if (trees_comment == "") $11 = "\\N"
     if (company == "") $1 = "\\N"
+    if (sector_or_quarter == "") $7 = "\\N"
+    if (tree_location_id == "") $5 = "\\N"
     if (tree_label == "") $4 = "\\N"
 }
 
@@ -124,8 +136,11 @@ action == "insert" && NR == 1 {
     print "COPY trees (" addfields FS "source_row_index" FS $0 ") FROM stdin;"
 }
 action == "insert" && NR > 1 {
-    gsub(",", "\t");
-    print addvals "\t" NR "\t" $0;
+   record = addvals "\t" NR
+   for (i = 1; i <= NF; i++) {
+       record = record "\t" $i
+   }
+   print record
 }
 action == "table" && NR == 1 {
      print "CREATE TABLE IF NOT EXISTS trees (company ,company_plot_number ,tree_number ,tree_label ,tree_location_id ,tree_origin ,sector_or_quarter ,species ,distance ,azimuth ,trees_comment , CONSTRAINT trees_pkey PRIMARY KEY (company,company_plot_number,tree_number) , CONSTRAINT trees_plot_fkey FOREIGN KEY (company,company_plot_number) REFERENCES plot (company,company_plot_number) MATCH FULL ON UPDATE CASCADE ON DELETE NO ACTION);"
