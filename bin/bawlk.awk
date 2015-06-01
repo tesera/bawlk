@@ -23,6 +23,7 @@ BEGIN {
     print "    if(!action) action = \"validate\""
     print "    summary_header=\"file_name,field_name,rule,message,violation_count\""
     print "    CSVFILENAME = CSVFILENAME ? CSVFILENAME : FILENAME"
+    print "    FPAT = \"([^,]*)|(\\\"[^\\\"]+\\\")\""
     print "}" RS
 
     print "# builtin helper functions"
