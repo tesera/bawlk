@@ -21,6 +21,7 @@ BEGIN {
     if(!action) action = "validate"
     summary_header="file_name,field_name,rule,message,violation_count"
     CSVFILENAME = CSVFILENAME ? CSVFILENAME : FILENAME
+    FPAT = "([^,]*)|(\"[^\"]+\")"
 }
 
 # builtin helper functions
