@@ -68,6 +68,7 @@ $1 == "headers" && $2 == "names" {
     split($3, headers, "|")
     print "# make header index/map"
     print "NR > 1 {"
+    print "field_width = " length(headers)
     for (i in headers) {
         header_name = headers[i]
         header_index[header_name] = i
@@ -79,10 +80,15 @@ $1 == "headers" && $2 == "names" {
     print "NR == 1 && action == \"validate\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print RS \"INVALID HEADERS IN \" CSVFILENAME RS \"WAS: \" RS $0 RS \"EXPECTED:\" RS headers RS; exit 0; } }"
     print "NR == 1 && action == \"validate:summary\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS \"headers\" FS  \"names\" FS \"csv headers are invalid\" FS \"error\"]=1; exit 0; } }"
     print pkeycheck
+    cat = "error"
+    test = "NF != field_width"
+    msg = "row \" NR \" in \" CSVFILENAME \" has \" NF \" records and \" field_width \" was expected"
+    mini_msg = "row \" NR \" has an invalid column number"
+    rule_type = "field-width-missmatch"
+    # print "action ~ /^validate/ && NR > 1 { if(NF != field_width) { print \"row \" NR \" in \" CSVFILENAME \" has \" NF \" records and \" field_width \" was expected\"; next;} }"
 }
 
-# RENDER VALUE CHECKS
-$1 == "field" {
+{
     # SET DEFAULTS IF NOT PASSED IN VIA RULES
     defaults["mode"]    = "text"
     defaults["summary"] = "true"
@@ -90,6 +96,10 @@ $1 == "field" {
     for (option in defaults) {
         if (!options[option]) options[option] = defaults[option]
     }
+}
+
+# RENDER VALUE CHECKS
+$1 == "field" {
 
     # PARSE RULE FIELDS
     rule_type     = $2
@@ -157,7 +167,9 @@ $1 == "field" {
         mini_msg    = "max length is: " limit
         msg         = field " length in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
     }
+}
 
+{
     # RENDER VIOLATION HANDLER
     if (test) {
         if (!cat) cat = options["dcat"]

@@ -49,6 +49,7 @@ function log_err(cat) { cats[cat]++; err_count++; }
 
 # make header index/map
 NR > 1 {
+field_width = 11
     company=$1
     company_plot_number=$2
     tree_number=$3
@@ -66,6 +67,8 @@ NR > 1 {
 NR == 1 && action == "validate" { headers="company|company_plot_number|tree_number|tree_label|tree_location_id|tree_origin|sector_or_quarter|species|distance|azimuth|trees_comment"; if (!are_headers_valid(headers)) { gsub(/\|/, FS, headers); print RS "INVALID HEADERS IN " CSVFILENAME RS "WAS: " RS $0 RS "EXPECTED:" RS headers RS; exit 0; } }
 NR == 1 && action == "validate:summary" { headers="company|company_plot_number|tree_number|tree_label|tree_location_id|tree_origin|sector_or_quarter|species|distance|azimuth|trees_comment"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS "headers" FS  "names" FS "csv headers are invalid" FS "error"]=1; exit 0; } }
 action ~ /validate/ && NR > 1 { pkey=company "-" company_plot_number "-" tree_number; if(keys[pkey]) { if (dupkeys[pkey]) dupkeys[pkey]++; else dupkeys[pkey] = 1 } else { keys[pkey] = NR } }
+action == "validate" && NR > 1 && NF != field_width { log_err("error"); print "row " NR " in " CSVFILENAME " has " NF " records and " field_width " was expected" RS $0 RS; } 
+action == "validate:summary" && NR > 1 && NF != field_width { key=CSVFILENAME FS "" FS  "field-width-missmatch" FS "row " NR " has an invalid column number" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && company == "" { log_err("error"); print "Field company in " CSVFILENAME " line " NR " is required" RS $0 RS; } 
 action == "validate:summary" && NR > 1 && company == "" { key=CSVFILENAME FS "company" FS  "required" FS "value is required but was empty" FS "error"; if(!violations[key]) { violations[key]=0; } violations[key]++; } 
 action == "validate" && NR > 1 && company != "" && company !~ /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ { log_err("error"); print "company in " CSVFILENAME " line " NR " should match the following pattern /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ and was " company " " RS $0 RS; } 
