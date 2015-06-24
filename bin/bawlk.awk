@@ -140,7 +140,7 @@ $1 == "field" {
         msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is a duplicate and should be unique"
 
     } else if (rule_type ~ /^minimum|maximum$/) {
-        comparator  = $2 == "maximum" ? ">" : "<"
+        comparator  = $2 == "maximum" ? ">=" : "<="
         limit       = params[2]
         term        = $2 == "maximum" ? "less" : "greater"
 
