@@ -146,8 +146,8 @@ $1 == "field" {
 
         cat         = "error"
         test        = field " != \"\" && " field " " comparator " " limit
-        mini_msg    = "value should be " term " than: " limit
-        msg         = field " in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" " field " \" "
+        mini_msg    = "value should be " term " or equal to: " limit
+        msg         = field " in \" CSVFILENAME \" line \" NR \" should be " term " or equal to" limit " and was \" " field " \" "
 
     } else if (rule_type == "pattern") {
         pattern     = params[2]
@@ -165,7 +165,7 @@ $1 == "field" {
         cat         = "error"
         test        = field " != \"\" && length(" field ") " comparator " " limit
         mini_msg    = "max length is: " limit
-        msg         = field " length in \" CSVFILENAME \" line \" NR \" should be " term " than " limit " and was \" length(" field ") \" "
+        msg         = field " length in \" CSVFILENAME \" line \" NR \" should be " term " or equal to " limit " and was \" length(" field ") \" "
     }
 }
 
