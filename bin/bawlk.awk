@@ -158,7 +158,7 @@ $1 == "field" {
         msg         = field " in \" CSVFILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
 
     } else if (rule_type ~ /^minLength|maxLength$/) {
-        comparator  = $2 == "maxLength" ? ">" : "<"
+        comparator  = $2 == "maxLength" ? ">=" : "<="
         limit       = params[2]
         term        = $2 == "maxLength" ? "less" : "greater"
 
