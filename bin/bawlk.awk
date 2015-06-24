@@ -82,9 +82,9 @@ $1 == "headers" && $2 == "names" {
     print pkeycheck
     cat = "error"
     test = "NF != field_width"
-    msg = "row \" NR \" in \" CSVFILENAME \" has \" NF \" records and \" field_width \" was expected"
-    mini_msg = "row \" NR \" has an invalid column number"
-    rule_type = "field-width-missmatch"
+    msg = "row \" NR \" in \" CSVFILENAME \" has \" NF \" columns and \" field_width \" was expected"
+    mini_msg = "row \" NR \" has an invalid column count"
+    rule_type = "invalid-column-count"
     # print "action ~ /^validate/ && NR > 1 { if(NF != field_width) { print \"row \" NR \" in \" CSVFILENAME \" has \" NF \" records and \" field_width \" was expected\"; next;} }"
 }
 
