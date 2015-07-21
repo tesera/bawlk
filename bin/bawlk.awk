@@ -195,17 +195,18 @@ $1 == "field" {
 }
 
 # BUILD MAP OF SQL TYPES FOR SQL CREATE AND COPY
-$1 == "field" {
+$2 == "type" {
+
     sql_types_map["string"] = "text"
     sql_types_map["integer"] = "integer"
     sql_types_map["number"] = "numeric"
 
-    rule_type = $2 ? sql_types_map[$2] : sql_types_map["string"]
+    rule_type == params[2] ? sql_types_map[$2] : sql_types_map["string"]
 
-    split($3, params, " ")
-    field = params[1]
+    split($3, field_params, " ")
+    field = field_params[1]
 
-    sql_types[field] = rule_type
+    sql_types[field] = params[2]
 }
 
 END {
