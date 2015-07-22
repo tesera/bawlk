@@ -200,13 +200,16 @@ $2 == "type" {
     sql_types_map["string"] = "text"
     sql_types_map["integer"] = "integer"
     sql_types_map["number"] = "numeric"
+    sql_types_map["numeric"] = "numeric"
+    sql_types_map["date"] = "date"
+    sql_types_map["datetime"] = "date"
 
-    rule_type == params[2] ? sql_types_map[$2] : sql_types_map["string"]
+    type = params[2] ? sql_types_map[type] : sql_types_map["string"]
 
     split($3, field_params, " ")
     field = field_params[1]
 
-    sql_types[field] = params[2]
+    sql_types[field] = type
 }
 
 END {
