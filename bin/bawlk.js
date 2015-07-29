@@ -61,7 +61,7 @@ datapackage.resources.forEach(function (resource) {
                 .pipe(es.through(function (script) {
                     var self = this;
                     var args = [
-                        '-v', 'action=validate:summary',
+                        '-v', 'action=validate',
                         '-v', 'CSVFILENAME='+resource.path,
                         script.toString('utf8')
                     ];
