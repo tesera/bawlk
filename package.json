@@ -19,7 +19,7 @@
   "author": "Yves Richard",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/tesera/awk-bawlk/issues"
+    "url": "https://github.com/tesera/bawlk/issues"
   },
   "dependencies": {
     "JSONStream": "^0.10.0",
