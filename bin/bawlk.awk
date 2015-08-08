@@ -77,7 +77,7 @@ $1 == "headers" && $2 == "names" {
 
     print "}" RS
     print "# awk rules based on user csv ruleset"
-    print "NR == 1 && action == \"validate\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print  NR FS CSVFILENAME FS \"my-key\" FS \"invalid headers\" FS \"error\" FS  \"headers are invalid \"; exit 0;} }"
+    print "NR == 1 && action == \"validate\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { gsub(/\\|/, FS, headers); print  NR FS CSVFILENAME FS \"header\" FS \"invalid-header\" FS \"error\" FS  \"headers are invalid \"; exit 0;} }"
     print "NR == 1 && action == \"validate:summary\" { headers=\"" $3 "\"; if (!are_headers_valid(headers)) { violations[CSVFILENAME FS \"headers\" FS  \"names\" FS \"csv headers are invalid\" FS \"error\"]=1; exit 0; } }"
     print pkeycheck
     cat = "error"
@@ -117,6 +117,7 @@ $1 == "field" {
         if (type ~ /^integer|number$/) {
             cat       = "error"
             test      = field " && !is_numeric(" field ")"
+            mini_msg  = field " should be numeric but was a string"
             msg       = "Field " field " in \" CSVFILENAME \" line \" NR \" should be a numeric but was \" " field " \" "
         }
 
@@ -125,18 +126,18 @@ $1 == "field" {
 
         if (req == "true") {
             test        = field " == \"\""
-            mini_msg    = "value is required but was empty"
+            mini_msg    = field " value is required but was empty"
             msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is required"
         } else if (req != "false") {
             test        = req " && " field " == \"\""
-            mini_msg    = "value is required if " req
+            mini_msg    = field " value is required if " req
             msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is required if " req
         }
 
     } else if (rule_type == "unique") {
         cat         = "error"
         test        = "!is_unique(" field ")"
-        mini_msg    = "value should be unique but had duplicates"
+        mini_msg    = field " value should be unique but had duplicates"
         msg         = "Field " field " in \" CSVFILENAME \" line \" NR \" is a duplicate and should be unique"
 
     } else if (rule_type ~ /^minimum|maximum$/) {
@@ -146,7 +147,7 @@ $1 == "field" {
 
         cat         = "error"
         test        = field " != \"\" && " field " " comparator " " limit
-        mini_msg    = "value should be " term " or equal to: " limit
+        mini_msg    = field " value should be " term " or equal to: " limit
         msg         = field " in \" CSVFILENAME \" line \" NR \" should be " term " or equal to" limit " and was \" " field " \" "
 
     } else if (rule_type == "pattern") {
@@ -154,7 +155,7 @@ $1 == "field" {
 
         cat         = "error"
         test        = field " != \"\" && " field " !~ " pattern
-        mini_msg    = "value should match: " pattern
+        mini_msg    = field " value should match: " pattern
         msg         = field " in \" CSVFILENAME \" line \" NR \" should match the following pattern " pattern " and was \" " field " \" "
 
     } else if (rule_type ~ /^minLength|maxLength$/) {
@@ -164,7 +165,7 @@ $1 == "field" {
 
         cat         = "error"
         test        = field " != \"\" && length(" field ") " comparator " " limit
-        mini_msg    = "max length is: " limit
+        mini_msg    = field " max length is: " limit
         msg         = field " length in \" CSVFILENAME \" line \" NR \" should be " term " or equal to " limit " and was \" length(" field ") \" "
     }
 }
@@ -187,7 +188,7 @@ $1 == "field" {
         } else if (options["mode"] == "violation") {
             key=file_options["pkey"]
             gsub(/\|/, " \"-\" ", key)
-            err_handler = handler_prefix "print  NR FS CSVFILENAME FS " key " FS \"" rule_type "\" FS \"" cat "\" FS  \"" mini_msg "\"}"
+            err_handler = handler_prefix "print  NR FS CSVFILENAME FS " key " FS \"" rule_type "\" FS \"" cat "\" FS  \"" mini_msg "\" FS \"" field "\"}"
         }
 
         if (rule_type != "none") {
