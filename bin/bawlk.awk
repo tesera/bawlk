@@ -30,8 +30,8 @@ BEGIN {
     print "function eql(x,y) {v=1; for (i in x) v=(v&&x[i]==y[i]); return v;}"
     print "function are_headers_valid(valid_headers) { v=0; split($0, h, \",\"); split(valid_headers, vh, \"|\"); return eql(h, vh); }"
     print "function is_unique(i, val) { if (vals[i,val]) { return 0; } else { vals[i,val] = 1; return 1; } }"
-    print "function is_integer(x) { return x ~ /^[0-9]+$/ }"
-    print "function is_number(x) { return x ~ /^[0-9]+.[0-9]+$/ }"
+    print "function is_integer(x) { return x ~ /^-?[0-9]+$/ }"
+    print "function is_number(x) { return x ~ /^-?[0-9]+.[0-9]+$/ }"
     print "function print_cats(categories) { for (category in categories) { if (categories[category]) print \"      \" category \": \" categories[category]; } }"
     print "function log_err(cat) { cats[cat]++; err_count++; }"
     print RS
