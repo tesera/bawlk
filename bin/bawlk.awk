@@ -31,7 +31,7 @@ BEGIN {
     print "function are_headers_valid(valid_headers) { v=0; split($0, h, \",\"); split(valid_headers, vh, \"|\"); return eql(h, vh); }"
     print "function is_unique(i, val) { if (vals[i,val]) { return 0; } else { vals[i,val] = 1; return 1; } }"
     print "function is_integer(x) { return x ~ /^-?[0-9]+$/ }"
-    print "function is_number(x) { return x ~ /^-?[0-9]+.[0-9]+$/ }"
+    print "function is_number(x) { return x ~ /^-?[0-9]+\.[0-9]+$/ }"
     print "function print_cats(categories) { for (category in categories) { if (categories[category]) print \"      \" category \": \" categories[category]; } }"
     print "function log_err(cat) { cats[cat]++; err_count++; }"
     print RS
@@ -123,8 +123,8 @@ $1 == "field" {
         } else if (type == "number") {
             cat       = "error"
             test      = field " && !is_number(" field ")"
-            mini_msg  = field " should be a number"
-            msg       = "Field " field " in \" CSVFILENAME \" line \" NR \" should be a number but was \" " field " \" "
+            mini_msg  = field " should be a decimal number"
+            msg       = "Field " field " in \" CSVFILENAME \" line \" NR \" should be a decimal number but was \" " field " \" "
         }
     } else if (rule_type == "required") {
         req = params[2]
