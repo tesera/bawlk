@@ -5,7 +5,7 @@ file,fkey,trees company|company_plot_number|tree_number
 headers,names,company|company_plot_number|measurement_number|tree_number|tree_type|dbh|dbh_height|rcd|rcd_height|height|crown_class|dbh_age|stump_age|stump_height|total_age|htlc|crown_diameter_ns|crown_diameter_ew|condition_code1|cause1|severity1|condition_code2|cause2|severity2|condition_code3|cause3|severity3|trees_measurement_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
@@ -14,34 +14,29 @@ field,required,measurement_number true error
 field,maxLength,measurement_number 2 error
 field,type,tree_number integer error
 field,required,tree_number true error
-field,minimum,tree_number 0 error
+field,minimum,tree_number 1 error
 field,maximum,tree_number 9999999 error
 field,type,tree_type string error
 field,required,tree_type true error
-field,pattern,tree_type /^(B|ES|ET|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10|S|T)$/ error
+field,pattern,tree_type /^(T|S|ES|ET|B|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/ error
 field,type,dbh number
 field,minimum,dbh 0.1
 field,maximum,dbh 120
-field,pattern,dbh /^[0-9]*.[0-9]{1}$/
 field,type,dbh_height number
 field,minimum,dbh_height 1.1
 field,maximum,dbh_height 1.5
-field,pattern,dbh_height /^[0-9].[0-9]{2}$/
 field,type,rcd number
 field,minimum,rcd 0.1
 field,maximum,rcd 15
-field,pattern,rcd /^[0-9]*.[0-9]{1}$/
 field,type,rcd_height number
 field,minimum,rcd_height 0
 field,maximum,rcd_height 0.3
-field,pattern,rcd_height /^[0-9].[0-9]{2}$/
 field,type,height number
 field,minimum,height 0.01
 field,maximum,height 45
-field,pattern,height /^[0-9]*.[0-9]{2}$/
 field,type,crown_class string warning
 field,required,crown_class true warning
-field,pattern,crown_class /^(C|D|I|N|S)$/ warning
+field,pattern,crown_class /^(D|C|I|S|N)$/ warning
 field,type,dbh_age integer
 field,minimum,dbh_age 1
 field,maximum,dbh_age 350
@@ -51,22 +46,18 @@ field,maximum,stump_age 350
 field,type,stump_height number
 field,minimum,stump_height 0
 field,maximum,stump_height 0.3
-field,pattern,stump_height /^[0-9].[0-9]{2}$/
 field,type,total_age integer
 field,minimum,total_age 1
 field,maximum,total_age 350
 field,type,htlc number
 field,minimum,htlc 0
 field,maximum,htlc 45
-field,pattern,htlc /^[0-9]*.[0-9]{2}$/
 field,type,crown_diameter_ns number
-field,minimum,crown_diameter_ns 0.01
+field,minimum,crown_diameter_ns 1
 field,maximum,crown_diameter_ns 20
-field,pattern,crown_diameter_ns /^[0-9]*.[0-9]{2}$/
 field,type,crown_diameter_ew number
-field,minimum,crown_diameter_ew 0.01
+field,minimum,crown_diameter_ew 1
 field,maximum,crown_diameter_ew 20
-field,pattern,crown_diameter_ew /^[0-9]*.[0-9]{2}$/
 field,type,condition_code1 integer error
 field,required,condition_code1 true error
 field,pattern,condition_code1 /^(0|1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16)$/ error

@@ -1,10 +1,10 @@
-file,table,photo_avi
+file,table,photo_avi_layer
 file,pkey,company|company_plot_number|polygon_number|year_photography|layer_type
 file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|initials|nfl|nfl_per|nat_non|anth_veg|anth_non|mod1|mod1_ext|mod1_yr|mod2|mod2_ext|mod2_yr|data|data_yr|photo_avi_layer_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
@@ -36,69 +36,69 @@ field,minimum,height 0 error
 field,maximum,height 50 error
 field,type,sp1 string error
 field,required,sp1 true error
-field,pattern,sp1 /^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/ error
+field,pattern,sp1 /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/ error
 field,type,sp1_per integer error
 field,required,sp1_per true error
 field,pattern,sp1_per /^(0|2|3|4|5|6|7|8|9|10)$/ error
 field,type,sp2 string
-field,pattern,sp2 /^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/
+field,pattern,sp2 /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/
 field,type,sp2_per integer error
 field,required,sp2_per true error
 field,pattern,sp2_per /^(0|1|2|3|4|5)$/ error
 field,type,sp3 string
-field,pattern,sp3 /^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/
+field,pattern,sp3 /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/
 field,type,sp3_per integer error
 field,required,sp3_per true error
 field,pattern,sp3_per /^(0|1|2|3)$/ error
 field,type,sp4 string
-field,pattern,sp4 /^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/
+field,pattern,sp4 /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/
 field,type,sp4_per integer error
 field,required,sp4_per true error
 field,pattern,sp4_per /^(0|1|2)$/ error
 field,type,sp5 string
-field,pattern,sp5 /^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/
+field,pattern,sp5 /^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/
 field,type,sp5_per integer error
 field,required,sp5_per true error
 field,pattern,sp5_per /^(0|1|2)$/ error
 field,type,struc string
-field,pattern,struc /^(C|H|M|S)$/
+field,pattern,struc /^(S|M|C|H)$/
 field,type,struc_val integer
 field,pattern,struc_val /^(0|1|2|3|4|5|6|7|8|9)$/
 field,type,origin integer
 field,minimum,origin 0
 field,maximum,origin 2050
 field,type,tpr string
-field,pattern,tpr /^(F|G|M|U)$/
+field,pattern,tpr /^(U|F|M|G)$/
 field,type,initials string
 field,maxLength,initials 2
 field,type,nfl string
-field,pattern,nfl /^(BR|HF|HG|SC|SO)$/
+field,pattern,nfl /^(SC|SO|HG|HF|BR)$/
 field,type,nfl_per string
 field,pattern,nfl_per /^(0|1|2|3|4|5|6|7|8|9|10)$/
 field,type,nat_non string
-field,pattern,nat_non /^(NMB|NMC|NMR|NMS|NWF|NWI|NWL|NWR)$/
+field,pattern,nat_non /^(NWI|NWL|NWR|NWF|NMB|NMC|NMR|NMS)$/
 field,type,anth_veg string
 field,pattern,anth_veg /^(CA|CP|CPR|CIP|CIW)$/
 field,type,anth_non string
 field,pattern,anth_non /^(ASC|ASR|AIH|AIE|AIG|AIF|AIM|AII)$/
 field,type,mod1 string
-field,pattern,mod1 /^(BT|BU|CC|CL|DI|DT|GR|IK|IR|PL|SC|SI|SN|ST|TH|WE|WF|UK)$/
+field,pattern,mod1 /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/
 field,type,mod1_ext string
 field,pattern,mod1_ext /^(0|1|2|3|4|5)$/
 field,type,mod1_yr integer
-field,minimum,mod1_yr 0
+field,minimum,mod1_yr 1900
 field,maximum,mod1_yr 2050
 field,type,mod2 string
-field,pattern,mod2 /^(BT|BU|CC|CL|DI|DT|GR|IK|IR|PL|SC|SI|SN|ST|TH|WE|WF|UK)$/
+field,pattern,mod2 /^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/
 field,type,mod2_ext string
 field,pattern,mod2_ext /^(0|1|2|3|4|5)$/
 field,type,mod2_yr integer
-field,minimum,mod2_yr 0
+field,minimum,mod2_yr 1900
 field,maximum,mod2_yr 2050
 field,type,data string
-field,pattern,data /^(A|C|F|I|L|P|S|V)$/
+field,pattern,data /^(F|A|I|S|P|C|V|L)$/
 field,type,data_yr integer
-field,minimum,data_yr 0
+field,minimum,data_yr 1900
 field,maximum,data_yr 2050
 field,type,photo_avi_layer_comment string
 field,maxLength,photo_avi_layer_comment 250

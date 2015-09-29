@@ -3,7 +3,7 @@ file,pkey,company|company_plot_number
 headers,names,company|company_plot_number|company_stand_number|establishment_year|establishment_month|establishment_day|fmu|fma|ats_township|ats_range|ats_meridian|ats_section|opening_number|sampling_unit_number|topographic_position|elevation|slope|aspect|x_coord|y_coord|utm_zone|datum|latitude|longitude|natural_subregion|ecosite_guide|ecosite|ecosite_phase|plot_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,unique,company_plot_number true error
@@ -24,7 +24,7 @@ field,minimum,establishment_day 1 warning
 field,maximum,establishment_day 31 warning
 field,type,fmu string warning
 field,required,fmu true warning
-field,pattern,fmu /^(A10|A11|A12|A13|A14|A15|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E13|E14|E15|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|F26|FO1|G1|G10|G11|G12|G13|G14|G15|G16|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P14|P19|P20|P21|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R12|R13|R14|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S23|S24|S25|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3|E14)$/ warning
+field,pattern,fmu /^(A10|A11|A12|A13|A14|A15|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E13|E14|E15|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|FO1|G1|G10|G11|G12|G13|G14|G15|G16|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P14|P19|P20|P21|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R12|R13|R14|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S23|S24|S25|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3)$/ warning
 field,type,fma string warning
 field,required,fma true warning
 field,maxLength,fma 30 warning
@@ -61,17 +61,15 @@ field,minimum,slope 0 warning
 field,maximum,slope 200 warning
 field,type,aspect string warning
 field,required,aspect true warning
-field,pattern,aspect /^(E|N|NE|NW|S|SE|SW|W|NA)$/ warning
+field,pattern,aspect /^(N|E|S|W|NE|SE|SW|NW|NA)$/ warning
 field,type,x_coord number warning
 field,required,x_coord true warning
-field,minimum,x_coord 240000 warning
-field,maximum,x_coord 850000 warning
-field,pattern,x_coord /^[0-9]*.[0-9]{5}$/ warning
+field,minimum,x_coord -1030400 warning
+field,maximum,x_coord -111700 warning
 field,type,y_coord number warning
 field,required,y_coord true warning
-field,minimum,y_coord 5400000 warning
-field,maximum,y_coord 6650000 warning
-field,pattern,y_coord /^[0-9]*.[0-9]{5}$/ warning
+field,minimum,y_coord 5643600 warning
+field,maximum,y_coord 6702500 warning
 field,type,utm_zone string warning
 field,required,utm_zone true warning
 field,pattern,utm_zone /^(UTM11|UTM12)$/ warning
@@ -81,22 +79,20 @@ field,pattern,datum /^(NAD27|NAD83)$/ warning
 field,type,latitude number
 field,minimum,latitude 49
 field,maximum,latitude 60
-field,pattern,latitude /^[0-9]*.[0-9]{10}$/
 field,type,longitude number
 field,minimum,longitude -120
 field,maximum,longitude -110
-field,pattern,longitude /^-[0-9]*.[0-9]{10}$/
 field,type,natural_subregion string error
 field,required,natural_subregion true error
-field,pattern,natural_subregion /^(ALP|AP|BSA|CM|CP|DM|DMG|FF|FP|KU|LBH|LF|MG|MT|NF|NM|PAD|PRP|SA|UBH|UF)$/ error
+field,pattern,natural_subregion /^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/ error
 field,type,ecosite_guide string warning
 field,required,ecosite_guide true warning
-field,pattern,ecosite_guide /^(N|SW|WC)$/ warning
+field,pattern,ecosite_guide /^(N|WC|SW)$/ warning
 field,type,ecosite string warning
 field,required,ecosite true warning
 field,pattern,ecosite /^(a|b|c|d|e|f|g|h|i|j|k|l|m|n)$/ warning
 field,type,ecosite_phase string warning
 field,required,ecosite_phase true warning
-field,pattern,ecosite_phase /^(a1|a2|a3|b1|b2|b3|b4|b5|c1|c2|c3|c4|c5|d1|d2|d3|d4|e1|e2|e3|e4|f1|f2|f3|f4|f5|f6|g1|g2|g3|h1|h2|h3|i1|i2|i3|j1|j2|j3|k1|k2|k3|l1|l2|l3|m1|m2|m3|n1)$/ warning
+field,pattern,ecosite_phase /^(a1|b1|b2|b3|b4|c1|d1|d2|d3|e1|e2|e3|f1|f2|f3|g1|h1|i1|i2|j1|j2|k1|k2|k3|l1|h2|j3|a2|a3|g2|h3|b5|c2|c3|c4|c5|d4|e4|f4|f5|f6|g3|i3|l2|l3|m1|m2|m3|n1)$/ warning
 field,type,plot_comment string
 field,maxLength,plot_comment 250

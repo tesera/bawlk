@@ -4,13 +4,13 @@ file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|tree_number|tree_label|tree_location_id|tree_origin|sector_or_quarter|species|distance|azimuth|trees_comment
 field,type,company string error
 field,required,company true error
-field,pattern,company /^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/ error
+field,pattern,company /^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/ error
 field,type,company_plot_number string error
 field,required,company_plot_number true error
 field,maxLength,company_plot_number 15 error
 field,type,tree_number integer error
 field,required,tree_number true error
-field,minimum,tree_number 0 error
+field,minimum,tree_number 1 error
 field,maximum,tree_number 9999999 error
 field,type,tree_label string
 field,maxLength,tree_label 15
@@ -24,14 +24,12 @@ field,type,sector_or_quarter string
 field,maxLength,sector_or_quarter 2
 field,type,species string error
 field,required,species true error
-field,pattern,species /^(A|Aw|Ax|Bw|Dc|Dd|Du|Fa|Fb|Fd|La|Ls|Lt|Lw|Ms|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/ error
+field,pattern,species /^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/ error
 field,type,distance number
 field,minimum,distance 0.01
 field,maximum,distance 100
-field,pattern,distance /^[0-9]*.[0-9]{2}$/
 field,type,azimuth number
 field,minimum,azimuth 0
 field,maximum,azimuth 360
-field,pattern,azimuth /^[0-9]*.[0-9]{1}$/
 field,type,trees_comment string
 field,maxLength,trees_comment 250

@@ -4,20 +4,24 @@
 "resources": [
 {
   "name": "plot",
+  "title": "Plot",
   "path": "plot.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/plot.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -28,6 +32,7 @@
       },
       {
         "name": "company_stand_number",
+        "title": "Company Stand Number",
         "type": "string",
         "constraints": {
           "maxLength": 15
@@ -35,6 +40,7 @@
       },
       {
         "name": "establishment_year",
+        "title": "Establishment Year",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -45,6 +51,7 @@
       },
       {
         "name": "establishment_month",
+        "title": "Establishment Month",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -55,6 +62,7 @@
       },
       {
         "name": "establishment_day",
+        "title": "Establishment Day",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -65,15 +73,17 @@
       },
       {
         "name": "fmu",
+        "title": "Forest Management Unit",
         "type": "string",
         "raises": "warning",
         "constraints": {
           "required": true,
-          "pattern": "/^(A10|A11|A12|A13|A14|A15|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E13|E14|E15|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|FO1|G1|G10|G11|G12|G13|G14|G15|G16|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P14|P19|P20|P21|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R12|R13|R14|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S23|S24|S25|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3)$/"
+          "pattern": "/^(A10|A11|A12|A13|A14|A15|A4|A5|A6|A7|A8|A9|B10|B11|B9|BO1|BO2|C4|C5|CO1|CO2|E1|E10|E11|E13|E14|E15|E2|E3|E4|E5|E6|E7|E8|E9|EO1|F1|F10|F11|F14|F20|F21|F23|F24|F25|F26|FO1|G1|G10|G11|G12|G13|G14|G15|G16|G2|G3|G4|G5|G6|G7|G8|G9|GO1|GO2|GO3|GO4|H1|L1|L11|L2|L3|L8|L9|LO1|M1|M10|M3|M4|M7|M9|NA|P1|P10|P11|P13|P14|P19|P20|P21|P3|P4|P5|P6|P7|P8|P9|PO1|PO2|PO3|R1|R10|R11|R12|R13|R14|R2|R2U|R3|R4|R4Y|RO1|S10|S11|S14|S15|S16|S17|S18|S19|S20|S21|S22|S23|S24|S25|S7|S9|SO1|SO2|W1|W10|W11|W13|W14|W15|W2|W3|W4|W5|W6|W8|WO1|WO2|WO3|E14)$/"
         }
       },
       {
         "name": "fma",
+        "title": "Forest Management Agreement Number",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -83,6 +93,7 @@
       },
       {
         "name": "ats_township",
+        "title": "ATS Township",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -93,6 +104,7 @@
       },
       {
         "name": "ats_range",
+        "title": "ATS Range",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -103,6 +115,7 @@
       },
       {
         "name": "ats_meridian",
+        "title": "ATS Meridian",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -113,6 +126,7 @@
       },
       {
         "name": "ats_section",
+        "title": "ATS Section",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -123,6 +137,7 @@
       },
       {
         "name": "opening_number",
+        "title": "Opening Number",
         "type": "string",
         "constraints": {
           "maxLength": 11
@@ -130,6 +145,7 @@
       },
       {
         "name": "sampling_unit_number",
+        "title": "Sampling Unit Number",
         "type": "string",
         "constraints": {
           "maxLength": 3
@@ -137,6 +153,7 @@
       },
       {
         "name": "topographic_position",
+        "title": "Topographic Position",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -146,6 +163,7 @@
       },
       {
         "name": "elevation",
+        "title": "Elevation",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -156,6 +174,7 @@
       },
       {
         "name": "slope",
+        "title": "Slope",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -166,35 +185,41 @@
       },
       {
         "name": "aspect",
+        "title": "Aspect",
         "type": "string",
         "raises": "warning",
         "constraints": {
           "required": true,
-          "pattern": "/^(N|E|S|W|NE|SE|SW|NW|NA)$/"
+          "pattern": "/^(E|N|NE|NW|S|SE|SW|W|NA)$/"
         }
       },
       {
         "name": "x_coord",
+        "title": "Easting or X-coordinate",
         "type": "number",
         "raises": "warning",
         "constraints": {
           "required": true,
-          "minimum": -1030400,
-          "maximum": -111700
+          "minimum": 240000.00000,
+          "maximum": 850000.00000,
+          "pattern": "/^[0-9]*.[0-9]{5}$/"
         }
       },
       {
         "name": "y_coord",
+        "title": "Northing or Y-coordinate",
         "type": "number",
         "raises": "warning",
         "constraints": {
           "required": true,
-          "minimum": 5643600,
-          "maximum": 6702500
+          "minimum": 5400000.00000,
+          "maximum": 6650000.00000,
+          "pattern": "/^[0-9]*.[0-9]{5}$/"
         }
       },
       {
         "name": "utm_zone",
+        "title": "UTM Zone",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -204,6 +229,7 @@
       },
       {
         "name": "datum",
+        "title": "Datum",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -213,40 +239,47 @@
       },
       {
         "name": "latitude",
+        "title": "Latitude",
         "type": "number",
         "constraints": {
-          "minimum": 49.00000,
-          "maximum": 60.00000
+          "minimum": 49.0000000000,
+          "maximum": 60.0000000000,
+          "pattern": "/^[0-9]*.[0-9]{10}$/"
         }
       },
       {
         "name": "longitude",
+        "title": "Longitude",
         "type": "number",
         "constraints": {
-          "minimum": -120.00000,
-          "maximum": -110.00000
+          "minimum": -120.0000000000,
+          "maximum": -110.0000000000,
+          "pattern": "/^-[0-9]*.[0-9]{10}$/"
         }
       },
       {
         "name": "natural_subregion",
+        "title": "Natural Subregion",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(CM|DM|NM|BSA|PAD|LBH|UBH|AP|ALP|SA|MT|UF|LF|KU|FP|PRP|CP|DMG|FF|NF|MG)$/"
+          "pattern": "/^(ALP|AP|BSA|CM|CP|DM|DMG|FF|FP|KU|LBH|LF|MG|MT|NF|NM|PAD|PRP|SA|UBH|UF)$/"
         }
       },
       {
         "name": "ecosite_guide",
+        "title": "Ecosite Guide",
         "type": "string",
         "raises": "warning",
         "constraints": {
           "required": true,
-          "pattern": "/^(N|WC|SW)$/"
+          "pattern": "/^(N|SW|WC)$/"
         }
       },
       {
         "name": "ecosite",
+        "title": "Ecosite",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -256,15 +289,17 @@
       },
       {
         "name": "ecosite_phase",
+        "title": "Ecosite Phase",
         "type": "string",
         "raises": "warning",
         "constraints": {
           "required": true,
-          "pattern": "/^(a1|b1|b2|b3|b4|c1|d1|d2|d3|e1|e2|e3|f1|f2|f3|g1|h1|i1|i2|j1|j2|k1|k2|k3|l1|h2|j3|a2|a3|g2|h3|b5|c2|c3|c4|c5|d4|e4|f4|f5|f6|g3|i3|l2|l3|m1|m2|m3|n1)$/"
+          "pattern": "/^(a1|a2|a3|b1|b2|b3|b4|b5|c1|c2|c3|c4|c5|d1|d2|d3|d4|e1|e2|e3|e4|f1|f2|f3|f4|f5|f6|g1|g2|g3|h1|h2|h3|i1|i2|i3|j1|j2|j3|k1|k2|k3|l1|l2|l3|m1|m2|m3|n1)$/"
         }
       },
       {
         "name": "plot_comment",
+        "title": "Plot Comment",
         "type": "string",
         "constraints": {
           "maxLength": 250
@@ -276,144 +311,27 @@
     "company",
     "company_plot_number"
   ]
-}
-,
-{
-  "name": "trees",
-  "path": "trees.csv",
-  "schema": {
-    "fields": [
-      {
-        "name": "company",
-        "type": "string",
-        "raises": "error",
-        "constraints": {
-          "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
-        }
-      },
-      {
-        "name": "company_plot_number",
-        "type": "string",
-        "raises": "error",
-        "constraints": {
-          "required": true,
-          "maxLength": 15
-        }
-      },
-      {
-        "name": "tree_number",
-        "type": "integer",
-        "raises": "error",
-        "constraints": {
-          "required": true,
-          "minimum": 1,
-          "maximum": 9999999
-        }
-      },
-      {
-        "name": "tree_label",
-        "type": "string",
-        "constraints": {
-        "maxLength": 15
-        }
-      },
-      {
-        "name": "tree_location_id",
-        "type": "integer",
-        "raises": "error",
-        "constraints": {
-          "required": true,
-          "pattern": "/^(0|1|2|3)$/"
-        }
-      },
-      {
-        "name": "tree_origin",
-        "type": "integer",
-        "raises": "error",
-        "constraints": {
-          "required": true,
-          "pattern": "/^(0|1|2|3|4|5|6|7|8|9|10)$/"
-        }
-      },
-      {
-        "name": "sector_or_quarter",
-        "type": "string",
-        "constraints": {
-        "maxLength": 2
-        }
-      },
-      {
-        "name": "species",
-        "type": "string",
-        "raises": "error",
-        "constraints": {
-          "required": true,
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|Dd|Dc|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Du|Ms|No)$/"
-        }
-      },
-      {
-        "name": "distance",
-        "type": "number",
-        "constraints": {
-          "minimum": 0.01,
-          "maximum": 100
-        }
-      },
-      {
-        "name": "azimuth",
-        "type": "number",
-        "constraints": {
-          "minimum": 0,
-          "maximum": 360
-        }
-      },
-      {
-        "name": "trees_comment",
-        "type": "string",
-        "constraints":{
-          "maxLength": 250
-        }
-      }
-    ]
-  },
-  "primaryKey": [
-    "company",
-    "company_plot_number",
-    "tree_number"
-  ],
-  "foreignKeys": [
-    {
-      "fields": [
-        "company",
-        "company_plot_number"
-      ],
-      "reference": {
-        "resource": "plot",
-        "fields": [
-          "company",
-          "company_plot_number"
-        ]
-      }
-    }
-  ]
 },
 {
   "name": "plot_measurement",
+  "title": "Plot Measurements",
   "path": "plot_measurement.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/plot_measurement.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -423,6 +341,7 @@
       },
       {
         "name": "measurement_number",
+        "title": "Measurement Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -432,6 +351,7 @@
       },
       {
         "name": "measurement_year",
+        "title": "Measurement Year",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -442,6 +362,7 @@
       },
       {
         "name": "measurement_month",
+        "title": "Measurement Month",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -452,6 +373,7 @@
       },
       {
         "name": "measurement_day",
+        "title": "Measurement Day",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -462,15 +384,17 @@
       },
       {
         "name": "stand_origin",
+        "title": "Stand Origin",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(C|L|F|P|R|N|S|A|B)$/"
+          "pattern": "/^(A|B|C|F|L|N|P|R|S)$/"
         }
       },
       {
         "name": "plot_type",
+        "title": "Plot Type",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -480,6 +404,7 @@
       },
       {
         "name": "stand_type",
+        "title": "Stand Type",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -489,6 +414,7 @@
       },
       {
         "name": "plot_status",
+        "title": "Plot Status",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -498,16 +424,19 @@
       },
       {
         "name": "tree_plot_area",
+        "title": "Tree Plot Area",
         "type": "number",
         "raises": "error",
         "constraints": {
           "required": true,
-          "minimum": 400,
-          "maximum": 2500
+          "minimum": 400.0,
+          "maximum": 2500.0,
+          "pattern": "/^[0-9]*.[0-9]{1}$/"
         }
       },
       {
         "name": "tree_plot_shape",
+        "title": "Tree Plot Shape",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -517,26 +446,31 @@
       },
       {
         "name": "tree_tagging_limit",
+        "title": "Tree Tagging Limit",
         "type": "number",
         "raises": "error",
         "constraints": {
           "required": true,
           "minimum": 0.1,
-          "maximum": 9.1
+          "maximum": 9.1,
+          "pattern": "/^[0-9].[0-9]{1}$/"
         }
       },
       {
         "name": "sapling_plot_area",
+        "title": "Sapling Plot Area",
         "type": "number",
         "raises": "error",
         "constraints": {
           "required": true,
-          "minimum": 0,
-          "maximum": 2500
+          "minimum": 0.0,
+          "maximum": 2500.0,
+          "pattern": "/^[0-9]*.[0-9]{1}$/"
         }
       },
       {
         "name": "sapling_plot_shape",
+        "title": "Sapling Plot Shape",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -546,32 +480,39 @@
       },
       {
         "name": "sapling_tagging_limit_dbh",
+        "title": "Sapling Tagging Limit DBH",
         "type": "number",
         "constraints": {
           "minimum": 0.1,
-          "maximum": 9.1
+          "maximum": 9.1,
+          "pattern": "/^[0-9].[0-9]{1}$/"
         }
       },
       {
         "name": "sapling_tagging_limit_height",
+        "title": "Sapling Tagging Limit Height",
         "type": "number",
         "constraints": {
-          "minimum": 1.3,
-          "maximum": 1.5
+          "minimum": 1.30,
+          "maximum": 1.50,
+          "pattern": "/^[0-9].[0-9]{2}$/"
         }
       },
       {
         "name": "regen_plot_area",
+        "title": "Regen Plot Area",
         "type": "number",
         "raises": "error",
         "constraints": {
           "required": true,
-          "minimum": 0,
-          "maximum": 2500
+          "minimum": 0.0,
+          "maximum": 2500.0,
+          "pattern": "/^[0-9]*.[0-9]{1}$/"
         }
       },
       {
         "name": "regen_plot_shape",
+        "title": "Regen Plot Shape",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -581,22 +522,27 @@
       },
       {
         "name": "regen_tagging_limit_conifer",
+        "title": "Regen Tagging Limit Conifer",
         "type": "number",
         "constraints": {
-          "minimum": 0.1,
-          "maximum": 1.3
+          "minimum": 0.10,
+          "maximum": 1.30,
+          "pattern": "/^[0-9].[0-9]{2}$/"
         }
       },
       {
         "name": "regen_tagging_limit_decid",
+        "title": "Regen Tagging Limit Deciduous",
         "type": "number",
         "constraints": {
-          "minimum": 0.1,
-          "maximum": 1.3
+          "minimum": 0.10,
+          "maximum": 1.30,
+          "pattern": "/^[0-9].[0-9]{2}$/"
         }
       },
       {
         "name": "number_regen_plots",
+        "title": "Number of Regen Plots",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -607,27 +553,31 @@
       },
       {
         "name": "contractor",
+        "title": "Contractor",
         "type": "string",
         "constraints": {
-        "maxLength": 50
+          "maxLength": 50
         }
       },
       {
         "name": "cruiser_1_name",
+        "title": "Cruiser 1 Name",
         "type": "string",
         "constraints": {
-        "maxLength": 25
+          "maxLength": 25
         }
       },
       {
         "name": "cruiser_2_name",
+        "title": "Cruiser 2 Name",
         "type": "string",
         "constraints": {
-        "maxLength": 25
+          "maxLength": 25
         }
       },
       {
         "name": "shrub_cover",
+        "title": "Shrub Cover",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -637,6 +587,7 @@
       },
       {
         "name": "herb_forb_cover",
+        "title": "Herb/Forb Cover",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -646,6 +597,7 @@
       },
       {
         "name": "grass_cover",
+        "title": "Grass Cover",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -655,6 +607,7 @@
       },
       {
         "name": "moss_lichen_cover",
+        "title": "Moss/Lichen Cover",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -664,17 +617,19 @@
       },
       {
         "name": "avi_field_call",
+        "title": "AVI Field Call",
         "type": "string",
         "raises": "warning",
         "constraints": {
-         "required": true,
-        "maxLength": 80
+          "required": true,
+          "maxLength": 80
         }
       },
       {
         "name": "plot_measurement_comment",
+        "title": "Plot Measurement Comment",
         "type": "string",
-        "constraints":{
+        "constraints": {
           "maxLength": 250
         }
       }
@@ -700,23 +655,164 @@
       }
     }
   ]
-},
+}
+,
 {
-  "name": "trees_measurement",
-  "path": "trees_measurement.csv",
+  "name": "trees",
+  "title": "Trees",
+  "path": "trees.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/trees.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
+        "type": "string",
+        "raises": "error",
+        "constraints": {
+          "required": true,
+          "maxLength": 15
+        }
+      },
+      {
+        "name": "tree_number",
+        "title": "Tree Number",
+        "type": "integer",
+        "raises": "error",
+        "constraints": {
+          "required": true,
+          "minimum": 0,
+          "maximum": 9999999
+        }
+      },
+      {
+        "name": "tree_label",
+        "title": "Tree Label",
+        "type": "string",
+        "constraints": {
+          "maxLength": 15
+        }
+      },
+      {
+        "name": "tree_location_id",
+        "title": "Tree Location Id",
+        "type": "integer",
+        "raises": "error",
+        "constraints": {
+          "required": true,
+          "pattern": "/^(0|1|2|3)$/"
+        }
+      },
+      {
+        "name": "tree_origin",
+        "title": "Tree Origin",
+        "type": "integer",
+        "raises": "error",
+        "constraints": {
+          "required": true,
+          "pattern": "/^(0|1|2|3|4|5|6|7|8|9|10)$/"
+        }
+      },
+      {
+        "name": "sector_or_quarter",
+        "title": "Sector Or Quarter",
+        "type": "string",
+        "constraints": {
+          "maxLength": 2
+        }
+      },
+      {
+        "name": "species",
+        "title": "Species",
+        "type": "string",
+        "raises": "error",
+        "constraints": {
+          "required": true,
+          "pattern": "/^(A|Aw|Ax|Bw|Dc|Dd|Du|Fa|Fb|Fd|La|Ls|Lt|Lw|Ms|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
+        }
+      },
+      {
+        "name": "distance",
+        "title": "Distance",
+        "type": "number",
+        "constraints": {
+          "minimum": 0.01,
+          "maximum": 100.00,
+          "pattern": "/^[0-9]*.[0-9]{2}$/"
+        }
+      },
+      {
+        "name": "azimuth",
+        "title": "Azimuth",
+        "type": "number",
+        "constraints": {
+          "minimum": 0.0,
+          "maximum": 360.0,
+          "pattern": "/^[0-9]*.[0-9]{1}$/"
+        }
+      },
+      {
+        "name": "trees_comment",
+        "title": "Trees Comment",
+        "type": "string",
+        "constraints": {
+          "maxLength": 250
+        }
+      }
+    ]
+  },
+  "primaryKey": [
+    "company",
+    "company_plot_number",
+    "tree_number"
+  ],
+  "foreignKeys": [
+    {
+      "fields": [
+        "company",
+        "company_plot_number"
+      ],
+      "reference": {
+        "resource": "plot",
+        "fields": [
+          "company",
+          "company_plot_number"
+        ]
+      }
+    }
+  ]
+}
+,
+{
+  "name": "trees_measurement",
+  "title": "Tree Measurements",
+  "path": "trees_measurement.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/trees_measurement.awk",
+  "schema": {
+    "fields": [
+      {
+        "name": "company",
+        "title": "Company",
+        "type": "string",
+        "raises": "error",
+        "constraints": {
+          "required": true,
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
+        }
+      },
+      {
+        "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -726,6 +822,7 @@
       },
       {
         "name": "measurement_number",
+        "title": "Measurement Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -735,74 +832,88 @@
       },
       {
         "name": "tree_number",
+        "title": "Tree Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
           "required": true,
-          "minimum": 1,
+          "minimum": 0,
           "maximum": 9999999
         }
       },
       {
         "name": "tree_type",
+        "title": "Tree Type",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(T|S|ES|ET|B|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10)$/"
+          "pattern": "/^(B|ES|ET|R1|R2|R3|R4|R5|R6|R7|R8|R9|R10|S|T)$/"
         }
       },
       {
         "name": "dbh",
+        "title": "Diameter at Breast Height",
         "type": "number",
         "constraints": {
           "minimum": 0.1,
-          "maximum": 120.0
+          "maximum": 120.0,
+          "pattern": "/^[0-9]*.[0-9]{1}$/"
         }
       },
       {
         "name": "dbh_height",
+        "title": "Height at DBH Measurement",
         "type": "number",
         "constraints": {
-          "minimum": 1.1,
-          "maximum": 1.5
+          "minimum": 1.10,
+          "maximum": 1.50,
+          "pattern": "/^[0-9].[0-9]{2}$/"
         }
       },
       {
         "name": "rcd",
+        "title": "Root Collar Diameter",
         "type": "number",
         "constraints": {
           "minimum": 0.1,
-          "maximum": 15.0
+          "maximum": 15.0,
+          "pattern": "/^[0-9]*.[0-9]{1}$/"
         }
       },
       {
         "name": "rcd_height",
+        "title": "Root Collar Diameter Height",
         "type": "number",
         "constraints": {
-          "minimum": 0.0,
-          "maximum": 0.3
+          "minimum": 0.00,
+          "maximum": 0.30,
+          "pattern": "/^[0-9].[0-9]{2}$/"
         }
       },
       {
         "name": "height",
+        "title": "Height",
         "type": "number",
         "constraints": {
           "minimum": 0.01,
-          "maximum": 45.0
+          "maximum": 45.00,
+          "pattern": "/^[0-9]*.[0-9]{2}$/"
         }
       },
       {
         "name": "crown_class",
+        "title": "Crown Class",
         "type": "string",
         "raises": "warning",
         "constraints": {
-        "required": true,
-        "pattern": "/^(D|C|I|S|N)$/"
+          "required": true,
+          "pattern": "/^(C|D|I|N|S)$/"
         }
       },
       {
         "name": "dbh_age",
+        "title": "DBH Age",
         "type": "integer",
         "constraints": {
           "minimum": 1,
@@ -811,6 +922,7 @@
       },
       {
         "name": "stump_age",
+        "title": "Stump Age",
         "type": "integer",
         "constraints": {
           "minimum": 1,
@@ -819,14 +931,17 @@
       },
       {
         "name": "stump_height",
+        "title": "Stump Height",
         "type": "number",
         "constraints": {
-          "minimum": 0.0,
-          "maximum": 0.30
+          "minimum": 0.00,
+          "maximum": 0.30,
+          "pattern": "/^[0-9].[0-9]{2}$/"
         }
       },
       {
         "name": "total_age",
+        "title": "Total Age",
         "type": "integer",
         "constraints": {
           "minimum": 1,
@@ -835,30 +950,37 @@
       },
       {
         "name": "htlc",
+        "title": "Tree Height to Live Crown",
         "type": "number",
         "constraints": {
-          "minimum": 0,
-          "maximum": 45
+          "minimum": 0.00,
+          "maximum": 45.00,
+          "pattern": "/^[0-9]*.[0-9]{2}$/"
         }
       },
       {
         "name": "crown_diameter_ns",
+        "title": "Crown Diameter North/South",
         "type": "number",
         "constraints": {
-          "minimum": 1,
-          "maximum": 20
+          "minimum": 0.01,
+          "maximum": 20.00,
+          "pattern": "/^[0-9]*.[0-9]{2}$/"
         }
       },
       {
         "name": "crown_diameter_ew",
+        "title": "Crown Diameter East/West",
         "type": "number",
         "constraints": {
-          "minimum": 1,
-          "maximum": 20
+          "minimum": 0.01,
+          "maximum": 20.00,
+          "pattern": "/^[0-9]*.[0-9]{2}$/"
         }
       },
       {
         "name": "condition_code1",
+        "title": "Condition Code 1",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -868,6 +990,7 @@
       },
       {
         "name": "cause1",
+        "title": "Cause 1",
         "type": "integer",
         "constraints": {
           "pattern": "/^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|99)$/"
@@ -875,6 +998,7 @@
       },
       {
         "name": "severity1",
+        "title": "Severity 1",
         "type": "integer",
         "constraints": {
           "pattern": "/^(1|2|3|9)$/"
@@ -882,6 +1006,7 @@
       },
       {
         "name": "condition_code2",
+        "title": "Condition Code 2",
         "type": "integer",
         "constraints": {
           "pattern": "/^(3|4|5|6|7|8|9|10|11|12|16)$/"
@@ -889,6 +1014,7 @@
       },
       {
         "name": "cause2",
+        "title": "Cause 2",
         "type": "integer",
         "constraints": {
           "pattern": "/^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|99)$/"
@@ -896,6 +1022,7 @@
       },
       {
         "name": "severity2",
+        "title": "Severity 2",
         "type": "integer",
         "constraints": {
           "pattern": "/^(1|2|3|9)$/"
@@ -903,6 +1030,7 @@
       },
       {
         "name": "condition_code3",
+        "title": "Condition Code 3",
         "type": "integer",
         "constraints": {
           "pattern": "/^(3|4|5|6|7|8|9|10|11|12|16)$/"
@@ -910,6 +1038,7 @@
       },
       {
         "name": "cause3",
+        "title": "Cause 3",
         "type": "integer",
         "constraints": {
           "pattern": "/^(1|2|3|4|5|6|7|8|9|10|11|12|13|14|15|16|17|18|19|20|21|22|23|99)$/"
@@ -917,6 +1046,7 @@
       },
       {
         "name": "severity3",
+        "title": "Severity 3",
         "type": "integer",
         "constraints": {
           "pattern": "/^(1|2|3|9)$/"
@@ -924,8 +1054,9 @@
       },
       {
         "name": "trees_measurement_comment",
+        "title": "Trees Measurement Comment",
         "type": "string",
-        "constraints":{
+        "constraints": {
           "maxLength": 250
         }
       }
@@ -972,21 +1103,25 @@
 }
 ,
 {
-  "name": "photo_avi_layer",
+  "name": "photo_avi",
+  "title": "Photo AVI",
   "path": "photo_avi.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/photo_avi.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -996,6 +1131,7 @@
       },
       {
         "name": "avi_version",
+        "title": "Alberta Vegetation Inventory Version",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -1005,6 +1141,7 @@
       },
       {
         "name": "polygon_number",
+        "title": "Polygon Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1015,6 +1152,7 @@
       },
       {
         "name": "year_photography",
+        "title": "Year Photography",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1025,6 +1163,7 @@
       },
       {
         "name": "year_photo_call",
+        "title": "Year Photo Call",
         "type": "integer",
         "constraints": {
           "minimum": 1900,
@@ -1033,6 +1172,7 @@
       },
       {
         "name": "layer_type",
+        "title": "Layer Type",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1042,6 +1182,7 @@
       },
       {
         "name": "moist_reg",
+        "title": "Moisture Regime",
         "type": "string",
         "raises": "warning",
         "constraints": {
@@ -1051,6 +1192,7 @@
       },
       {
         "name": "density",
+        "title": "Density",
         "type": "string",
         "constraints": {
           "pattern": "/^(A|B|C|D)$/"
@@ -1058,6 +1200,7 @@
       },
       {
         "name": "height",
+        "title": "Height",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1068,15 +1211,17 @@
       },
       {
         "name": "sp1",
+        "title": "Species 1",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|No)$/"
+          "pattern": "/^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
         }
       },
       {
         "name": "sp1_per",
+        "title": "Species 1 Percentage",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1086,13 +1231,15 @@
       },
       {
         "name": "sp2",
+        "title": "Species 2",
         "type": "string",
         "constraints": {
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/"
+        "pattern": "/^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
         }
       },
       {
         "name": "sp2_per",
+        "title": "Species 2 Percentage",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1102,13 +1249,15 @@
       },
       {
         "name": "sp3",
+        "title": "Species 3",
         "type": "string",
         "constraints": {
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/"
+        "pattern": "/^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
         }
       },
       {
         "name": "sp3_per",
+        "title": "Species 3 Percentage",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1118,13 +1267,15 @@
       },
       {
         "name": "sp4",
+        "title": "Species 4",
         "type": "string",
         "constraints": {
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/"
+        "pattern": "/^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
         }
       },
       {
         "name": "sp4_per",
+        "title": "Species 4 Percentage",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1134,13 +1285,15 @@
       },
       {
         "name": "sp5",
+        "title": "Species 5",
         "type": "string",
         "constraints": {
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls)$/"
+        "pattern": "/^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
         }
       },
       {
         "name": "sp5_per",
+        "title": "Species 5 Percentage",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1150,13 +1303,15 @@
       },
       {
         "name": "struc",
+        "title": "Structure",
         "type": "string",
         "constraints": {
-          "pattern": "/^(S|M|C|H)$/"
+          "pattern": "/^(C|H|M|S)$/"
         }
       },
       {
         "name": "struc_val",
+        "title": "Structure Value",
         "type": "integer",
         "constraints": {
           "pattern": "/^(0|1|2|3|4|5|6|7|8|9)$/"
@@ -1164,6 +1319,7 @@
       },
       {
         "name": "origin",
+        "title": "Origin Class",
         "type": "integer",
         "constraints": {
           "minimum": 0,
@@ -1172,13 +1328,15 @@
       },
       {
         "name": "tpr",
+        "title": "Timber Productivity Rating Class",
         "type": "string",
         "constraints": {
-          "pattern": "/^(U|F|M|G)$/"
+          "pattern": "/^(F|G|M|U)$/"
         }
       },
       {
         "name": "initials",
+        "title": "Initials",
         "type": "string",
         "constraints": {
           "maxLength": 2
@@ -1186,13 +1344,15 @@
       },
       {
         "name": "nfl",
+        "title": "Non-Forest Vegetated Land",
         "type": "string",
         "constraints": {
-          "pattern": "/^(SC|SO|HG|HF|BR)$/"
+          "pattern": "/^(BR|HF|HG|SC|SO)$/"
         }
       },
       {
         "name": "nfl_per",
+        "title": "Non-Forest Vegetated Land Percantage",
         "type": "string",
         "constraints": {
           "pattern": "/^(0|1|2|3|4|5|6|7|8|9|10)$/"
@@ -1200,13 +1360,15 @@
       },
       {
         "name": "nat_non",
+        "title": "Naturally Non-Vegetated Lands",
         "type": "string",
         "constraints": {
-          "pattern": "/^(NWI|NWL|NWR|NWF|NMB|NMC|NMR|NMS)$/"
+          "pattern": "/^(NMB|NMC|NMR|NMS|NWF|NWI|NWL|NWR)$/"
         }
       },
       {
         "name": "anth_veg",
+        "title": "Anthropogenic Vegetated Land",
         "type": "string",
         "constraints": {
           "pattern": "/^(CA|CP|CPR|CIP|CIW)$/"
@@ -1214,6 +1376,7 @@
       },
       {
         "name": "anth_non",
+        "title": "Anthropogenic Non-Vegetated Land",
         "type": "string",
         "constraints": {
           "pattern": "/^(ASC|ASR|AIH|AIE|AIG|AIF|AIM|AII)$/"
@@ -1221,13 +1384,15 @@
       },
       {
         "name": "mod1",
+        "title": "Stand Modifier 1 Condition/Treatment",
         "type": "string",
         "constraints": {
-          "pattern": "/^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/"
+          "pattern": "/^(BT|BU|CC|CL|DI|DT|GR|IK|IR|PL|SC|SI|SN|ST|TH|WE|WF|UK)$/"
         }
       },
       {
         "name": "mod1_ext",
+        "title": "Stand Modifier Extent",
         "type": "string",
         "constraints": {
           "pattern": "/^(0|1|2|3|4|5)$/"
@@ -1235,21 +1400,24 @@
       },
       {
         "name": "mod1_yr",
+        "title": "Stand Modifier Year",
         "type": "integer",
         "constraints": {
-          "minimum": 1900,
+          "minimum": 0,
           "maximum": 2050
         }
       },
       {
         "name": "mod2",
+        "title": "Stand Modifier 2 Condition/Treatment",
         "type": "string",
         "constraints": {
-          "pattern": "/^(CC|BU|WF|CL|DI|IK|UK|WE|DT|BT|SN|ST|SI|SC|PL|TH|GR|IR)$/"
+          "pattern": "/^(BT|BU|CC|CL|DI|DT|GR|IK|IR|PL|SC|SI|SN|ST|TH|WE|WF|UK)$/"
         }
       },
       {
         "name": "mod2_ext",
+        "title": "Stand Modifier 2 Extent",
         "type": "string",
         "constraints": {
           "pattern": "/^(0|1|2|3|4|5)$/"
@@ -1257,29 +1425,33 @@
       },
       {
         "name": "mod2_yr",
+        "title": "Stand Modifier 2 Year",
         "type": "integer",
         "constraints": {
-          "minimum": 1900,
+          "minimum": 0,
           "maximum": 2050
         }
       },
       {
         "name": "data",
+        "title": "Data",
         "type": "string",
         "constraints": {
-          "pattern": "/^(F|A|I|S|P|C|V|L)$/"
+          "pattern": "/^(A|C|F|I|L|P|S|V)$/"
         }
       },
       {
         "name": "data_yr",
+        "title": "Data Year",
         "type": "integer",
         "constraints": {
-          "minimum": 1900,
+          "minimum": 0,
           "maximum": 2050
         }
       },
       {
         "name": "photo_avi_layer_comment",
+        "title": "Photo Avi Layer Comment",
         "type": "string",
         "constraints":{
           "maxLength": 250
@@ -1313,20 +1485,24 @@
 ,
 {
   "name": "treatment",
+  "title": "Treatment",
   "path": "treatment.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/treatment.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -1336,6 +1512,7 @@
       },
       {
         "name": "treatment_number",
+        "title": "Treatment Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1346,15 +1523,17 @@
       },
       {
         "name": "treatment_code",
+        "title": "Treatment Code",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(NT|P|H|M|C|B|TH|TW|F|FI|PC|CT|S|UP|UA|D|SA|SM|NK)$/"
+          "pattern": "/^(B|C|CT|D|F|FI|H|M|NK|NT|P|PC|S|SA|SM|TH|TW|UP|UA)$/"
         }
       },
       {
         "name": "treatment_year",
+        "title": "Treatment Year",
         "type": "integer",
         "constraints": {
           "minimum": 1900,
@@ -1363,6 +1542,7 @@
       },
       {
         "name": "treatment_month",
+        "title": "Treatment Month",
         "type": "integer",
         "constraints": {
           "minimum": 1,
@@ -1371,6 +1551,7 @@
       },
       {
         "name": "treatment_day",
+        "title": "Treatment Day",
         "type": "integer",
         "constraints": {
           "minimum": 1,
@@ -1379,8 +1560,9 @@
       },
       {
         "name": "treatment_comment",
+        "title": "Treatment Comment",
         "type": "string",
-        "constraints":{
+        "constraints": {
           "maxLength": 250
         }
       }
@@ -1409,20 +1591,24 @@
 },
 {
   "name": "disturbance",
+  "title": "Disturbance",
   "path": "disturbance.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/disturbance.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -1432,6 +1618,7 @@
       },
       {
         "name": "disturbance_number",
+        "title": "Disturbance Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1442,15 +1629,17 @@
       },
       {
         "name": "disturbance_code",
+        "title": "Disturbance Code",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(BU|DF|MI|MU|NDD|NDW|DC|HL|MLU|NDC|NDI|DA)$/"
+          "pattern": "/^(BU|DA|DC|DF|HL|MI|MLU|MU|NDD|NDW|NDC|NDI)$/"
         }
       },
       {
         "name": "disturbance_year",
+        "title": "Disturbance Year",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -1461,6 +1650,7 @@
       },
       {
         "name": "disturbance_month",
+        "title": "Disturbance Month",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -1471,6 +1661,7 @@
       },
       {
         "name": "disturbance_day",
+        "title": "Disturbance Day",
         "type": "integer",
         "raises": "warning",
         "constraints": {
@@ -1481,8 +1672,9 @@
       },
       {
         "name": "disturbance_comment",
+        "title": "Disturbance Comment",
         "type": "string",
-        "constraints":{
+        "constraints": {
           "maxLength": 250
         }
       }
@@ -1508,24 +1700,27 @@
       }
     }
   ]
-}
-,
+},
 {
   "name": "regeneration",
+  "title": "Regeneration",
   "path": "regeneration.csv",
+  "validator": "http://s3.amazonaws.com/tesera.dataprofiles/dev.afgo.pgyi/awk/regeneration.awk",
   "schema": {
     "fields": [
       {
         "name": "company",
+        "title": "Company",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(AINS|GOA|APLY|ALPC|ANC|BLUE|CFPL|CFS|DAIS|FOFP|MDFP|MWWC|SLPC|SPRA|SUND|SFPI|HLFP|TOLK|TOSL|UOA|VAND|WFML|WYGP|WYPM|UNKN|HPFP)$/"
+          "pattern": "/^(AINS|ALPC|ANC|APLY|BLUE|CFPL|CFS|DAIS|FOFP|GOA|HPFP|HLFP|MDFP|MWWC|SFPI|SLPC|SPRA|SUND|TOLK|TOSL|UNKN|UOA|VAND|WFML|WYGP|WYPM)$/"
         }
       },
       {
         "name": "company_plot_number",
+        "title": "Company Plot Number",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -1535,6 +1730,7 @@
       },
       {
         "name": "measurement_number",
+        "title": "Measurement Number",
         "type": "integer",
         "raises": "error",
         "constraints": {
@@ -1544,6 +1740,7 @@
       },
       {
         "name": "regeneration_plot_name",
+        "title": "Regeneration Plot Name",
         "type": "string",
         "raises": "error",
         "constraints": {
@@ -1553,15 +1750,17 @@
       },
       {
         "name": "species",
+        "title": "Species",
         "type": "string",
         "raises": "error",
         "constraints": {
           "required": true,
-          "pattern": "/^(A|Aw|Pb|Bw|Ax|P|Pl|Pw|Pa|Pf|Pj|Px|Sw|Se|Sb|Sx|Fb|Fa|Fd|Lt|Lw|La|Ls|Ms|No)$/"
+          "pattern": "/^(A|Aw|Ax|Bw|Fa|Fb|Fd|La|Ls|Lt|Lw|Ms|P|Pa|Pb|Pf|Pj|Pl|Pw|Px|Sb|Se|Sw|Sx|No)$/"
         }
       },
       {
         "name": "regeneration_count",
+        "title": "Regeneration Count",
         "type": "integer",
         "constraints": {
           "minimum": 0,
@@ -1570,8 +1769,9 @@
       },
       {
         "name": "regeneration_comment",
+        "title": "Regeneration Comment",
         "type": "string",
-        "constraints":{
+        "constraints": {
           "maxLength": 250
         }
       }
@@ -1588,13 +1788,15 @@
     {
       "fields": [
         "company",
-        "company_plot_number"
+        "company_plot_number",
+        "measurement_number"
       ],
       "reference": {
-        "resource": "plot",
+        "resource": "plot_measurement",
         "fields": [
           "company",
-          "company_plot_number"
+          "company_plot_number",
+          "measurement_number"
         ]
       }
     }
