@@ -117,12 +117,12 @@ $1 == "field" {
 
         if (type == "integer") {
             cat       = "error"
-            test      = field " && !is_integer(" field ")"
+            test      = field " != \"\" && !is_integer(" field ")"
             mini_msg  = field " should be an integer"
             msg       = "Field " field " in \" CSVFILENAME \" line \" NR \" should be an integer but was \" " field " \" "
         } else if (type == "number") {
             cat       = "error"
-            test      = field " && !is_number(" field ")"
+            test      = field " != \"\" && !is_number(" field ")"
             mini_msg  = field " should be a decimal number"
             msg       = "Field " field " in \" CSVFILENAME \" line \" NR \" should be a decimal number but was \" " field " \" "
         }
