@@ -327,7 +327,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS plot_measurement (company ,company_plot_number ,measurement_number ,measurement_year ,measurement_month ,measurement_day ,stand_origin ,plot_type ,stand_type ,plot_status ,tree_plot_area ,tree_plot_shape ,tree_tagging_limit ,sapling_plot_area ,sapling_plot_shape ,sapling_tagging_limit_dbh ,sapling_tagging_limit_height ,regen_plot_area ,regen_plot_shape ,regen_tagging_limit_conifer ,regen_tagging_limit_decid ,number_regen_plots ,contractor ,cruiser_1_name ,cruiser_2_name ,shrub_cover ,herb_forb_cover ,grass_cover ,moss_lichen_cover ,avi_field_call ,plot_measurement_comment );"
+     print "CREATE TABLE IF NOT EXISTS plot_measurement (company text,company_plot_number text,measurement_number integer,measurement_year integer,measurement_month integer,measurement_day integer,stand_origin text,plot_type integer,stand_type integer,plot_status integer,tree_plot_area numeric,tree_plot_shape text,tree_tagging_limit numeric,sapling_plot_area text,sapling_plot_shape text,sapling_tagging_limit_dbh numeric,sapling_tagging_limit_height numeric,regen_plot_area text,regen_plot_shape text,regen_tagging_limit_conifer numeric,regen_tagging_limit_decid numeric,number_regen_plots text,contractor text,cruiser_1_name text,cruiser_2_name text,shrub_cover integer,herb_forb_cover integer,grass_cover integer,moss_lichen_cover integer,avi_field_call text,plot_measurement_comment text);"
 }
 action == "sanitize" { print }
 # la fin

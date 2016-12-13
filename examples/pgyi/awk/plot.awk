@@ -303,7 +303,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS plot (company ,company_plot_number ,company_stand_number ,establishment_year ,establishment_month ,establishment_day ,fmu ,fma ,ats_township ,ats_range ,ats_meridian ,ats_section ,opening_number ,sampling_unit_number ,topographic_position ,elevation ,slope ,aspect ,x_coord ,y_coord ,utm_zone ,datum ,latitude ,longitude ,natural_subregion ,ecosite_guide ,ecosite ,ecosite_phase ,plot_comment );"
+     print "CREATE TABLE IF NOT EXISTS plot (company text,company_plot_number text,company_stand_number text,establishment_year integer,establishment_month integer,establishment_day integer,fmu text,fma text,ats_township integer,ats_range integer,ats_meridian integer,ats_section integer,opening_number text,sampling_unit_number text,topographic_position integer,elevation text,slope text,aspect text,x_coord numeric,y_coord numeric,utm_zone text,datum text,latitude numeric,longitude numeric,natural_subregion text,ecosite_guide text,ecosite text,ecosite_phase text,plot_comment text);"
 }
 action == "sanitize" { print }
 # la fin

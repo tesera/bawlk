@@ -1,6 +1,4 @@
 file,table,trees
-file,pkey,company|company_plot_number|tree_number
-file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|tree_number|tree_label|tree_location_id|tree_origin|sector_or_quarter|species|distance|azimuth|trees_comment
 field,type,company string error
 field,required,company true error

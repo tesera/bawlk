@@ -307,7 +307,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS photo_avi (company ,company_plot_number ,avi_version ,polygon_number ,year_photography ,year_photo_call ,layer_type ,moist_reg ,density ,height ,sp1 ,sp1_per ,sp2 ,sp2_per ,sp3 ,sp3_per ,sp4 ,sp4_per ,sp5 ,sp5_per ,struc ,struc_val ,origin ,tpr ,initials ,nfl ,nfl_per ,nat_non ,anth_veg ,anth_non ,mod1 ,mod1_ext ,mod1_yr ,mod2 ,mod2_ext ,mod2_yr ,data ,data_yr ,photo_avi_layer_comment );"
+     print "CREATE TABLE IF NOT EXISTS photo_avi (company text,company_plot_number text,avi_version text,polygon_number integer,year_photography integer,year_photo_call integer,layer_type integer,moist_reg text,density text,height text,sp1 text,sp1_per integer,sp2 text,sp2_per integer,sp3 text,sp3_per integer,sp4 text,sp4_per integer,sp5 text,sp5_per integer,struc text,struc_val integer,origin text,tpr text,initials text,nfl text,nfl_per text,nat_non text,anth_veg text,anth_non text,mod1 text,mod1_ext text,mod1_yr text,mod2 text,mod2_ext text,mod2_yr text,data text,data_yr text,photo_avi_layer_comment text);"
 }
 action == "sanitize" { print }
 # la fin

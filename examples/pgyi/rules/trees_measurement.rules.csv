@@ -1,7 +1,4 @@
 file,table,trees_measurement
-file,pkey,company|company_plot_number|measurement_number|tree_number
-file,fkey,plot_measurement company|company_plot_number|measurement_number
-file,fkey,trees company|company_plot_number|tree_number
 headers,names,company|company_plot_number|measurement_number|tree_number|tree_type|dbh|dbh_height|rcd|rcd_height|height|crown_class|dbh_age|stump_age|stump_height|total_age|htlc|crown_diameter_ns|crown_diameter_ew|condition_code1|cause1|severity1|condition_code2|cause2|severity2|condition_code3|cause3|severity3|trees_measurement_comment
 field,type,company string error
 field,required,company true error
