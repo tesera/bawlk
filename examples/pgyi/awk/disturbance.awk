@@ -139,7 +139,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS disturbance (company ,company_plot_number ,disturbance_number ,disturbance_code ,disturbance_year ,disturbance_month ,disturbance_day ,disturbance_comment );"
+     print "CREATE TABLE IF NOT EXISTS disturbance (company text,company_plot_number text,disturbance_number integer,disturbance_code text,disturbance_year integer,disturbance_month integer,disturbance_day integer,disturbance_comment text);"
 }
 action == "sanitize" { print }
 # la fin

@@ -1,6 +1,4 @@
 file,table,photo_avi
-file,pkey,company|company_plot_number|polygon_number|year_photography|layer_type
-file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|avi_version|polygon_number|year_photography|year_photo_call|layer_type|moist_reg|density|height|sp1|sp1_per|sp2|sp2_per|sp3|sp3_per|sp4|sp4_per|sp5|sp5_per|struc|struc_val|origin|tpr|initials|nfl|nfl_per|nat_non|anth_veg|anth_non|mod1|mod1_ext|mod1_yr|mod2|mod2_ext|mod2_yr|data|data_yr|photo_avi_layer_comment
 field,type,company string error
 field,required,company true error

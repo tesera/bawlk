@@ -121,7 +121,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS regeneration (company ,company_plot_number ,measurement_number ,regeneration_plot_name ,species ,regeneration_count ,regeneration_comment );"
+     print "CREATE TABLE IF NOT EXISTS regeneration (company text,company_plot_number text,measurement_number integer,regeneration_plot_name text,species text,regeneration_count text,regeneration_comment text);"
 }
 action == "sanitize" { print }
 # la fin

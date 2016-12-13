@@ -133,7 +133,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS treatment (company ,company_plot_number ,treatment_number ,treatment_code ,treatment_year ,treatment_month ,treatment_day ,treatment_comment );"
+     print "CREATE TABLE IF NOT EXISTS treatment (company text,company_plot_number text,treatment_number integer,treatment_code text,treatment_year integer,treatment_month integer,treatment_day integer,treatment_comment text);"
 }
 action == "sanitize" { print }
 # la fin

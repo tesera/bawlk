@@ -1,6 +1,4 @@
 file,table,disturbance
-file,pkey,company|company_plot_number|disturbance_number
-file,fkey,plot company|company_plot_number
 headers,names,company|company_plot_number|disturbance_number|disturbance_code|disturbance_year|disturbance_month|disturbance_day|disturbance_comment
 field,type,company string error
 field,required,company true error

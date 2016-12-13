@@ -210,12 +210,12 @@ $1 == "field" {
     sql_types_map["integer"] = "integer"
     sql_types_map["number"] = "numeric"
 
-    rule_type = $2 ? sql_types_map[$2] : sql_types_map["string"]
-
     split($3, params, " ")
     field = params[1]
+    field_type = params[2]
 
-    sql_types[field] = rule_type
+    sql_type = field_type ? sql_types_map[field_type] : sql_types_map["string"]
+    if(sql_type) sql_types[field] = sql_type
 }
 
 END {

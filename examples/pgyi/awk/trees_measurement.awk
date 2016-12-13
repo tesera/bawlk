@@ -293,7 +293,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS trees_measurement (company ,company_plot_number ,measurement_number ,tree_number ,tree_type ,dbh ,dbh_height ,rcd ,rcd_height ,height ,crown_class ,dbh_age ,stump_age ,stump_height ,total_age ,htlc ,crown_diameter_ns ,crown_diameter_ew ,condition_code1 ,cause1 ,severity1 ,condition_code2 ,cause2 ,severity2 ,condition_code3 ,cause3 ,severity3 ,trees_measurement_comment );"
+     print "CREATE TABLE IF NOT EXISTS trees_measurement (company text,company_plot_number text,measurement_number integer,tree_number text,tree_type text,dbh numeric,dbh_height numeric,rcd numeric,rcd_height text,height numeric,crown_class text,dbh_age integer,stump_age integer,stump_height text,total_age integer,htlc text,crown_diameter_ns numeric,crown_diameter_ew numeric,condition_code1 integer,cause1 integer,severity1 integer,condition_code2 integer,cause2 integer,severity2 integer,condition_code3 integer,cause3 integer,severity3 integer,trees_measurement_comment text);"
 }
 action == "sanitize" { print }
 # la fin

@@ -153,7 +153,7 @@ action == "insert" && NR > 1 {
    print record
 }
 action == "table" && NR == 1 {
-     print "CREATE TABLE IF NOT EXISTS trees (company ,company_plot_number ,tree_number ,tree_label ,tree_location_id ,tree_origin ,sector_or_quarter ,species ,distance ,azimuth ,trees_comment );"
+     print "CREATE TABLE IF NOT EXISTS trees (company text,company_plot_number text,tree_number text,tree_label text,tree_location_id integer,tree_origin integer,sector_or_quarter text,species text,distance numeric,azimuth text,trees_comment text);"
 }
 action == "sanitize" { print }
 # la fin
